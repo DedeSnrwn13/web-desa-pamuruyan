@@ -62,6 +62,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo-kab-sukabumi.png'))
             ->brandName('Desa Pamuruyan')
             ->brandLogoHeight('3rem')
-            ->maxContentWidth('full');
+            ->maxContentWidth('full')
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s');
     }
 }

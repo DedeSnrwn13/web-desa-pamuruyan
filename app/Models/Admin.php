@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable implements FilamentUser
 {
@@ -44,5 +45,10 @@ class Admin extends Authenticatable implements FilamentUser
     protected function name(): Attribute
     {
         return Attribute::get(fn() => $this->nama_admin ?? $this->username ?? 'Admin');
+    }
+
+    public function kategoriBeritas(): HasMany
+    {
+        return $this->hasMany(KategoriBerita::class);
     }
 }

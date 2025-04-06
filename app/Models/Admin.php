@@ -46,12 +46,12 @@ class Admin extends Authenticatable implements FilamentUser
 
     public function getUserName(): string
     {
-        return $this->nama_admin ?? $this->username ?? 'Admin';
+        return $this->nama ?? $this->username ?? 'Admin';
     }
 
     protected function name(): Attribute
     {
-        return Attribute::get(fn() => $this->nama_admin ?? $this->username ?? 'Admin');
+        return Attribute::get(fn() => $this->nama ?? $this->username ?? 'Admin');
     }
 
     public function kategoriBeritas(): HasMany

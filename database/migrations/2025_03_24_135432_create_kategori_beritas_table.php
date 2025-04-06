@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('kategori_beritas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('admin_id')->constrained('admins');
-            $table->string('nama_kategori');
+            $table->string('nama');
             $table->string('slug')->unique();
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }

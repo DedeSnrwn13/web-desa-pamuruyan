@@ -21,6 +21,11 @@ class SuratFormField extends Model
         'group'
     ];
 
+    protected $casts = [
+        'opsi' => 'array',
+        'is_required' => 'boolean'
+    ];
+
     public function jenisSurat(): BelongsTo
     {
         return $this->belongsTo(JenisSurat::class);

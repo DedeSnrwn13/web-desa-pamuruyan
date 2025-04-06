@@ -4,8 +4,15 @@ namespace Database\Seeders;
 
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\RtSeeder;
+use Database\Seeders\RwSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\WargaSeeder;
+use Database\Seeders\KampungSeeder;
+use Database\Seeders\JenisSuratSeeder;
+use Database\Seeders\KategoriBeritaSeeder;
+use Database\Seeders\SuratFormFieldSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +23,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminSeeder::class,
+            KampungSeeder::class,
+            RwSeeder::class,
+            RtSeeder::class,
+            WargaSeeder::class,
+            JenisSuratSeeder::class,
+            SuratFormFieldSeeder::class,
+            KategoriBeritaSeeder::class,
         ]);
     }
 }

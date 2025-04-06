@@ -9,7 +9,7 @@ class KategoriBerita extends Model
 {
     protected $fillable = [
         'admin_id',
-        'nama_kategori',
+        'nama',
         'slug'
     ];
 

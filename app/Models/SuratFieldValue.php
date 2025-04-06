@@ -48,7 +48,7 @@ class SuratFieldValue extends Model
                 };
             },
             set: function ($value) {
-                $tipe = $this->formField->tipe;
+                $tipe = $this->suratFormField->tipe;
 
                 return match ($tipe) {
                     'text', 'textarea' => ['text_value' => $value],

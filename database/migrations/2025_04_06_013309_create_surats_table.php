@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('jenis_surat_id')->constrained('jenis_surats')->cascadeOnDelete();
             $table->enum('status', ['menunggu', 'disetujui', 'ditolak']);
             $table->string(column: 'keterangan_warga');
-            $table->string(column: 'keterangan_admin');
+            $table->string(column: 'keterangan_admin')->nullable();
             $table->string(column: 'no_surat')->nullable();
             $table->string(column: 'tanggal_surat')->nullable();
             $table->timestamps();

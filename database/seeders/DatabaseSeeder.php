@@ -8,6 +8,7 @@ use Database\Seeders\RtSeeder;
 use Database\Seeders\RwSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\SuratSeeder;
 use Database\Seeders\WargaSeeder;
 use Database\Seeders\KampungSeeder;
 use Database\Seeders\JenisSuratSeeder;
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             JenisSuratSeeder::class,
             SuratFormFieldSeeder::class,
             KategoriBeritaSeeder::class,
+            SuratSeeder::class,
         ]);
     }
 }

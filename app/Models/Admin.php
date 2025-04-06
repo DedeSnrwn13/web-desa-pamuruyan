@@ -2,7 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Rt;
+use App\Models\Rw;
 use Filament\Panel;
+use App\Models\Surat;
+use App\Models\Kampung;
+use App\Models\JenisSurat;
+use App\Models\KategoriBerita;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,7 +21,8 @@ class Admin extends Authenticatable implements FilamentUser
 
     protected $fillable = [
         'username',
-        'nama_admin',
+        'nama',
+        'jabatan',
         'email',
         'last_login'
     ];
@@ -50,5 +57,30 @@ class Admin extends Authenticatable implements FilamentUser
     public function kategoriBeritas(): HasMany
     {
         return $this->hasMany(KategoriBerita::class);
+    }
+
+    public function jenisSurats(): HasMany
+    {
+        return $this->hasMany(JenisSurat::class);
+    }
+
+    public function kampungs(): HasMany
+    {
+        return $this->hasMany(Kampung::class);
+    }
+
+    public function rws(): HasMany
+    {
+        return $this->hasMany(Rw::class);
+    }
+
+    public function rts(): HasMany
+    {
+        return $this->hasMany(Rt::class);
+    }
+
+    public function surats(): HasMany
+    {
+        return $this->hasMany(Surat::class);
     }
 }

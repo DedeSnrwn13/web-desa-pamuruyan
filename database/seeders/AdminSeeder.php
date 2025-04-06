@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -15,10 +16,12 @@ class AdminSeeder extends Seeder
     {
         Admin::create([
             'username' => 'admin',
-            'nama_admin' => 'Admin',
+            'nama' => 'Admin',
+            'jabatan' => 'Admin',
             'email' => 'admin@desapamuruyan.com',
             'password' => bcrypt('password123'),
-            'last_login' => now()
+            'last_login' => now(),
+            'remember_token' => Str::random(64),
         ]);
     }
 }

@@ -3,11 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Rt;
+use App\Models\Surat;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class Warga extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -18,9 +22,17 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'rt_id',
+        'nama',
         'email',
-        'password',
+        'jenis_kelamin',
+        'no_telepon',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'pekerjaan',
+        'agama',
+        'status_perkawinan',
+        'kewarganegaraan'
     ];
 
     /**
@@ -44,5 +56,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function rt(): BelongsTo
+    {
+        return $this->belongsTo(related: Rt::class);
+    }
+
+    public function surats(): HasMany
+    {
+        return $this->hasMany(related: Surat::class);
     }
 }

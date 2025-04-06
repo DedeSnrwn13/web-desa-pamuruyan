@@ -5,19 +5,29 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Surat;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Support\Enums\ActionSize;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SuratResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SuratResource\RelationManagers;
+use Filament\Tables\Actions\Modal\Actions\Action as ModalAction;
+use Filament\Pages\Actions;
 
 class SuratResource extends Resource
 {
@@ -43,14 +53,16 @@ class SuratResource extends Resource
                     ->relationship('warga', 'nama')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
                 Select::make('jenis_surat_id')
                     ->placeholder('Pilih jenis surat')
                     ->relationship('jenisSurat', 'nama')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
                 Select::make('status')
                     ->options([
@@ -58,19 +70,24 @@ class SuratResource extends Resource
                         'disetujui' => 'Disetujui',
                         'ditolak' => 'Ditolak'
                     ])
-                    ->required(),
+                    ->required()
+                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
                 TextInput::make('keterangan_warga')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
                 TextInput::make('keterangan_admin')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
                 TextInput::make('no_surat')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
-                DatePicker::make('tanggal_surat'),
+                DatePicker::make('tanggal_surat')
+                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
             ]);
     }
 
@@ -110,11 +127,17 @@ class SuratResource extends Resource
                     ->dateTime()
                     ->sortable(),
 
-                TextColumn::make('updated_at')
-                    ->label('Diperbarui pada')
-                    ->dateTime()
+                TextColumn::make('admin.name')
+                    ->label(label: 'Di setujui/ditolak oleh')
+                    ->default(fn($record) => $record?->admin?->name ?? '-')
                     ->sortable(),
             ])
+            ->defaultSort('created_at', 'asc')
+            ->modifyQueryUsing(
+                fn(Builder $query) => $query
+                    ->orderByRaw("FIELD(status, 'menunggu', 'disetujui', 'ditolak')")
+                    ->orderBy('created_at', direction: 'asc')
+            )
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
@@ -126,12 +149,19 @@ class SuratResource extends Resource
                     ->relationship('jenisSurat', 'nama')
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->hidden(fn($record) => $record?->status !== 'menunggu'),
+                // Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('tinjau')
+                    ->label('Tinjau')
+                    ->icon('heroicon-o-eye')
+                    ->color('warning')
+                    ->url(fn(Surat $record): string => static::getUrl('tinjau', ['record' => $record]))
+                    ->visible(fn($record) => $record->status === 'menunggu'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -148,6 +178,7 @@ class SuratResource extends Resource
         return [
             'index' => Pages\ListSurats::route('/'),
             'edit' => Pages\EditSurat::route('/{record}/edit'),
+            'tinjau' => Pages\TinjauSurat::route('/{record}/tinjau'),
         ];
     }
 }

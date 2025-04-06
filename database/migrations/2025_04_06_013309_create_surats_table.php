@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('surats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained('admins')->cascadeOnDelete();
+            $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
             $table->foreignId('warga_id')->constrained('wargas')->cascadeOnDelete();
             $table->foreignId('jenis_surat_id')->constrained('jenis_surats')->cascadeOnDelete();
             $table->enum('status', ['menunggu', 'disetujui', 'ditolak']);

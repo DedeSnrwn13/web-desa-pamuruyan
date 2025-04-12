@@ -2,33 +2,32 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\PenandatanganResource\Pages;
+use App\Models\Penandatangan;
 use Filament\Forms;
-use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\LampiranSurat;
 use Filament\Resources\Resource;
-use App\Filament\Resources\LampiranSuratResource\Pages;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Filament\Tables\Columns\TextColumn;
 
-class LampiranSuratResource extends Resource
+class PenandatanganResource extends Resource
 {
-    protected static ?string $model = LampiranSurat::class;
+    protected static ?string $model = Penandatangan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
     protected static ?string $navigationGroup = 'Manajemen Surat';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
-    protected static ?string $navigationLabel = 'Lampiran';
+    protected static ?string $navigationLabel = 'Penandatangan';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Informasi Lampiran')
+                Forms\Components\Section::make('Informasi Penandatangan')
                     ->schema([
                         Forms\Components\Select::make('surat_id')
                             ->relationship('surat', 'no_surat')
@@ -36,24 +35,30 @@ class LampiranSuratResource extends Resource
                             ->searchable()
                             ->preload()
                             ->placeholder('Pilih surat'),
-                        Forms\Components\TextInput::make('nama_file')
-                            ->placeholder('Masukkan nama file')
+                        Forms\Components\TextInput::make('nama')
                             ->required()
+                            ->placeholder('Masukkan nama penandatangan')
                             ->maxLength(255),
-                        Forms\Components\FileUpload::make('path')
-                            ->label('File Lampiran')
+
+                        Forms\Components\TextInput::make('jabatan')
                             ->required()
-                            ->directory('lampiran-surat')
+                            ->placeholder('Masukkan jabatan')
+                            ->maxLength(255),
+
+                        Forms\Components\FileUpload::make('ttd_path')
+                            ->label('Tanda Tangan')
+                            ->required()
+                            ->image()
+                            ->directory('tanda-tangan')
                             ->preserveFilenames()
                             ->downloadable()
-                            ->uploadingMessage('Uploading lampiran...')
-                            ->directory('lampiran-surat')
+                            ->uploadingMessage('Mengupload tanda tangan...')
                             ->getUploadedFileNameForStorageUsing(
                                 fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
-                                    ->prepend('lampiran-surat-'),
+                                    ->prepend('ttd-'),
                             )
                             ->columnSpanFull()
-                            ->maxSize(size: 5120),
+                            ->maxSize(2048)
                     ])
                     ->columns(2),
             ]);
@@ -63,13 +68,17 @@ class LampiranSuratResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make(name: '#')
+                Tables\Columns\TextColumn::make('#')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('surat.no_surat')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nama_file')
+                Tables\Columns\TextColumn::make('nama')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('jabatan')
+                    ->searchable(),
+                Tables\Columns\ImageColumn::make('ttd_path')
+                    ->label('Tanda Tangan'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat pada')
                     ->dateTime()
@@ -101,9 +110,9 @@ class LampiranSuratResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLampiranSurats::route('/'),
-            'create' => Pages\CreateLampiranSurat::route('/create'),
-            'edit' => Pages\EditLampiranSurat::route('/{record}/edit'),
+            'index' => Pages\ListPenandatangans::route('/'),
+            'create' => Pages\CreatePenandatangan::route('/create'),
+            'edit' => Pages\EditPenandatangan::route('/{record}/edit'),
         ];
     }
 }

@@ -37,6 +37,8 @@ class SuratFormFieldResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+        ->schema([
+            Forms\Components\Section::make('Informasi Input')
             ->schema([
                 Select::make('jenis_surat_id')
                     ->relationship('jenisSurat', 'nama')
@@ -105,7 +107,9 @@ class SuratFormFieldResource extends Resource
                     ->placeholder('Masukkan group input')
                     ->maxLength(150)
                     ->nullable(),
-            ]);
+            ])
+            ->columns(2),
+        ]);
     }
 
     public static function table(Table $table): Table

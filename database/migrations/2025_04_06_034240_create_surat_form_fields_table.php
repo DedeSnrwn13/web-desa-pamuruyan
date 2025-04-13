@@ -17,7 +17,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('nama_field');
             $table->string('label');
-            $table->enum('tipe', ['text', 'textarea', 'number', 'date', 'select']);
+            $table->enum('tipe', ['text', 'textarea', 'number', 'date', 'select', 'file']);
             $table->json('opsi')->nullable();
             $table->boolean('is_required')->default(false);
             $table->integer('urutan');

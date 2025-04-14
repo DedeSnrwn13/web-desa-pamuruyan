@@ -7,6 +7,7 @@ use App\Models\Rw;
 use Filament\Panel;
 use App\Models\Surat;
 use App\Models\Kampung;
+use App\Models\Inventaris;
 use App\Models\JenisSurat;
 use App\Models\KategoriBerita;
 use Illuminate\Notifications\Notifiable;
@@ -82,5 +83,10 @@ class Admin extends Authenticatable implements FilamentUser
     public function surats(): HasMany
     {
         return $this->hasMany(Surat::class);
+    }
+
+    public function inventaris(): HasMany
+    {
+        return $this->hasMany(Inventaris::class);
     }
 }

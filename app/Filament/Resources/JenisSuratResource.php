@@ -33,20 +33,24 @@ class JenisSuratResource extends Resource
     {
         return $form
             ->schema([
-                Hidden::make('admin_id')
-                    ->default(fn() => Auth::guard('admin')->id())
-                    ->required(),
+                Forms\Components\Section::make('Informasi Jenis Surat')
+                    ->description('Informasi detail jenis surat yang akan dipublikasikan')
+                    ->schema([
+                        Hidden::make('admin_id')
+                            ->default(fn() => Auth::guard('admin')->id())
+                            ->required(),
 
-                TextInput::make('nama')
-                    ->placeholder('Masukkan nama jenis surat')
-                    ->required()
-                    ->maxLength(150),
+                    TextInput::make('nama')
+                        ->placeholder('Masukkan nama jenis surat')
+                        ->required()
+                        ->maxLength(150),
 
-                TextInput::make('kode')
-                    ->placeholder('Masukkan kode jenis surat')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(20),
+                    TextInput::make('kode')
+                        ->placeholder('Masukkan kode jenis surat')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(20),
+                ])->columns(2)
             ]);
     }
 

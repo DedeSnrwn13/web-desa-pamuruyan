@@ -45,49 +45,53 @@ class SuratResource extends Resource
     {
         return $form
             ->schema([
-                Hidden::make('admin_id')
-                    ->default(fn() => Auth::guard('admin')->id()),
+                Forms\Components\Section::make('Informasi Berita')
+                    ->description('Informasi detail surat yang akan dipublikasikan')
+                    ->schema([
+                        Hidden::make('admin_id')
+                            ->default(fn() => Auth::guard('admin')->id()),
 
-                Select::make('warga_id')
-                    ->placeholder('Pilih warga')
-                    ->relationship('warga', 'nama')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                        Select::make('warga_id')
+                            ->placeholder('Pilih warga')
+                            ->relationship('warga', 'nama')
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
-                Select::make('jenis_surat_id')
-                    ->placeholder('Pilih jenis surat')
-                    ->relationship('jenisSurat', 'nama')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                        Select::make('jenis_surat_id')
+                            ->placeholder('Pilih jenis surat')
+                            ->relationship('jenisSurat', 'nama')
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
-                Select::make('status')
-                    ->options([
-                        'menunggu' => 'Menunggu',
-                        'disetujui' => 'Disetujui',
-                        'ditolak' => 'Ditolak'
-                    ])
-                    ->required()
-                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                        Select::make('status')
+                            ->options([
+                                'menunggu' => 'Menunggu',
+                                'disetujui' => 'Disetujui',
+                                'ditolak' => 'Ditolak'
+                            ])
+                            ->required()
+                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
-                TextInput::make('keterangan_warga')
-                    ->required()
-                    ->maxLength(255)
-                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                        TextInput::make('keterangan_warga')
+                            ->required()
+                            ->maxLength(255)
+                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
-                TextInput::make('keterangan_admin')
-                    ->maxLength(255)
-                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                        TextInput::make('keterangan_admin')
+                            ->maxLength(255)
+                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
-                TextInput::make('no_surat')
-                    ->maxLength(255)
-                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                        TextInput::make('no_surat')
+                            ->maxLength(255)
+                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
 
-                DatePicker::make('tanggal_surat')
-                    ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                        DatePicker::make('tanggal_surat')
+                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                    ])->columns(2),
             ]);
     }
 

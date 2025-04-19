@@ -39,7 +39,7 @@ class SuratFieldValue extends Model
     {
         return Attribute::make(
             get: function () {
-                return match ($this->formField->tipe) {
+                return match ($this->suratFormField->tipe) {
                     'text', 'textarea' => $this->text_value,
                     'number' => $this->number_value,
                     'date' => $this->date_value,

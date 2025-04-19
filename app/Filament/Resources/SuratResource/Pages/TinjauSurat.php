@@ -4,6 +4,8 @@ namespace App\Filament\Resources\SuratResource\Pages;
 
 use Filament\Forms\Form;
 use Filament\Actions\Action;
+use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Page;
 use Filament\Forms\Components\Grid;
 use Illuminate\Support\Facades\Log;
@@ -16,13 +18,23 @@ use Filament\Notifications\Notification;
 use App\Filament\Resources\SuratResource;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Infolists\Components\Section as InfolistSection;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class TinjauSurat extends Page implements HasForms
+class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasActions
 {
-    use InteractsWithForms, InteractsWithRecord;
+    use InteractsWithForms, InteractsWithRecord, InteractsWithTable, InteractsWithInfolists;
 
     protected static string $resource = SuratResource::class;
 
@@ -37,6 +49,8 @@ class TinjauSurat extends Page implements HasForms
         if ($this->record->status !== 'menunggu') {
             redirect()->to($this->getResource()::getUrl('index'));
         }
+
+        $this->record->load(['suratFieldValues.suratFormField']);
 
         $this->form->fill([
             'warga' => [
@@ -219,5 +233,38 @@ class TinjauSurat extends Page implements HasForms
                     }
                 }),
         ];
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->relationship(fn (): HasMany => $this->record->suratFieldValues())
+            ->columns([
+                TextColumn::make('suratFormField.label')
+                    ->label('Label')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('value')
+                    ->label('Nilai')
+                    ->formatStateUsing(function ($state, $record) {
+                        if ($record->suratFormField->tipe === 'date') {
+                            return $state?->format('d/m/Y');
+                        } elseif ($record->suratFormField->tipe === 'select') {
+                            return $record->select_value;
+                        } elseif ($record->suratFormField->tipe === 'number') {
+                            return $record->number_value;
+                        } elseif ($record->suratFormField->tipe === 'text') {
+                            return $record->text_value;
+                        }
+                        return $state;
+                    }),
+                TextColumn::make('suratFormField.group')
+                    ->label('Grup')
+                    ->sortable(),
+            ])
+            ->defaultGroup('suratFormField.group')
+            ->modifyQueryUsing(fn ($query) => $query->join('surat_form_fields', 'surat_field_values.surat_form_field_id', '=', 'surat_form_fields.id')
+                ->orderBy('surat_form_fields.urutan', 'asc')
+        );
     }
 }

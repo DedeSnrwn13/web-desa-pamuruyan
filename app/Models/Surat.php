@@ -22,7 +22,8 @@ class Surat extends Model
         'keterangan_warga',
         'keterangan_admin',
         'no_surat',
-        'tanggal_surat'
+        'tanggal_surat',
+        'file_surat'
     ];
 
     public function admin(): BelongsTo

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string(column: 'keterangan_admin')->nullable();
             $table->string(column: 'no_surat')->nullable();
             $table->string(column: 'tanggal_surat')->nullable();
+            $table->string(column: 'file_surat')->nullable();
             $table->timestamps();
         });
     }

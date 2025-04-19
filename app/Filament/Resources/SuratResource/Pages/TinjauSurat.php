@@ -14,8 +14,11 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\SuratResource;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class TinjauSurat extends Page implements HasForms
 {
@@ -119,6 +122,31 @@ class TinjauSurat extends Page implements HasForms
                 ->color('success')
                 ->requiresConfirmation()
                 ->form([
+                    TextInput::make('no_surat')
+                        ->label('Nomor Surat')
+                        ->required()
+                        ->placeholder('Masukkan nomor surat')
+                        ->maxLength(255),
+
+                    DatePicker::make('tanggal_surat')
+                        ->label('Tanggal Surat')
+                        ->required()
+                        ->default(now()),
+
+                    FileUpload::make('file_surat')
+                        ->label('Upload File Surat')
+                        ->required()
+                        ->directory('surat-disetujui')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->uploadingMessage('Uploading file surat...')
+                        ->required()
+                        ->directory('surat-disetujui/' . $this->record->id)
+                        ->getUploadedFileNameForStorageUsing(
+                            fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                                ->prepend('surat-disetujui-'),
+                        )
+                        ->maxSize(5120),
+
                     Textarea::make('keterangan_admin')
                         ->label('Keterangan Persetujuan')
                         ->placeholder('Masukkan keterangan kenapa surat disetujui')
@@ -132,6 +160,9 @@ class TinjauSurat extends Page implements HasForms
                         $this->record->update([
                             'admin_id' => Auth::guard('admin')->id(),
                             'status' => 'disetujui',
+                            'no_surat' => $data['no_surat'],
+                            'tanggal_surat' => $data['tanggal_surat'],
+                            'file_surat' => $data['file_surat'],
                             'keterangan_admin' => $data['keterangan_admin']
                         ]);
 

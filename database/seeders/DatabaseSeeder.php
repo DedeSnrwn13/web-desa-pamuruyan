@@ -2,9 +2,30 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\RtSeeder;
+use Database\Seeders\RwSeeder;
 use Illuminate\Database\Seeder;
+use Database\Seeders\AdminSeeder;
+use Database\Seeders\SuratSeeder;
+use Database\Seeders\WargaSeeder;
+use Database\Seeders\KampungSeeder;
+use Database\Seeders\JenisSuratSeeder;
+use Database\Seeders\KategoriBeritaSeeder;
+use Database\Seeders\SuratFormFieldSeeder;
+use Database\Seeders\SuratAhliWarisFormFieldSeeder;
+use Database\Seeders\SuratAhliWarisBankFormFieldSeeder;
+use Database\Seeders\SuratKeteranganUsahaFormFieldSeeder;
+use Database\Seeders\SuratKeteranganBedaNamaFormFieldSeeder;
+use Database\Seeders\SuratKeteranganKematianFormFieldSeeder;
+use Database\Seeders\SuratKeteranganCatatanKepolisianFormFieldSeeder;
+use Database\Seeders\SuratKeteranganTidakMampuFormFieldSeeder;
+use Database\Seeders\SuratKeteranganKehilanganAktaCeraiFormFieldSeeder;
+use Database\Seeders\SuratKeteranganBelumKawinFormFieldSeeder;
+use Database\Seeders\SuratKeteranganKepemilikanTanahFormFieldSeeder;
+use Database\Seeders\SuratKeteranganDomisiliFormFieldSeeder;
+use Database\Seeders\InventarisSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +34,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            AdminSeeder::class,
+            KampungSeeder::class,
+            RwSeeder::class,
+            RtSeeder::class,
+            WargaSeeder::class,
+            JenisSuratSeeder::class,
+            SuratFormFieldSeeder::class,
+            KategoriBeritaSeeder::class,
+            SuratSeeder::class,
+            SuratAhliWarisFormFieldSeeder::class,
+            SuratAhliWarisBankFormFieldSeeder::class,
+            SuratKeteranganUsahaFormFieldSeeder::class,
+            SuratKeteranganBedaNamaFormFieldSeeder::class,
+            SuratKeteranganKematianFormFieldSeeder::class,
+            SuratKeteranganCatatanKepolisianFormFieldSeeder::class,
+            SuratKeteranganTidakMampuFormFieldSeeder::class,
+            SuratKeteranganKehilanganAktaCeraiFormFieldSeeder::class,
+            SuratKeteranganBelumKawinFormFieldSeeder::class,
+            SuratKeteranganKepemilikanTanahFormFieldSeeder::class,
+            SuratKeteranganDomisiliFormFieldSeeder::class,
+            InventarisSeeder::class,
         ]);
     }
 }

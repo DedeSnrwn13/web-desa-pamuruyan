@@ -44,7 +44,7 @@ class KategoriBeritaResource extends Resource
                             ->default(fn() => Auth::guard('admin')->id())
                             ->required(),
 
-                        TextInput::make('nama_kategori')
+                        TextInput::make('nama')
                             ->required()
                             ->live(onBlur: true)
                             ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
@@ -73,7 +73,7 @@ class KategoriBeritaResource extends Resource
                 TextColumn::make(name: '#')
                     ->rowIndex(),
 
-                TextColumn::make('nama_kategori')
+                TextColumn::make('nama')
                     ->searchable()
                     ->sortable(),
 
@@ -85,12 +85,12 @@ class KategoriBeritaResource extends Resource
                     ->label('Dibuat oleh'),
 
                 TextColumn::make('created_at')
-                    ->label('Dibuat')
+                    ->label('Dibuat pada')
                     ->dateTime()
                     ->sortable(),
 
                 TextColumn::make('updated_at')
-                    ->label('Diperbarui')
+                    ->label('Diperbarui pada')
                     ->dateTime()
                     ->sortable(),
             ])

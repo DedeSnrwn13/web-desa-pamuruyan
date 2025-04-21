@@ -68,7 +68,7 @@ class BeritaResource extends Resource
                             ->dehydrated(),
 
                         Select::make('kategori_berita_id')
-                            ->relationship('kategoriBerita', 'nama_kategori')
+                            ->relationship('kategoriBerita', 'nama')
                             ->required()
                             ->searchable()
                             ->preload(),
@@ -111,7 +111,7 @@ class BeritaResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('kategoriBerita.nama_kategori')
+                TextColumn::make('kategoriBerita.nama')
                     ->searchable(),
 
                 ImageColumn::make('thumbnail')
@@ -137,12 +137,12 @@ class BeritaResource extends Resource
                     ->label('Dibuat oleh'),
 
                 TextColumn::make('created_at')
-                    ->label('Dibuat')
+                    ->label('Dibuat pada')
                     ->dateTime()
                     ->sortable(),
 
                 TextColumn::make('updated_at')
-                    ->label('Diperbarui')
+                    ->label('Diperbarui pada')
                     ->dateTime()
                     ->sortable(),
             ])
@@ -155,7 +155,7 @@ class BeritaResource extends Resource
                     ]),
 
                 Tables\Filters\SelectFilter::make('kategori')
-                    ->relationship('kategoriBerita', 'nama_kategori'),
+                    ->relationship('kategoriBerita', 'nama'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

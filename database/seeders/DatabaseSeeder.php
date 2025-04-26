@@ -10,6 +10,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\SuratSeeder;
 use Database\Seeders\WargaSeeder;
+use Database\Seeders\JadwalSeeder;
 use Database\Seeders\KampungSeeder;
 use Database\Seeders\JenisSuratSeeder;
 use Database\Seeders\KategoriBeritaSeeder;
@@ -58,6 +59,7 @@ class DatabaseSeeder extends Seeder
             SuratKeteranganDomisiliFormFieldSeeder::class,
             InventarisSeeder::class,
             KeuanganSeeder::class,
+            JadwalSeeder::class,
         ]);
     }
 }

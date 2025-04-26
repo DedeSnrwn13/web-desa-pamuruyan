@@ -26,6 +26,7 @@ use Database\Seeders\SuratKeteranganBelumKawinFormFieldSeeder;
 use Database\Seeders\SuratKeteranganKepemilikanTanahFormFieldSeeder;
 use Database\Seeders\SuratKeteranganDomisiliFormFieldSeeder;
 use Database\Seeders\InventarisSeeder;
+use Database\Seeders\KeuanganSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -56,6 +57,7 @@ class DatabaseSeeder extends Seeder
             SuratKeteranganKepemilikanTanahFormFieldSeeder::class,
             SuratKeteranganDomisiliFormFieldSeeder::class,
             InventarisSeeder::class,
+            KeuanganSeeder::class,
         ]);
     }
 }

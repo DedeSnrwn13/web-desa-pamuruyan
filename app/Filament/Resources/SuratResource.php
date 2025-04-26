@@ -133,8 +133,7 @@ class SuratResource extends Resource
 
                 TextColumn::make('admin.name')
                     ->label(label: 'Di setujui/ditolak oleh')
-                    ->default(fn($record) => $record?->admin?->name ?? '-')
-                    ->sortable(),
+                    ->default(fn($record) => $record?->admin?->name ?? '-'),
             ])
             ->defaultSort('created_at', 'asc')
             ->modifyQueryUsing(

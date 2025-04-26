@@ -6,7 +6,9 @@ use App\Models\Rt;
 use App\Models\Rw;
 use Filament\Panel;
 use App\Models\Surat;
+use App\Models\Jadwal;
 use App\Models\Kampung;
+use App\Models\Keuangan;
 use App\Models\Inventaris;
 use App\Models\JenisSurat;
 use App\Models\KategoriBerita;
@@ -88,5 +90,15 @@ class Admin extends Authenticatable implements FilamentUser
     public function inventaris(): HasMany
     {
         return $this->hasMany(Inventaris::class);
+    }
+
+    public function keuangans(): HasMany
+    {
+        return $this->hasMany(Keuangan::class);
+    }
+
+    public function jadwals(): HasMany
+    {
+        return $this->hasMany(Jadwal::class);
     }
 }

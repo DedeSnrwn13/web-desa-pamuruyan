@@ -195,7 +195,17 @@ class SuratResource extends Resource
                                     'Data Kepala Desa',
                                     'Data Pengesahan',
                                 ])) {
-                                    continue;
+                                    // Jika ada field ttd_pemohon, tetap tampilkan meskipun groupnya di-hide
+                                    $hasRequiredField = false;
+                                    foreach ($groupFields as $gField) {
+                                        if ($gField->nama_field === 'ttd_pemohon') {
+                                            $hasRequiredField = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!$hasRequiredField) {
+                                        continue;
+                                    }
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_USAHA->value) {
                                 if (in_array($group, [
@@ -203,7 +213,17 @@ class SuratResource extends Resource
                                     'Data Kepala Desa',
                                     'Data Pengesahan',
                                 ])) {
-                                    continue;
+                                    // Jika ada field ttd_pemohon, tetap tampilkan meskipun groupnya di-hide
+                                    $hasRequiredField = false;
+                                    foreach ($groupFields as $gField) {
+                                        if ($gField->nama_field === 'ttd_pemohon') {
+                                            $hasRequiredField = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!$hasRequiredField) {
+                                        continue;
+                                    }
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::PERNYATAAN_KEPEMILIKAN_TANAH->value) {
                                 if (in_array($group, [
@@ -211,12 +231,23 @@ class SuratResource extends Resource
                                     'Data Kepala Desa',
                                     'Data Pengesahan',
                                 ])) {
-                                    continue;
+                                    // Jika ada field ttd_pemohon, tetap tampilkan meskipun groupnya di-hide
+                                    $hasRequiredField = false;
+                                    foreach ($groupFields as $gField) {
+                                        if ($gField->nama_field === 'ttd_pemohon') {
+                                            $hasRequiredField = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!$hasRequiredField) {
+                                        continue;
+                                    }
                                 }
                             }
 
                             $fields = [];
                             foreach ($groupFields as $field) {
+                                // Skip certain fields based on surat type
                                 if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
                                     if (in_array($field->nama_field, [
                                         'nama_desa',
@@ -258,7 +289,6 @@ class SuratResource extends Resource
                                         'nama_kepala_desa',
                                         'tanggal_surat',
                                         'ttd_kepala_desa',
-                                        'ttd_pemohon',
                                     ])) {
                                         continue;
                                     }
@@ -268,7 +298,6 @@ class SuratResource extends Resource
                                         'nama_kepala_desa',
                                         'tanggal_surat',
                                         'ttd_kepala_desa',
-                                        'ttd_pemohon',
                                     ])) {
                                         continue;
                                     }
@@ -279,7 +308,6 @@ class SuratResource extends Resource
                                         'jabatan',
                                         'tanggal_surat',
                                         'ttd_kepala_desa',
-                                        'ttd_pemohon',
                                     ])) {
                                         continue;
                                     }
@@ -290,7 +318,6 @@ class SuratResource extends Resource
                                         'jabatan',
                                         'tanggal_surat',
                                         'ttd_kepala_desa',
-                                        'ttd_pemohon',
                                         'nama_kepala_kua',
                                         'nip_kepala_kua',
                                         'ttd_kepala_kua',
@@ -312,7 +339,6 @@ class SuratResource extends Resource
                                         'nama_kepala_desa',
                                         'tanggal_surat',
                                         'ttd_kepala_desa',
-                                        'ttd_pemohon',
                                     ])) {
                                         continue;
                                     }

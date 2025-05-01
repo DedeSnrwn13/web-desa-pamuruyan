@@ -164,6 +164,14 @@ class SuratResource extends Resource
                                 ])) {
                                     continue;
                                 }
+                            } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_DOMISILI->value) {
+                                if (in_array($group, [
+                                    'Data Surat',
+                                    'Data Kepala Desa',
+                                    'Data Pengesahan',
+                                ])) {
+                                    continue;
+                                }
                             }
 
                             $fields = [];
@@ -217,6 +225,17 @@ class SuratResource extends Resource
                                     if (in_array($field->nama_field, [
                                         'nomor_surat',
                                         'nama_kepala_desa',
+                                        'tanggal_surat',
+                                        'ttd_kepala_desa',
+                                        'ttd_pemohon',
+                                    ])) {
+                                        continue;
+                                    }
+                                } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_DOMISILI->value) {
+                                    if (in_array($field->nama_field, [
+                                        'nomor_surat',
+                                        'nama_kepala_desa',
+                                        'jabatan',
                                         'tanggal_surat',
                                         'ttd_kepala_desa',
                                         'ttd_pemohon',

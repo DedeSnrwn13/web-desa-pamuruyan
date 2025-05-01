@@ -8,7 +8,9 @@ use App\Models\Surat;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Form;
+use App\Enum\SuratStatus;
 use Filament\Tables\Table;
+use Filament\Pages\Actions;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Filament\Tables\Actions\Action;
@@ -27,7 +29,6 @@ use App\Filament\Resources\SuratResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SuratResource\RelationManagers;
 use Filament\Tables\Actions\Modal\Actions\Action as ModalAction;
-use Filament\Pages\Actions;
 
 class SuratResource extends Resource
 {
@@ -57,7 +58,7 @@ class SuratResource extends Resource
                             ->required()
                             ->searchable()
                             ->preload()
-                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                            ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         Select::make('jenis_surat_id')
                             ->placeholder('Pilih jenis surat')
@@ -65,7 +66,7 @@ class SuratResource extends Resource
                             ->required()
                             ->searchable()
                             ->preload()
-                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                            ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         Select::make('status')
                             ->options([
@@ -74,23 +75,23 @@ class SuratResource extends Resource
                                 'ditolak' => 'Ditolak'
                             ])
                             ->required()
-                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                            ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         TextInput::make('keterangan_warga')
                             ->required()
                             ->maxLength(255)
-                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                            ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         TextInput::make('keterangan_admin')
                             ->maxLength(255)
-                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                            ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         TextInput::make('no_surat')
                             ->maxLength(255)
-                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                            ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         DatePicker::make('tanggal_surat')
-                            ->disabled(fn($record) => $record?->status !== 'menunggu'),
+                            ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
                     ])->columns(2),
             ]);
     }
@@ -124,7 +125,8 @@ class SuratResource extends Resource
                         'menunggu' => 'warning',
                         'disetujui' => 'success',
                         'ditolak' => 'danger',
-                    }),
+                    })
+                    ->formatStateUsing(fn(string $state): string => SuratStatus::from($state)->label()),
 
                 TextColumn::make('created_at')
                     ->label('Dibuat pada')

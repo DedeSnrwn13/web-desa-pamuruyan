@@ -3,8 +3,9 @@
 namespace App\Filament\Resources\SuratResource\Pages;
 
 use Filament\Forms\Form;
-use Filament\Actions\Action;
+use App\Enum\SuratStatus;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Page;
 use Filament\Forms\Components\Grid;
@@ -13,20 +14,20 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\SuratResource;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Infolists\Components\RepeatableEntry;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Infolists\Components\Section as InfolistSection;
@@ -46,7 +47,7 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
     {
         $this->record = $this->resolveRecord($record);
 
-        if ($this->record->status !== 'menunggu') {
+        if ($this->record->status !== SuratStatus::MENUNGGU->value) {
             redirect()->to($this->getResource()::getUrl('index'));
         }
 
@@ -173,7 +174,7 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
                     try {
                         $this->record->update([
                             'admin_id' => Auth::guard('admin')->id(),
-                            'status' => 'disetujui',
+                            'status' => SuratStatus::DISETUJUI->value,
                             'no_surat' => $data['no_surat'],
                             'tanggal_surat' => $data['tanggal_surat'],
                             'file_surat' => $data['file_surat'],
@@ -213,7 +214,7 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
                     try {
                         $this->record->update([
                             'admin_id' => Auth::guard('admin')->id(),
-                            'status' => 'ditolak',
+                            'status' => SuratStatus::DITOLAK->value,
                             'keterangan_admin' => $data['keterangan_admin']
                         ]);
 

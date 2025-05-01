@@ -86,4 +86,20 @@ return [
 
     'livewire_loading_delay' => 'default',
 
+    'panels' => [
+        'warga' => [
+            'path' => 'warga',
+            'domain' => null,
+            'home_url' => '/dashboard',
+            'brand_name' => 'Desa Pamuruyan',
+            'auth' => [
+                'guard' => 'warga',
+                'pages' => [
+                    'login' => \App\Filament\Warga\Pages\Auth\Login::class,
+                    'register' => \App\Filament\Warga\Pages\Auth\Register::class,
+                ],
+            ],
+        ],
+    ],
+
 ];

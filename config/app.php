@@ -1,5 +1,12 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Auth\AuthServiceProvider;
+use Illuminate\Events\EventServiceProvider;
+use App\Providers\Filament\WargaPanelProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
+
 return [
 
     /*
@@ -122,5 +129,21 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        /*
+         * Package Service Providers...
+         */
+        BladeUI\Icons\BladeIconsServiceProvider::class,
+
+        /*
+         * Application Service Providers...
+         */
+        AppServiceProvider::class,
+        AuthServiceProvider::class,
+        EventServiceProvider::class,
+        RouteServiceProvider::class,
+        WargaPanelProvider::class,
+    ])->toArray(),
 
 ];

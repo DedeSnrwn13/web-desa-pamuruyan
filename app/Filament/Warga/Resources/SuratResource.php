@@ -127,7 +127,6 @@ class SuratResource extends Resource
                         foreach ($formFields as $group => $groupFields) {
                             // Skip certain groups for specific surat types
                             if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
-                                // Skip these groups entirely for warga
                                 if (in_array($group, [
                                     'Data Alamat',
                                     'Data Surat',
@@ -136,9 +135,24 @@ class SuratResource extends Resource
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS->value) {
-                                // Skip these groups for Keterangan Ahli Waris
                                 if (in_array($group, [
                                     'Data Kepala Desa',
+                                ])) {
+                                    continue;
+                                }
+                            } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BEDA_NAMA->value) {
+                                if (in_array($group, [
+                                    'Data Surat',
+                                    'Data Kepala Desa',
+                                    'Data Pengesahan',
+                                ])) {
+                                    continue;
+                                }
+                            } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BELUM_KAWIN->value) {
+                                if (in_array($group, [
+                                    'Data Surat',
+                                    'Data Kepala Desa',
+                                    'Data Pengesahan',
                                 ])) {
                                     continue;
                                 }
@@ -146,9 +160,7 @@ class SuratResource extends Resource
 
                             $fields = [];
                             foreach ($groupFields as $field) {
-                                // Skip specific fields for Keterangan Ahli Waris Bank
                                 if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
-                                    // Skip fields that should be hidden from warga
                                     if (in_array($field->nama_field, [
                                         'nama_desa',
                                         'nomor_surat',
@@ -161,19 +173,35 @@ class SuratResource extends Resource
                                         continue;
                                     }
 
-                                    // Modify required state for ahli waris fields
                                     if (str_contains($group, 'Data Ahli Waris')) {
                                         $field->is_required = $group === 'Data Ahli Waris 1';
                                     }
 
-                                    // Modify required state for saksi fields
                                     if ($group === 'Data Saksi') {
                                         $field->is_required = in_array($field->nama_field, ['nama_saksi_1', 'ttd_saksi_1']);
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS->value) {
-                                    // Skip fields that should be hidden from warga for Keterangan Ahli Waris
                                     if (in_array($field->nama_field, [
                                         'nama_kepala_desa',
+                                    ])) {
+                                        continue;
+                                    }
+                                } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BEDA_NAMA->value) {
+                                    if (in_array($field->nama_field, [
+                                        'nomor_surat',
+                                        'nama_kepala_desa',
+                                        'tanggal_surat',
+                                        'ttd_kepala_desa',
+                                    ])) {
+                                        continue;
+                                    }
+                                } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BELUM_KAWIN->value) {
+                                    if (in_array($field->nama_field, [
+                                        'nomor_surat',
+                                        'nama_kepala_desa',
+                                        'tanggal_surat',
+                                        'ttd_kepala_desa',
+                                        'ttd_pemohon',
                                     ])) {
                                         continue;
                                     }
@@ -361,4 +389,4 @@ class SuratResource extends Resource
             $record->saveFormFieldValues($data['form_fields']);
         }
     }
-} 
+}

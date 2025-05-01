@@ -99,7 +99,7 @@ class SuratAhliWarisBankFormFieldSeeder extends Seeder
                 'nama_field' => "nama_ahli_waris_$i",
                 'label' => "Nama Ahli Waris $i",
                 'tipe' => 'text',
-                'is_required' => $i <= 3,
+                'is_required' => $i === 1,
                 'urutan' => $urutanBase,
                 'group' => "Data Ahli Waris $i"
             ]);
@@ -109,7 +109,7 @@ class SuratAhliWarisBankFormFieldSeeder extends Seeder
                 'nama_field' => "umur_ahli_waris_$i",
                 'label' => "Umur Ahli Waris $i",
                 'tipe' => 'number',
-                'is_required' => $i <= 3,
+                'is_required' => $i === 1,
                 'urutan' => $urutanBase + 1,
                 'group' => "Data Ahli Waris $i"
             ]);
@@ -119,7 +119,7 @@ class SuratAhliWarisBankFormFieldSeeder extends Seeder
                 'nama_field' => "pekerjaan_ahli_waris_$i",
                 'label' => "Pekerjaan Ahli Waris $i",
                 'tipe' => 'text',
-                'is_required' => $i <= 3,
+                'is_required' => $i === 1,
                 'urutan' => $urutanBase + 2,
                 'group' => "Data Ahli Waris $i"
             ]);
@@ -129,7 +129,7 @@ class SuratAhliWarisBankFormFieldSeeder extends Seeder
                 'nama_field' => "ttd_ahli_waris_$i",
                 'label' => "Tanda Tangan Ahli Waris $i",
                 'tipe' => 'file',
-                'is_required' => $i <= 3,
+                'is_required' => $i === 1,
                 'urutan' => $urutanBase + 3,
                 'group' => "Data Ahli Waris $i"
             ]);
@@ -147,7 +147,7 @@ class SuratAhliWarisBankFormFieldSeeder extends Seeder
                 'nama_field' => "nama_saksi_$i",
                 'label' => "Nama Saksi $i",
                 'tipe' => 'text',
-                'is_required' => $i <= 2,
+                'is_required' => $i === 1,
                 'urutan' => $urutanBase,
                 'group' => 'Data Saksi'
             ]);
@@ -157,7 +157,7 @@ class SuratAhliWarisBankFormFieldSeeder extends Seeder
                 'nama_field' => "ttd_saksi_$i",
                 'label' => "Tanda Tangan Saksi $i",
                 'tipe' => 'file',
-                'is_required' => $i <= 2,
+                'is_required' => $i === 1,
                 'urutan' => $urutanBase + 1,
                 'group' => 'Data Saksi'
             ]);

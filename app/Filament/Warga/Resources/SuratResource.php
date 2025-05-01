@@ -7,6 +7,7 @@ use Filament\Tables;
 use App\Models\Surat;
 use Filament\Forms\Form;
 use App\Enum\SuratStatus;
+use App\Enum\JenisSuratEnum;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
@@ -122,41 +123,82 @@ class SuratResource extends Resource
 
                         $sections = [];
                         foreach ($formFields as $group => $groupFields) {
-                            $sections[] = Section::make($group)
-                                ->schema(
-                                    $groupFields->map(function ($field) {
-                                        return match ($field->tipe) {
-                                            'text' => TextInput::make("form_fields.{$field->id}")
-                                                ->label($field->label)
-                                                ->placeholder("Masukkan {$field->label}")
-                                                ->required($field->is_required),
-                                            'textarea' => Textarea::make("form_fields.{$field->id}")
-                                                ->label($field->label)
-                                                ->placeholder("Masukkan {$field->label}")
-                                                ->required($field->is_required),
-                                            'number' => TextInput::make("form_fields.{$field->id}")
-                                                ->label($field->label)
-                                                ->placeholder("Masukkan {$field->label}")
-                                                ->numeric()
-                                                ->required($field->is_required),
-                                            'date' => DatePicker::make("form_fields.{$field->id}")
-                                                ->label($field->label)
-                                                ->placeholder("Pilih {$field->label}")
-                                                ->required($field->is_required),
-                                            'select' => Select::make("form_fields.{$field->id}")
-                                                ->label($field->label)
-                                                ->placeholder("Pilih {$field->label}")
-                                                ->options(collect(explode(',', $field->opsi))->mapWithKeys(fn ($item) => [$item => $item]))
-                                                ->required($field->is_required),
-                                            'file' => FileUpload::make("form_fields.{$field->id}")
-                                                ->label($field->label)
-                                                ->placeholder("Unggah {$field->label}")
-                                                ->required($field->is_required),
-                                            default => null,
-                                        };
-                                    })->filter()->toArray()
-                                )
-                                ->columns(2);
+                            // Skip certain groups for Keterangan Ahli Waris Bank
+                            if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
+                                // Skip these groups entirely for warga
+                                if (in_array($group, [
+                                    'Data Alamat',
+                                    'Data Surat',
+                                    'Data Pengesahan',
+                                ])) {
+                                    continue;
+                                }
+                            }
+
+                            $fields = [];
+                            foreach ($groupFields as $field) {
+                                // Skip specific fields for Keterangan Ahli Waris Bank
+                                if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
+                                    // Skip fields that should be hidden from warga
+                                    if (in_array($field->nama_field, [
+                                        'nama_desa',
+                                        'nomor_surat',
+                                        'nama_camat',
+                                        'nip_camat',
+                                        'ttd_camat',
+                                        'nama_kepala_desa',
+                                        'ttd_kepala_desa',
+                                    ])) {
+                                        continue;
+                                    }
+
+                                    // Modify required state for ahli waris fields
+                                    if (str_contains($group, 'Data Ahli Waris')) {
+                                        $field->is_required = $group === 'Data Ahli Waris 1';
+                                    }
+
+                                    // Modify required state for saksi fields
+                                    if ($group === 'Data Saksi') {
+                                        $field->is_required = in_array($field->nama_field, ['nama_saksi_1', 'ttd_saksi_1']);
+                                    }
+                                }
+
+                                $fields[] = match ($field->tipe) {
+                                    'text' => TextInput::make("form_fields.{$field->id}")
+                                        ->label($field->label)
+                                        ->placeholder("Masukkan {$field->label}")
+                                        ->required($field->is_required),
+                                    'textarea' => Textarea::make("form_fields.{$field->id}")
+                                        ->label($field->label)
+                                        ->placeholder("Masukkan {$field->label}")
+                                        ->required($field->is_required),
+                                    'number' => TextInput::make("form_fields.{$field->id}")
+                                        ->label($field->label)
+                                        ->placeholder("Masukkan {$field->label}")
+                                        ->numeric()
+                                        ->required($field->is_required),
+                                    'date' => DatePicker::make("form_fields.{$field->id}")
+                                        ->label($field->label)
+                                        ->placeholder("Pilih {$field->label}")
+                                        ->required($field->is_required),
+                                    'select' => Select::make("form_fields.{$field->id}")
+                                        ->label($field->label)
+                                        ->placeholder("Pilih {$field->label}")
+                                        ->options(collect(explode(',', $field->opsi))->mapWithKeys(fn ($item) => [$item => $item]))
+                                        ->required($field->is_required),
+                                    'file' => FileUpload::make("form_fields.{$field->id}")
+                                        ->label($field->label)
+                                        ->placeholder("Unggah {$field->label}")
+                                        ->required($field->is_required),
+                                    default => null,
+                                };
+                            }
+
+                            if (!empty($fields)) {
+                                $sections[] = Section::make($group)
+                                    ->schema($fields)
+                                    ->columns(2);
+                            }
                         }
 
                         return $sections;

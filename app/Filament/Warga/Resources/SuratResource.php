@@ -123,13 +123,20 @@ class SuratResource extends Resource
 
                         $sections = [];
                         foreach ($formFields as $group => $groupFields) {
-                            // Skip certain groups for Keterangan Ahli Waris Bank
+                            // Skip certain groups for specific surat types
                             if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
                                 // Skip these groups entirely for warga
                                 if (in_array($group, [
                                     'Data Alamat',
                                     'Data Surat',
                                     'Data Pengesahan',
+                                ])) {
+                                    continue;
+                                }
+                            } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS->value) {
+                                // Skip these groups for Keterangan Ahli Waris
+                                if (in_array($group, [
+                                    'Data Kepala Desa',
                                 ])) {
                                     continue;
                                 }
@@ -160,6 +167,13 @@ class SuratResource extends Resource
                                     // Modify required state for saksi fields
                                     if ($group === 'Data Saksi') {
                                         $field->is_required = in_array($field->nama_field, ['nama_saksi_1', 'ttd_saksi_1']);
+                                    }
+                                } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS->value) {
+                                    // Skip fields that should be hidden from warga for Keterangan Ahli Waris
+                                    if (in_array($field->nama_field, [
+                                        'nama_kepala_desa',
+                                    ])) {
+                                        continue;
                                     }
                                 }
 

@@ -172,6 +172,15 @@ class SuratResource extends Resource
                                 ])) {
                                     continue;
                                 }
+                            } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_KEHILANGAN_AKTA_CERAI->value) {
+                                if (in_array($group, [
+                                    'Data Surat',
+                                    'Data Kepala Desa',
+                                    'Data Pengesahan',
+                                    'Data KUA',
+                                ])) {
+                                    continue;
+                                }
                             }
 
                             $fields = [];
@@ -239,6 +248,20 @@ class SuratResource extends Resource
                                         'tanggal_surat',
                                         'ttd_kepala_desa',
                                         'ttd_pemohon',
+                                    ])) {
+                                        continue;
+                                    }
+                                } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_KEHILANGAN_AKTA_CERAI->value) {
+                                    if (in_array($field->nama_field, [
+                                        'nomor_surat',
+                                        'nama_kepala_desa',
+                                        'jabatan',
+                                        'tanggal_surat',
+                                        'ttd_kepala_desa',
+                                        'ttd_pemohon',
+                                        'nama_kepala_kua',
+                                        'nip_kepala_kua',
+                                        'ttd_kepala_kua',
                                     ])) {
                                         continue;
                                     }

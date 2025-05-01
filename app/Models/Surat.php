@@ -59,9 +59,27 @@ class Surat extends Model
                 continue;
             }
 
+            // Determine which column to use based on field type
+            $valueColumn = match ($field->tipe) {
+                'text', 'textarea' => 'text_value',
+                'number' => 'number_value',
+                'date' => 'date_value',
+                'select' => 'select_value',
+                'file' => 'text_value',
+                default => null
+            };
+
+            if ($valueColumn === null) {
+                continue;
+            }
+
             $this->suratFieldValues()->updateOrCreate(
-                ['surat_form_field_id' => $fieldId],
-                ['value' => $value]
+                [
+                    'surat_form_field_id' => $fieldId
+                ],
+                [
+                    $valueColumn => $value
+                ]
             );
         }
     }

@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -23,6 +24,7 @@ use App\Filament\Warga\Resources\SuratResource\Pages;
 use App\Models\JenisSurat;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Model;
 
 class SuratResource extends Resource
 {
@@ -194,6 +196,8 @@ class SuratResource extends Resource
                                     'date' => DatePicker::make("form_fields.{$field->id}")
                                         ->label($field->label)
                                         ->placeholder("Pilih {$field->label}")
+                                        ->format('Y-m-d')
+                                        ->displayFormat('d/m/Y')
                                         ->required($field->is_required),
                                     'select' => Select::make("form_fields.{$field->id}")
                                         ->label($field->label)
@@ -236,12 +240,12 @@ class SuratResource extends Resource
                 TextColumn::make('no_surat')
                     ->label('Nomor Surat')
                     ->searchable()
-                    ->default('-'),
+                    ->placeholder('-'),
 
                 TextColumn::make('tanggal_surat')
                     ->label('Tanggal Surat')
                     ->date()
-                    ->default('-'),
+                    ->placeholder('-'),
 
                 TextColumn::make('status')
                     ->badge()
@@ -260,7 +264,7 @@ class SuratResource extends Resource
 
                 TextColumn::make('admin.name')
                     ->label('Ditinjau oleh')
-                    ->default('-'),
+                    ->placeholder('-'),
             ])
             ->defaultSort('created_at', 'desc')
             ->modifyQueryUsing(
@@ -299,9 +303,7 @@ class SuratResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -317,5 +319,46 @@ class SuratResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('warga_id', auth()->id());
+    }
+
+    public static function mutateFormDataBeforeFill(array $data): array
+    {
+        $record = static::getModel()::find($data['id']);
+        if (!$record) {
+            return $data;
+        }
+
+        // Get all form field values for this surat
+        $formFieldValues = $record->suratFieldValues()
+            ->with('suratFormField')
+            ->get();
+
+        // Map the values to the form_fields array
+        $data['form_fields'] = $formFieldValues->mapWithKeys(function ($fieldValue) {
+            return [$fieldValue->surat_form_field_id => $fieldValue->value];
+        })->toArray();
+
+        return $data;
+    }
+
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        Log::info('Form data before save:', $data);
+        
+        $formFields = $data['form_fields'] ?? [];
+        unset($data['form_fields']);
+
+        return $data;
+    }
+
+    public static function afterSave(Model $record, array $data): void
+    {
+        if (isset($data['form_fields'])) {
+            Log::info('Saving form fields for surat #' . $record->id, [
+                'form_fields' => $data['form_fields']
+            ]);
+            
+            $record->saveFormFieldValues($data['form_fields']);
+        }
     }
 } 

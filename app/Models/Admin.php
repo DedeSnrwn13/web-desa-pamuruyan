@@ -6,6 +6,7 @@ use App\Models\Rt;
 use App\Models\Rw;
 use Filament\Panel;
 use App\Models\Surat;
+use App\Models\Berita;
 use App\Models\Jadwal;
 use App\Models\Kampung;
 use App\Models\Keuangan;
@@ -100,5 +101,10 @@ class Admin extends Authenticatable implements FilamentUser
     public function jadwals(): HasMany
     {
         return $this->hasMany(Jadwal::class);
+    }
+
+    public function beritas(): HasMany
+    {
+        return $this->hasMany(Berita::class);
     }
 }

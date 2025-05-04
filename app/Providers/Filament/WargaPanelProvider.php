@@ -62,7 +62,6 @@ class WargaPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('30s')
             ->spa()
             ->unsavedChangesAlerts()
-            // ->brandLogo(asset('images/logo-kab-sukabumi.png'))
             ->brandName('Desa Pamuruyan')
             ->brandLogoHeight('3rem')
             ->maxContentWidth('full');

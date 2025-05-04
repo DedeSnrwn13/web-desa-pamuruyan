@@ -52,6 +52,7 @@ class BeritaResource extends Resource
 
                         TextInput::make('judul')
                             ->required()
+                            ->placeholder('Input judul')
                             ->live(onBlur: true)
                             ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
                                 if ($state) {
@@ -75,6 +76,7 @@ class BeritaResource extends Resource
 
                         RichEditor::make('isi')
                             ->required()
+                            ->placeholder('Input isi berita')
                             ->minLength(15)
                             ->columnSpanFull(),
 

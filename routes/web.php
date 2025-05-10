@@ -12,9 +12,33 @@ Route::name('front.')->group(function () {
     Route::get('/jadwal', [FrontController::class, 'jadwal'])->name('jadwal');
 
     // Detail & Kategori
-    Route::get('/detail/{beritas:slug}', [FrontController::class, 'detail'])->name('berita.detail');
-    Route::get('kategori/{kategori_berita:slug}', [FrontController::class, 'category'])->name('kategori');
+    Route::prefix('berita')->name('berita.')->group(function () {
+        Route::get('/', [FrontController::class, 'beritaIndex'])->name('index');
+        Route::get('/detail/{beritas:slug}', [FrontController::class, 'beritaDetail'])->name('detail');
+        Route::get('kategori/{kategori_berita:slug}', [FrontController::class, 'category'])->name('kategori');
+    });
     Route::get('/search', [FrontController::class, 'search'])->name('search');
+
+    // Kepengurusan
+    Route::get('/kepengurusan', [FrontController::class, 'kepengurusan'])->name('kepengurusan');
+
+    // Jadwal
+    Route::get('/jadwal-kegiatan', [FrontController::class, 'jadwalKegiatan'])->name('jadwal-kegiatan');
+
+    // Layanan Surat
+    Route::get('/layanan-surat', [FrontController::class, 'layananSurat'])->name('layanan-surat');
+
+    // Sejarah Desa
+    Route::get('/sejarah-desa', [FrontController::class, 'sejarahDesa'])->name('sejarah-desa');
+
+    // Visi Misi
+    Route::get('/visi-misi', [FrontController::class, 'visiMisi'])->name('visi-misi');
+
+    // Demografi
+    Route::get('/demografi', [FrontController::class, 'demografi'])->name('demografi');
+
+    // Galeri
+    Route::get('/galeri', [FrontController::class, 'galeri'])->name('galeri');
 });
 
 // Login & Register

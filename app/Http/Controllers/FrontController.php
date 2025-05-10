@@ -5,21 +5,57 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 use App\Models\KategoriBerita;
+use App\Repositories\BeritaRepository;
+use App\Repositories\JadwalRepository;
+use App\Repositories\KeuanganRepository;
+use App\Repositories\JenisSuratRepository;
 
 class FrontController extends Controller
 {
+    protected $beritaRepo;
+    protected $jadwalRepo;
+    protected $jenisSuratRepo;
+    protected $keuanganRepo;
+
+    public function __construct(
+        BeritaRepository $beritaRepo,
+        JadwalRepository $jadwalRepo,
+        JenisSuratRepository $jenisSuratRepo,
+        KeuanganRepository $keuanganRepo
+    ) {
+        $this->beritaRepo = $beritaRepo;
+        $this->jadwalRepo = $jadwalRepo;
+        $this->jenisSuratRepo = $jenisSuratRepo;
+        $this->keuanganRepo = $keuanganRepo;
+    }
+    
     public function index()
     {
-        $berita_terbarus = Berita::with('kategoriBerita')
-            ->orderByDesc('tanggal_post')
-            ->take(3)
-            ->get();
+        $beritaUtama = $this->beritaRepo->getBeritaUtama();
+        $beritaTerbaru = $this->beritaRepo->getBeritaTerbaru();
+        $jadwalKegiatan = $this->jadwalRepo->getJadwalKegiatan();
+        $layananSurat = $this->jenisSuratRepo->getLayananSurat();
+        
+        $totalPendapatan = $this->keuanganRepo->getTotalPendapatan();
+        $totalBelanja = $this->keuanganRepo->getTotalBelanja();
+        $totalPembiayaan = $this->keuanganRepo->getTotalPembiayaan();
+        
+        $sumberPendapatan = $this->keuanganRepo->getSumberPendapatan();
+        $jenisBelanja = $this->keuanganRepo->getJenisBelanja();
+        $jenisPembiayaan = $this->keuanganRepo->getJenisPembiayaan();
 
-        $beritas = Berita::all();
-
-        $kategori_beritas = KategoriBerita::all();
-
-        return view('welcome', compact('berita_terbarus', 'kategori_beritas', 'beritas'));
+        return view('welcome', compact(
+            'beritaUtama',
+            'beritaTerbaru',
+            'jadwalKegiatan',
+            'layananSurat',
+            'totalPendapatan',
+            'totalBelanja',
+            'totalPembiayaan',
+            'sumberPendapatan',
+            'jenisBelanja',
+            'jenisPembiayaan'
+        ));
     }
 
     public function apbdes()
@@ -47,14 +83,15 @@ class FrontController extends Controller
     public function search(Request $request)
     {
         $request->validate([
-            'keyword' => ['required', 'string', 'max:255']
+            'keyword' => ['required', 'string', 'max:255'],
         ]);
 
         $kategori_beritas = KategoriBerita::all();
         $keyword = $request->keyword;
 
         $beritas = Berita::with(['kategoriBerita', 'admin'])
-            ->where('judul', 'like', '%' . $keyword . '%')->paginate(6);
+            ->where('judul', 'like', '%' . $keyword . '%')
+            ->paginate(6);
 
         return view('front.search', compact('beritas', 'keyword', 'kategori_beritas'));
     }
@@ -70,10 +107,41 @@ class FrontController extends Controller
             ->take(3)
             ->get();
 
-        return view('front.berita.detail', compact(
-            'berita',
-            'kategori_beritas',
-            'beritas'
-        ));
+        return view('front.berita.detail', compact('berita', 'kategori_beritas', 'beritas'));
     }
-} 
+
+    public function kepengurusan()
+    {
+        //
+    }
+
+    public function jadwalKegiatan()
+    {
+        // 
+    }
+
+    public function layananSurat()
+    {
+        // 
+    }
+
+    public function sejarahDesa()
+    {
+        // 
+    }
+
+    public function visiMisi()
+    {
+        // 
+    }
+
+    public function demografi()
+    {
+        // 
+    }
+
+    public function galeri()
+    {
+        // 
+    }
+}

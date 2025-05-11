@@ -125,17 +125,7 @@ class FrontController extends Controller
         // 
     }
 
-    public function sejarahDesa()
-    {
-        // 
-    }
-
     public function visiMisi()
-    {
-        // 
-    }
-
-    public function demografi()
     {
         // 
     }

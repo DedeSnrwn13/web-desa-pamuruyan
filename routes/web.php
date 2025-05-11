@@ -28,14 +28,8 @@ Route::name('front.')->group(function () {
     // Layanan Surat
     Route::get('/layanan-surat', [FrontController::class, 'layananSurat'])->name('layanan-surat');
 
-    // Sejarah Desa
-    Route::get('/sejarah-desa', [FrontController::class, 'sejarahDesa'])->name('sejarah-desa');
-
     // Visi Misi
     Route::get('/visi-misi', [FrontController::class, 'visiMisi'])->name('visi-misi');
-
-    // Demografi
-    Route::get('/demografi', [FrontController::class, 'demografi'])->name('demografi');
 
     // Galeri
     Route::get('/galeri', [FrontController::class, 'galeri'])->name('galeri');

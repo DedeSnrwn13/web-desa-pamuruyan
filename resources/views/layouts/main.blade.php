@@ -75,17 +75,12 @@
                         </button>
                         <div x-show="open" x-cloak
                             class="absolute z-10 -left-4 mt-2 bg-white rounded-md shadow-lg w-48" x-transition>
-                            <a href="{{ route('front.sejarah-desa') }}"
-                                class="block px-4 py-2 text-gray-700 hover:bg-lime-50 hover:text-lime-600">Sejarah
-                                Desa</a>
                             <a href="{{ route('front.visi-misi') }}"
                                 class="block px-4 py-2 text-gray-700 hover:bg-lime-50 hover:text-lime-600">Visi &
                                 Misi</a>
                             <a href="{{ route('front.kepengurusan') }}"
                                 class="block px-4 py-2 text-gray-700 hover:bg-lime-50 hover:text-lime-600">Struktur
                                 Pemerintahan</a>
-                            <a href="{{ route('front.demografi') }}"
-                                class="block px-4 py-2 text-gray-700 hover:bg-lime-50 hover:text-lime-600">Demografi</a>
                         </div>
                     </div>
 
@@ -161,16 +156,12 @@
                         </svg>
                     </button>
                     <div x-show="open" x-cloak class="pl-4 space-y-1" x-transition>
-                        <a href="{{ route('front.sejarah-desa') }}"
-                            class="block py-2 text-gray-700 hover:text-lime-600">Sejarah Desa</a>
                         <a href="{{ route('front.visi-misi') }}"
                             class="block py-2 text-gray-700 hover:text-lime-600">Visi
                             &
                             Misi</a>
                         <a href="{{ route('front.kepengurusan') }}"
                             class="block py-2 text-gray-700 hover:text-lime-600">Struktur Pemerintahan</a>
-                        <a href="{{ route('front.demografi') }}"
-                            class="block py-2 text-gray-700 hover:text-lime-600">Demografi</a>
                     </div>
                 </div>
 
@@ -335,7 +326,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <span class="text-lime-100">Jl. Pamuruyan-Leuweung datar No.3, Pamuruyan, Kec. Cibadak, Kabupaten Sukabumi, Jawa Barat 43351</span>
+                            <span class="text-lime-100">Jl. Pamuruyan-Leuweung datar No.3, Pamuruyan, Kec. Cibadak,
+                                Kabupaten Sukabumi, Jawa Barat 43351</span>
                         </li>
                     </ul>
                 </div>

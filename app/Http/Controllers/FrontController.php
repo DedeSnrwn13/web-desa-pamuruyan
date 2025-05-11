@@ -98,6 +98,18 @@ class FrontController extends Controller
         return view('front.search', compact('beritas', 'keyword', 'kategori_beritas'));
     }
 
+    public function beritaIndex(Request $request)
+    {
+        $beritas = Berita::query()
+            ->with(['kategoriBerita', 'admin'])
+            ->latest()
+            ->paginate(9);
+
+        $kategori_beritas = KategoriBerita::all();
+
+        return view('front.berita.index', compact('beritas', 'kategori_beritas'));
+    }
+
     public function beritaDetail(Berita $berita)
     {
         $kategori_beritas = KategoriBerita::all();

@@ -14,9 +14,19 @@
                 <div class="flex items-center justify-center gap-[70px]">
                     <a id="Author" href="#" class="w-fit h-fit">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full overflow-hidden">
-                                <img src="{{ Storage::url($berita->admin->avatar) }}" class="object-cover w-full h-full"
-                                    alt="avatar">
+                            <div class="w-10 h-10 rounded-full overflow-hidden bg-lime-600 flex items-center justify-center text-white font-semibold">
+                                @php
+                                    $nama = explode(' ', $berita->admin->name);
+                                    $inisial = '';
+                                    if (count($nama) >= 2) {
+                                        foreach ($nama as $kata) {
+                                            $inisial .= strtoupper(substr($kata, 0, 1));
+                                        }
+                                    } else {
+                                        $inisial = strtoupper(substr($berita->admin->name, 0, 1));
+                                    }
+                                @endphp
+                                {{ $inisial }}
                             </div>
                             <div class="flex flex-col">
                                 <p class="font-semibold text-sm leading-[21px]">{{ $berita->admin->nama }}</p>

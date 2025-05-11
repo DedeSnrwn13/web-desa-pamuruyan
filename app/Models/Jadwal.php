@@ -22,8 +22,13 @@ class Jadwal extends Model
         'foto_kegiatan'
     ];
 
-   public function admin()
-   {
-    return $this->belongsTo(Admin::class);
-   }
+    protected $casts = [
+        'waktu' => 'datetime',
+        'waktu_selesai' => 'datetime'
+    ];
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 }

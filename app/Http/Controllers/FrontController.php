@@ -10,6 +10,7 @@ use App\Repositories\JadwalRepository;
 use App\Repositories\KeuanganRepository;
 use App\Repositories\JenisSuratRepository;
 use App\Models\JenisSurat;
+use App\Models\Jadwal;
 
 class FrontController extends Controller
 {
@@ -118,13 +119,25 @@ class FrontController extends Controller
 
     public function jadwalKegiatan()
     {
-        // 
+        $jadwals = Jadwal::query()
+            ->orderBy('waktu', 'asc')
+            ->paginate(2);
+
+        $groupedJadwals = $jadwals->getCollection()->groupBy(function($jadwal) {
+            return $jadwal->waktu->format('Y-m');
+        });
+
+        return view('front.jadwal-kegiatan', [
+            'jadwals' => $jadwals,
+            'groupedJadwals' => $groupedJadwals
+        ]);
     }
 
     public function layananSurat()
     {
-        $jenisSurat = JenisSurat::all();
-        return view('public.layanan-surat', compact('jenisSurat'));
+        $jenisSurat = JenisSurat::paginate(14);
+        
+        return view('front.layanan-surat', compact('jenisSurat'));
     }
 
     public function visiMisi()

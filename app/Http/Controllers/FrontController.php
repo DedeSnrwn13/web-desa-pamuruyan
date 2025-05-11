@@ -9,6 +9,7 @@ use App\Repositories\BeritaRepository;
 use App\Repositories\JadwalRepository;
 use App\Repositories\KeuanganRepository;
 use App\Repositories\JenisSuratRepository;
+use App\Models\JenisSurat;
 
 class FrontController extends Controller
 {
@@ -122,7 +123,8 @@ class FrontController extends Controller
 
     public function layananSurat()
     {
-        // 
+        $jenisSurat = JenisSurat::all();
+        return view('public.layanan-surat', compact('jenisSurat'));
     }
 
     public function visiMisi()

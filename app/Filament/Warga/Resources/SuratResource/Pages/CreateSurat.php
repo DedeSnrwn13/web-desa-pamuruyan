@@ -2,12 +2,28 @@
 
 namespace App\Filament\Warga\Resources\SuratResource\Pages;
 
-use App\Filament\Warga\Resources\SuratResource;
+use App\Models\JenisSurat;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Warga\Resources\SuratResource;
 
 class CreateSurat extends CreateRecord
 {
     protected static string $resource = SuratResource::class;
+
+    public function mount(): void 
+    {
+        parent::mount();
+
+        $kode = request()->query('kode-surat');
+        if ($kode) {
+            $jenisSurat = JenisSurat::where('kode', $kode)->first();
+            if ($jenisSurat) {
+                $this->form->fill([
+                    'jenis_surat_id' => $jenisSurat->id
+                ]);
+            }
+        }
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

@@ -122,8 +122,13 @@
                         </svg>
                     </button>
 
-                    <a href="{{ route('login') }}"
-                        class="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded-md text-sm font-medium">Login</a>
+                    @if (Auth::check())
+                        <a href="{{ route('filament.warga.pages.dashboard') }}"
+                            class="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded-md text-sm font-medium">Dashbor</a>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded-md text-sm font-medium">Login</a>
+                    @endif
                 </div>
 
                 <!-- Mobile menu button -->
@@ -188,7 +193,12 @@
 
                 <a href="{{ route('front.galeri') }}"
                     class="block py-2 text-gray-700 hover:text-lime-600 font-medium">Galeri</a>
-                <a href="{{ route('login') }}" class="block py-2 text-lime-600 font-medium">Login</a>
+                @if (Auth::check())
+                    <a href="{{ route('filament.warga.pages.dashboard') }}"
+                        class="block py-2 text-lime-600 font-medium">Dasbor</a>
+                @else
+                    <a href="{{ route('login') }}" class="block py-2 text-lime-600 font-medium">Login</a>
+                @endif
             </div>
         </div>
 

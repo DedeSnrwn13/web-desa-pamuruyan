@@ -85,17 +85,19 @@ class FrontController extends Controller
     public function search(Request $request)
     {
         $request->validate([
-            'keyword' => ['required', 'string', 'max:255'],
+            'keyword' => ['required', 'string', 'min:3', 'max:255'],
         ]);
 
-        $kategori_beritas = KategoriBerita::all();
         $keyword = $request->keyword;
 
-        $beritas = Berita::with(['kategoriBerita', 'admin'])
+        $beritas = Berita::query()
+            ->with(['kategoriBerita', 'admin'])
             ->where('judul', 'like', '%' . $keyword . '%')
-            ->paginate(6);
+            ->orWhere('isi', 'like', '%' . $keyword . '%')
+            ->latest()
+            ->paginate(9);
 
-        return view('front.search', compact('beritas', 'keyword', 'kategori_beritas'));
+        return view('front.berita.search', compact('beritas', 'keyword'));
     }
 
     public function beritaIndex(Request $request)

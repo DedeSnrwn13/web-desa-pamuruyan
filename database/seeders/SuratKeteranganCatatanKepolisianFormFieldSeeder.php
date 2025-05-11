@@ -141,6 +141,16 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'group' => 'Data Pemohon'
         ]);
 
+        SuratFormField::create([
+            'jenis_surat_id' => $jenisSurat->id,
+            'nama_field' => 'ttd_pemohon',
+            'label' => 'Tanda Tangan Pemohon',
+            'tipe' => 'file',
+            'is_required' => true,
+            'urutan' => 13,
+            'group' => 'Data Pemohon'
+        ]);
+
         // Alamat Pemohon
         SuratFormField::create([
             'jenis_surat_id' => $jenisSurat->id,
@@ -148,7 +158,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Dusun',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 13,
+            'urutan' => 14,
             'group' => 'Alamat Pemohon'
         ]);
 
@@ -158,7 +168,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'RT',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 14,
+            'urutan' => 15,
             'group' => 'Alamat Pemohon'
         ]);
 
@@ -168,7 +178,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'RW',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 15,
+            'urutan' => 16,
             'group' => 'Alamat Pemohon'
         ]);
 
@@ -178,7 +188,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Desa',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 16,
+            'urutan' => 17,
             'group' => 'Alamat Pemohon'
         ]);
 
@@ -188,7 +198,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Kecamatan',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 17,
+            'urutan' => 18,
             'group' => 'Alamat Pemohon'
         ]);
 
@@ -199,7 +209,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Nama Orang Tua/Ayah',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 18,
+            'urutan' => 19,
             'group' => 'Data Ayah'
         ]);
 
@@ -209,7 +219,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Tempat Lahir Ayah',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 19,
+            'urutan' => 20,
             'group' => 'Data Ayah'
         ]);
 
@@ -219,7 +229,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Tanggal Lahir Ayah',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 20,
+            'urutan' => 21,
             'group' => 'Data Ayah'
         ]);
 
@@ -229,7 +239,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Pekerjaan Ayah',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 21,
+            'urutan' => 22,
             'group' => 'Data Ayah'
         ]);
 
@@ -240,7 +250,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Alamat Lengkap Ayah',
             'tipe' => 'textarea',
             'is_required' => true,
-            'urutan' => 22,
+            'urutan' => 23,
             'group' => 'Data Ayah'
         ]);
 
@@ -251,7 +261,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Nama Orang Tua/Ibu',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 23,
+            'urutan' => 24,
             'group' => 'Data Ibu'
         ]);
 
@@ -261,7 +271,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Tempat Lahir Ibu',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 24,
+            'urutan' => 25,
             'group' => 'Data Ibu'
         ]);
 
@@ -271,7 +281,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Tanggal Lahir Ibu',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 25,
+            'urutan' => 26,
             'group' => 'Data Ibu'
         ]);
 
@@ -281,7 +291,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Pekerjaan Ibu',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 26,
+            'urutan' => 27,
             'group' => 'Data Ibu'
         ]);
 
@@ -292,7 +302,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Alamat Lengkap Ibu',
             'tipe' => 'textarea',
             'is_required' => true,
-            'urutan' => 27,
+            'urutan' => 28,
             'group' => 'Data Ibu'
         ]);
 
@@ -303,7 +313,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Tujuan SKCK',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 28,
+            'urutan' => 29,
             'group' => 'Data Tujuan'
         ]);
 
@@ -314,7 +324,7 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'label' => 'Tanggal Surat',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 29,
+            'urutan' => 30,
             'group' => 'Data Pengesahan'
         ]);
 
@@ -322,16 +332,6 @@ class SuratKeteranganCatatanKepolisianFormFieldSeeder extends Seeder
             'jenis_surat_id' => $jenisSurat->id,
             'nama_field' => 'ttd_kepala_desa',
             'label' => 'Tanda Tangan Kepala Desa',
-            'tipe' => 'file',
-            'is_required' => true,
-            'urutan' => 30,
-            'group' => 'Data Pengesahan'
-        ]);
-
-        SuratFormField::create([
-            'jenis_surat_id' => $jenisSurat->id,
-            'nama_field' => 'ttd_pemohon',
-            'label' => 'Tanda Tangan Pemohon',
             'tipe' => 'file',
             'is_required' => true,
             'urutan' => 31,

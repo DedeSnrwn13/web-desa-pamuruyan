@@ -8,6 +8,7 @@ use App\Models\JenisSurat;
 use App\Models\LampiranSurat;
 use App\Models\Penandatangan;
 use App\Models\SuratFieldValue;
+use App\Models\SuratFormField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,6 +45,43 @@ class Surat extends Model
     public function suratFieldValues(): HasMany
     {
         return $this->hasMany(SuratFieldValue::class);
+    }
+
+    public function saveFormFieldValues(array $formFields): void
+    {
+        foreach ($formFields as $fieldId => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            $field = SuratFormField::find($fieldId);
+            if (!$field) {
+                continue;
+            }
+
+            // Determine which column to use based on field type
+            $valueColumn = match ($field->tipe) {
+                'text', 'textarea' => 'text_value',
+                'number' => 'number_value',
+                'date' => 'date_value',
+                'select' => 'select_value',
+                'file' => 'text_value',
+                default => null
+            };
+
+            if ($valueColumn === null) {
+                continue;
+            }
+
+            $this->suratFieldValues()->updateOrCreate(
+                [
+                    'surat_form_field_id' => $fieldId
+                ],
+                [
+                    $valueColumn => $value
+                ]
+            );
+        }
     }
 
     public function lampiranSurats(): HasMany

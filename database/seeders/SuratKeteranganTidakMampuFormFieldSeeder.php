@@ -99,6 +99,16 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'group' => 'Data Orang Tua'
         ]);
 
+        SuratFormField::create([
+            'jenis_surat_id' => $jenisSurat->id,
+            'nama_field' => 'ttd_pemohon',
+            'label' => 'Tanda Tangan Pemohon',
+            'tipe' => 'file',
+            'is_required' => true,
+            'urutan' => 9,
+            'group' => 'Data Orang Tua'
+        ]);
+
         // Alamat
         SuratFormField::create([
             'jenis_surat_id' => $jenisSurat->id,
@@ -106,7 +116,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Dusun',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 9,
+            'urutan' => 10,
             'group' => 'Alamat'
         ]);
 
@@ -116,7 +126,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'RT',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 10,
+            'urutan' => 11,
             'group' => 'Alamat'
         ]);
 
@@ -126,7 +136,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'RW',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 11,
+            'urutan' => 12,
             'group' => 'Alamat'
         ]);
 
@@ -136,7 +146,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Desa',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 12,
+            'urutan' => 13,
             'group' => 'Alamat'
         ]);
 
@@ -146,7 +156,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Kecamatan',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 13,
+            'urutan' => 14,
             'group' => 'Alamat'
         ]);
 
@@ -157,7 +167,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Pekerjaan',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 14,
+            'urutan' => 15,
             'group' => 'Data Ekonomi'
         ]);
 
@@ -167,7 +177,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Penghasilan Perbulan',
             'tipe' => 'number',
             'is_required' => true,
-            'urutan' => 15,
+            'urutan' => 16,
             'group' => 'Data Ekonomi'
         ]);
 
@@ -178,7 +188,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Nama Lengkap Anak',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 16,
+            'urutan' => 17,
             'group' => 'Data Anak'
         ]);
 
@@ -188,7 +198,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'NIK Anak',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 17,
+            'urutan' => 18,
             'group' => 'Data Anak'
         ]);
 
@@ -198,7 +208,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Tempat Lahir Anak',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 18,
+            'urutan' => 19,
             'group' => 'Data Anak'
         ]);
 
@@ -208,7 +218,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Tanggal Lahir Anak',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 19,
+            'urutan' => 20,
             'group' => 'Data Anak'
         ]);
 
@@ -219,7 +229,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'tipe' => 'select',
             'opsi' => 'Laki-laki,Perempuan',
             'is_required' => true,
-            'urutan' => 20,
+            'urutan' => 21,
             'group' => 'Data Anak'
         ]);
 
@@ -229,7 +239,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Nama Sekolah',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 21,
+            'urutan' => 22,
             'group' => 'Data Sekolah'
         ]);
 
@@ -239,7 +249,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Jurusan',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 22,
+            'urutan' => 23,
             'group' => 'Data Sekolah'
         ]);
 
@@ -250,7 +260,7 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'label' => 'Tanggal Surat',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 23,
+            'urutan' => 24,
             'group' => 'Data Pengesahan'
         ]);
 
@@ -258,16 +268,6 @@ class SuratKeteranganTidakMampuFormFieldSeeder extends Seeder
             'jenis_surat_id' => $jenisSurat->id,
             'nama_field' => 'ttd_kepala_desa',
             'label' => 'Tanda Tangan Kepala Desa',
-            'tipe' => 'file',
-            'is_required' => true,
-            'urutan' => 24,
-            'group' => 'Data Pengesahan'
-        ]);
-
-        SuratFormField::create([
-            'jenis_surat_id' => $jenisSurat->id,
-            'nama_field' => 'ttd_pemohon',
-            'label' => 'Tanda Tangan Pemohon',
             'tipe' => 'file',
             'is_required' => true,
             'urutan' => 25,

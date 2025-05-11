@@ -129,6 +129,16 @@ class SuratKeteranganKehilanganAktaCeraiFormFieldSeeder extends Seeder
             'group' => 'Data Pemohon'
         ]);
 
+        SuratFormField::create([
+            'jenis_surat_id' => $jenisSurat->id,
+            'nama_field' => 'ttd_pemohon',
+            'label' => 'Tanda Tangan Pemohon',
+            'tipe' => 'file',
+            'is_required' => true,
+            'urutan' => 12,
+            'group' => 'Data Pemohon'
+        ]);
+
         // Alamat
         SuratFormField::create([
             'jenis_surat_id' => $jenisSurat->id,
@@ -136,7 +146,7 @@ class SuratKeteranganKehilanganAktaCeraiFormFieldSeeder extends Seeder
             'label' => 'Alamat',
             'tipe' => 'textarea',
             'is_required' => true,
-            'urutan' => 12,
+            'urutan' => 13,
             'group' => 'Alamat'
         ]);
 
@@ -147,7 +157,7 @@ class SuratKeteranganKehilanganAktaCeraiFormFieldSeeder extends Seeder
             'label' => 'Tanggal Kehilangan',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 13,
+            'urutan' => 14,
             'group' => 'Data Kehilangan'
         ]);
 
@@ -157,7 +167,7 @@ class SuratKeteranganKehilanganAktaCeraiFormFieldSeeder extends Seeder
             'label' => 'Nomor Perkara',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 14,
+            'urutan' => 15,
             'group' => 'Data Kehilangan'
         ]);
 
@@ -168,7 +178,7 @@ class SuratKeteranganKehilanganAktaCeraiFormFieldSeeder extends Seeder
             'label' => 'Tanggal Surat',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 15,
+            'urutan' => 16,
             'group' => 'Data Pengesahan'
         ]);
 
@@ -176,16 +186,6 @@ class SuratKeteranganKehilanganAktaCeraiFormFieldSeeder extends Seeder
             'jenis_surat_id' => $jenisSurat->id,
             'nama_field' => 'ttd_kepala_desa',
             'label' => 'Tanda Tangan Kepala Desa',
-            'tipe' => 'file',
-            'is_required' => true,
-            'urutan' => 16,
-            'group' => 'Data Pengesahan'
-        ]);
-
-        SuratFormField::create([
-            'jenis_surat_id' => $jenisSurat->id,
-            'nama_field' => 'ttd_pemohon',
-            'label' => 'Tanda Tangan Pemohon',
             'tipe' => 'file',
             'is_required' => true,
             'urutan' => 17,

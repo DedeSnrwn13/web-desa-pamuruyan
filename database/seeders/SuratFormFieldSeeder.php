@@ -50,7 +50,7 @@ class SuratFormFieldSeeder extends Seeder
                 'nama_field' => 'jenis_kelamin',
                 'label' => 'Jenis Kelamin',
                 'tipe' => 'select',
-                'opsi' => ["Laki-laki", "Perempuan"],
+                'opsi' => 'Laki-laki,Perempuan',
                 'is_required' => true,
                 'urutan' => 4,
                 'group' => 'Data Diri'
@@ -60,7 +60,7 @@ class SuratFormFieldSeeder extends Seeder
                 'nama_field' => 'status_perkawinan',
                 'label' => 'Status Perkawinan',
                 'tipe' => 'select',
-                'opsi' => ["Kawin", "Belum Kawin", "Cerai Hidup", "Cerai Mati"],
+                'opsi' => 'Kawin,Belum Kawin,Cerai Hidup,Cerai Mati',
                 'is_required' => true,
                 'urutan' => 5,
                 'group' => 'Data Diri'
@@ -90,7 +90,7 @@ class SuratFormFieldSeeder extends Seeder
                 'nama_field' => 'agama',
                 'label' => 'Agama',
                 'tipe' => 'select',
-                'opsi' => ["Islam", "Kristen", "Katolik", "Hindu", "Buddha", "Konghucu"],
+                'opsi' => 'Islam,Kristen,Katolik,Hindu,Buddha,Konghucu',
                 'is_required' => true,
                 'urutan' => 8,
                 'group' => 'Data Diri'

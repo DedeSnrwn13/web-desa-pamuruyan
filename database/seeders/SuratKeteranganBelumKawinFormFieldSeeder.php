@@ -108,6 +108,16 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'group' => 'Data Pemohon'
         ]);
 
+        SuratFormField::create([
+            'jenis_surat_id' => $jenisSurat->id,
+            'nama_field' => 'ttd_pemohon',
+            'label' => 'Tanda Tangan Pemohon',
+            'tipe' => 'file',
+            'is_required' => true,
+            'urutan' => 10,
+            'group' => 'Data Pemohon'
+        ]);
+
         // Alamat
         SuratFormField::create([
             'jenis_surat_id' => $jenisSurat->id,
@@ -115,7 +125,7 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'label' => 'Dusun',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 10,
+            'urutan' => 11,
             'group' => 'Alamat'
         ]);
 
@@ -125,7 +135,7 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'label' => 'RT',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 11,
+            'urutan' => 12,
             'group' => 'Alamat'
         ]);
 
@@ -135,7 +145,7 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'label' => 'RW',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 12,
+            'urutan' => 13,
             'group' => 'Alamat'
         ]);
 
@@ -145,7 +155,7 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'label' => 'Desa',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 13,
+            'urutan' => 14,
             'group' => 'Alamat'
         ]);
 
@@ -155,7 +165,7 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'label' => 'Kecamatan',
             'tipe' => 'text',
             'is_required' => true,
-            'urutan' => 14,
+            'urutan' => 15,
             'group' => 'Alamat'
         ]);
 
@@ -166,7 +176,7 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'label' => 'Tanggal Surat',
             'tipe' => 'date',
             'is_required' => true,
-            'urutan' => 15,
+            'urutan' => 16,
             'group' => 'Data Pengesahan'
         ]);
 
@@ -174,16 +184,6 @@ class SuratKeteranganBelumKawinFormFieldSeeder extends Seeder
             'jenis_surat_id' => $jenisSurat->id,
             'nama_field' => 'ttd_kepala_desa',
             'label' => 'Tanda Tangan Kepala Desa',
-            'tipe' => 'file',
-            'is_required' => true,
-            'urutan' => 16,
-            'group' => 'Data Pengesahan'
-        ]);
-
-        SuratFormField::create([
-            'jenis_surat_id' => $jenisSurat->id,
-            'nama_field' => 'ttd_pemohon',
-            'label' => 'Tanda Tangan Pemohon',
             'tipe' => 'file',
             'is_required' => true,
             'urutan' => 17,

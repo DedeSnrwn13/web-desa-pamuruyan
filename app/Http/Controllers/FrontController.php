@@ -96,13 +96,13 @@ class FrontController extends Controller
         return view('front.search', compact('beritas', 'keyword', 'kategori_beritas'));
     }
 
-    public function details(Berita $berita)
+    public function beritaDetail(Berita $berita)
     {
         $kategori_beritas = KategoriBerita::all();
 
         $beritas = Berita::with(['kategoriBerita'])
-            ->where('is_featured', 'not_featured')
             ->where('id', '!=', $berita->id)
+            ->where('kategori_berita_id', $berita->kategori_berita_id)
             ->latest()
             ->take(3)
             ->get();

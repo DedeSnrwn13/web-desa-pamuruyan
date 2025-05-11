@@ -14,7 +14,7 @@ Route::name('front.')->group(function () {
     // Detail & Kategori
     Route::prefix('berita')->name('berita.')->group(function () {
         Route::get('/', [FrontController::class, 'beritaIndex'])->name('index');
-        Route::get('/detail/{beritas:slug}', [FrontController::class, 'beritaDetail'])->name('detail');
+        Route::get('/detail/{berita:slug}', [FrontController::class, 'beritaDetail'])->name('detail');
         Route::get('kategori/{kategori_berita:slug}', [FrontController::class, 'category'])->name('kategori');
     });
     Route::get('/search', [FrontController::class, 'search'])->name('search');

@@ -1,6 +1,26 @@
 @extends('layouts.main')
 
 @section('content')
+    <!-- Hero Section -->
+    <section class="relative bg-lime-600 text-white">
+        <div class="absolute inset-0 bg-gradient-to-r from-lime-800 to-lime-600 opacity-90"></div>
+        <div class="container mx-auto px-4 md:px-6 py-16 md:py-24 relative z-10">
+            <div class="max-w-2xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">Selamat Datang di Website Resmi Desa Pamuruyan</h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8">Mewujudkan desa yang mandiri, sejahtera dan berbudaya
+                    melalui pelayanan prima dan pemberdayaan masyarakat.</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="{{ route('front.layanan-surat') }}"
+                        class="bg-white text-lime-600 hover:bg-lime-50 px-6 py-3 rounded-md font-medium">Layanan
+                        Online</a>
+                    <a href="{{ route('front.berita.index') }}"
+                        class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-lime-600 px-6 py-3 rounded-md font-medium">Berita
+                        Terkini</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Section 2: Berita Terbaru -->
     <section class="py-16 px-4 md:px-8 lg:px-16 bg-white">
         <div class="container mx-auto">

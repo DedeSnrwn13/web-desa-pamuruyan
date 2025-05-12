@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('title', 'Pelayanan Surat')
+
 @section('content')
     <div class="bg-white">
         <div class="relative isolate px-6 pt-14 lg:px-8">

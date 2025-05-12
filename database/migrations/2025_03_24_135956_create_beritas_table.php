@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('isi');
             $table->enum('status', ['PENDING', 'PUBLISHED', 'REJECTED'])->default('PENDING');
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
             $table->dateTime('tanggal_post')->nullable();
             $table->timestamps();
         });

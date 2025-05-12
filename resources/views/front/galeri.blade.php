@@ -6,7 +6,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" rel="stylesheet">
     <style>
         .gallery-item {
-            transition: all 0.3s ease;
+            transition: all 0.3s ease;  
         }
 
         .gallery-item:hover {
@@ -36,6 +36,10 @@
         }
     </style>
 @endpush
+
+@php
+use App\Helpers\ImageHelper;
+@endphp
 
 @section('content')
     <div class="bg-white">
@@ -83,10 +87,10 @@
                         <div class="gallery-container">
                             @forelse($beritas as $berita)
                                 <div class="gallery-item break-inside-avoid mb-6">
-                                    <a href="{{ Storage::url($berita->thumbnail) }}" class="gallery-link">
+                                    <a href="{{ ImageHelper::getImage($berita->thumbnail, $berita->judul) }}" class="gallery-link">
                                         <div
                                             class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                            <img src="{{ Storage::url($berita->thumbnail) }}" alt="{{ $berita->judul }}"
+                                            <img src="{{ ImageHelper::getImage($berita->thumbnail, $berita->judul) }}" alt="{{ $berita->judul }}"
                                                 class="w-full h-64 object-cover">
                                             <div class="p-4">
                                                 <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
@@ -173,10 +177,10 @@
                         <div class="gallery-container">
                             @forelse($keuangans as $keuangan)
                                 <div class="gallery-item break-inside-avoid mb-6">
-                                    <a href="{{ Storage::url($keuangan->file_bukti) }}" class="gallery-link">
+                                    <a href="{{ ImageHelper::getImage($keuangan->file_bukti, $keuangan->nama_program) }}" class="gallery-link">
                                         <div
                                             class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                            <img src="{{ Storage::url($keuangan->file_bukti) }}"
+                                            <img src="{{ ImageHelper::getImage($keuangan->file_bukti, $keuangan->nama_program) }}"
                                                 alt="{{ $keuangan->nama_program }}" class="w-full h-64 object-cover">
                                             <div class="p-4">
                                                 <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
@@ -267,10 +271,10 @@
                         <div class="gallery-container">
                             @forelse($jadwals as $jadwal)
                                 <div class="gallery-item break-inside-avoid mb-6">
-                                    <a href="{{ Storage::url($jadwal->foto_kegiatan) }}" class="gallery-link">
+                                    <a href="{{ ImageHelper::getImage($jadwal->foto_kegiatan, $jadwal->nama_kegiatan) }}" class="gallery-link">
                                         <div
                                             class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                            <img src="{{ Storage::url($jadwal->foto_kegiatan) }}"
+                                            <img src="{{ ImageHelper::getImage($jadwal->foto_kegiatan, $jadwal->nama_kegiatan) }}"
                                                 alt="{{ $jadwal->nama_kegiatan }}" class="w-full h-64 object-cover">
                                             <div class="p-4">
                                                 <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
@@ -366,10 +370,10 @@
                             @else
                                 @foreach ($beritas as $berita)
                                     <div class="gallery-item break-inside-avoid mb-6">
-                                        <a href="{{ Storage::url($berita->thumbnail) }}" class="gallery-link">
+                                        <a href="{{ ImageHelper::getImage($berita->thumbnail, $berita->judul) }}" class="gallery-link">
                                             <div
                                                 class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                                <img src="{{ Storage::url($berita->thumbnail) }}"
+                                                <img src="{{ ImageHelper::getImage($berita->thumbnail, $berita->judul) }}"
                                                     alt="{{ $berita->judul }}" class="w-full h-64 object-cover">
                                                 <div class="p-4">
                                                     <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
@@ -389,10 +393,10 @@
 
                                 @foreach ($keuangans as $keuangan)
                                     <div class="gallery-item break-inside-avoid mb-6">
-                                        <a href="{{ Storage::url($keuangan->file_bukti) }}" class="gallery-link">
+                                        <a href="{{ ImageHelper::getImage($keuangan->file_bukti, $keuangan->nama_program) }}" class="gallery-link">
                                             <div
                                                 class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                                <img src="{{ Storage::url($keuangan->file_bukti) }}"
+                                                <img src="{{ ImageHelper::getImage($keuangan->file_bukti, $keuangan->nama_program) }}"
                                                     alt="{{ $keuangan->nama_program }}" class="w-full h-64 object-cover">
                                                 <div class="p-4">
                                                     <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
@@ -412,10 +416,10 @@
 
                                 @foreach ($jadwals as $jadwal)
                                     <div class="gallery-item break-inside-avoid mb-6">
-                                        <a href="{{ Storage::url($jadwal->foto_kegiatan) }}" class="gallery-link">
+                                        <a href="{{ ImageHelper::getImage($jadwal->foto_kegiatan, $jadwal->nama_kegiatan) }}" class="gallery-link">
                                             <div
                                                 class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                                <img src="{{ Storage::url($jadwal->foto_kegiatan) }}"
+                                                <img src="{{ ImageHelper::getImage($jadwal->foto_kegiatan, $jadwal->nama_kegiatan) }}"
                                                     alt="{{ $jadwal->nama_kegiatan }}" class="w-full h-64 object-cover">
                                                 <div class="p-4">
                                                     <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">

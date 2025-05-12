@@ -28,6 +28,7 @@ use Database\Seeders\SuratKeteranganKepemilikanTanahFormFieldSeeder;
 use Database\Seeders\SuratKeteranganDomisiliFormFieldSeeder;
 use Database\Seeders\InventarisSeeder;
 use Database\Seeders\KeuanganSeeder;
+use Database\Seeders\BeritaSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -45,6 +46,7 @@ class DatabaseSeeder extends Seeder
             JenisSuratSeeder::class,
             SuratFormFieldSeeder::class,
             KategoriBeritaSeeder::class,
+            BeritaSeeder::class,
             SuratSeeder::class,
             SuratAhliWarisFormFieldSeeder::class,
             SuratAhliWarisBankFormFieldSeeder::class,

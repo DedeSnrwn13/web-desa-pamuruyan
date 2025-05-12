@@ -2,6 +2,10 @@
 
 @section('title', 'Detail Berita')
 
+@php
+    use App\Helpers\ImageHelper;
+@endphp
+
 @section('content')
 
     <div class="font-[Poppins] py-16">
@@ -14,7 +18,8 @@
                 <div class="flex items-center justify-center gap-[70px]">
                     <a id="Author" href="#" class="w-fit h-fit">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full overflow-hidden bg-lime-600 flex items-center justify-center text-white font-semibold">
+                            <div
+                                class="w-10 h-10 rounded-full overflow-hidden bg-lime-600 flex items-center justify-center text-white font-semibold">
                                 @php
                                     $nama = explode(' ', $berita->admin->name);
                                     $inisial = '';
@@ -37,7 +42,8 @@
                 </div>
             </div>
             <div class="w-full h-[500px] flex shrink-0 overflow-hidden">
-                <img src="{{ Storage::url($berita->thumbnail) }}" class="object-cover w-full h-full" alt="cover thumbnail">
+                <img src="{{ ImageHelper::getImage($berita->thumbnail, $berita->judul) }}"
+                    class="object-cover w-full h-full" alt="cover thumbnail">
             </div>
         </header>
         <section id="Article-container" class="max-w-[1130px] mx-auto flex gap-20 mt-[50px]">
@@ -52,8 +58,8 @@
                             <div
                                 class="rounded-[20px] ring-1 ring-[#EEF0F7] p-[14px] flex gap-4 hover:ring-2 hover:ring-[#FF6B18] transition-all duration-300">
                                 <div class="w-[70px] h-[70px] flex shrink-0 overflow-hidden rounded-2xl">
-                                    <img src="{{ Storage::url($ber->thumbnail) }}" class="object-cover w-full h-full"
-                                        alt="thumbnail">
+                                    <img src="{{ ImageHelper::getImage($ber->thumbnail, $ber->judul) }}"
+                                        class="object-cover w-full h-full" alt="thumbnail">
                                 </div>
                                 <div class="flex flex-col gap-[6px]">
                                     <p class="line-clamp-2 font-bold">

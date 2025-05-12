@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Jadwal;
+use App\Models\JenisSurat;
 use Illuminate\Http\Request;
 use App\Models\KategoriBerita;
+use App\Enum\KategoriAnggaranEnum;
 use App\Repositories\BeritaRepository;
 use App\Repositories\JadwalRepository;
 use App\Repositories\KeuanganRepository;
 use App\Repositories\JenisSuratRepository;
-use App\Models\JenisSurat;
-use App\Models\Jadwal;
 
 class FrontController extends Controller
 {
@@ -62,7 +63,64 @@ class FrontController extends Controller
 
     public function apbdes()
     {
-        return view('front.apbdes');
+        // Get current year for default filter
+        $tahunSekarang = date('Y');
+        $tahunAnggaran = request('tahun', $tahunSekarang);
+        
+        // Get raw data from repository with year filter
+        $totalPendapatan = $this->keuanganRepo->getTotalPendapatan($tahunAnggaran);
+        $totalBelanja = $this->keuanganRepo->getTotalBelanja($tahunAnggaran);
+        $totalPembiayaan = $this->keuanganRepo->getTotalPembiayaan($tahunAnggaran);
+        
+        // Get detailed data and transform into array of objects
+        $sumberPendapatan = $this->keuanganRepo->getSumberPendapatan($tahunAnggaran)
+            ->map(function ($total, $sumber) {
+                return (object)[
+                    'sumber_dana' => $sumber,
+                    'total' => $total
+                ];
+            })
+            ->values();
+
+        $jenisBelanja = $this->keuanganRepo->getJenisBelanja($tahunAnggaran)
+            ->map(function ($total, $jenis) {
+                return (object)[
+                    'sub_kategori' => $jenis,
+                    'total' => $total
+                ];
+            })
+            ->values();
+
+        $jenisPembiayaan = $this->keuanganRepo->getJenisPembiayaan($tahunAnggaran)
+            ->map(function ($total, $jenis) {
+                return (object)[
+                    'sub_kategori' => $jenis,
+                    'total' => $total
+                ];
+            })
+            ->values();
+
+        // Get detailed program information
+        $programPendapatan = $this->keuanganRepo->getProgramDetails(KategoriAnggaranEnum::PENDAPATAN->value, $tahunAnggaran);
+        $programBelanja = $this->keuanganRepo->getProgramDetails(KategoriAnggaranEnum::BELANJA->value, $tahunAnggaran);
+        $programPembiayaan = $this->keuanganRepo->getProgramDetails(KategoriAnggaranEnum::PEMBIAYAAN->value, $tahunAnggaran);
+
+        // Get available years for filter
+        $tahunTersedia = $this->keuanganRepo->getAvailableYears();
+
+        return view('front.apbdes', compact(
+            'totalPendapatan',
+            'totalBelanja',
+            'totalPembiayaan',
+            'sumberPendapatan',
+            'jenisBelanja',
+            'jenisPembiayaan',
+            'programPendapatan',
+            'programBelanja',
+            'programPembiayaan',
+            'tahunAnggaran',
+            'tahunTersedia'
+        ));
     }
 
     public function inventaris()

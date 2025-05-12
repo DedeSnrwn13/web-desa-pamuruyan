@@ -50,7 +50,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('front.index') }}" class="flex items-center">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo Desa" class="h-12 w-auto mr-3">
+                        <img src="{{ asset('images/logo-kab-sukabumi.png') }}" alt="Logo Desa" class="h-12 w-auto mr-3">
                         <div>
                             <h1 class="font-bold text-lg text-lime-800 leading-none">DESA PAMURUYAN</h1>
                             <p class="text-xs text-gray-500">Website Resmi Pemerintah Desa</p>

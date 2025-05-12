@@ -108,7 +108,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('front.galeri') }}"
+                    <a href="{{ route('front.galeri', ['tab' => 'semua']) }}"
                         class="text-gray-700 hover:text-lime-600 font-medium">Galeri</a>
                 </nav>
 
@@ -191,7 +191,7 @@
                     </div>
                 </div>
 
-                <a href="{{ route('front.galeri') }}"
+                <a href="{{ route('front.galeri', ['tab' => 'semua']) }}"
                     class="block py-2 text-gray-700 hover:text-lime-600 font-medium">Galeri</a>
                 @if (Auth::check())
                     <a href="{{ route('filament.warga.pages.dashboard') }}"

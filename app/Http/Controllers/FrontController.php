@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use App\Models\Jadwal;
+use App\Models\Keuangan;
 use App\Models\JenisSurat;
 use Illuminate\Http\Request;
 use App\Models\KategoriBerita;
@@ -193,7 +194,7 @@ class FrontController extends Controller
     {
         $jadwals = Jadwal::query()
             ->orderBy('waktu', 'asc')
-            ->paginate(2);
+            ->paginate(20);
 
         $groupedJadwals = $jadwals->getCollection()->groupBy(function($jadwal) {
             return $jadwal->waktu->format('Y-m');
@@ -217,8 +218,30 @@ class FrontController extends Controller
         // 
     }
 
-    public function galeri()
+    public function galeri(Request $request)
     {
-        // 
+        $activeTab = $request->get('tab', 'semua'); // Default to 'semua' if no tab specified
+        $itemsPerPage = 20; // Number of items per page
+
+        $beritas = Berita::select('thumbnail', 'judul', 'tanggal_post')
+            ->where('status', 'PUBLISHED')
+            ->whereNotNull('thumbnail')
+            ->latest('tanggal_post')
+            ->paginate($itemsPerPage)
+            ->appends(['tab' => $activeTab]);
+
+        $keuangans = Keuangan::select('file_bukti', 'nama_program', 'tahun_anggaran')
+            ->whereNotNull('file_bukti')
+            ->latest('created_at')
+            ->paginate($itemsPerPage)
+            ->appends(['tab' => $activeTab]);
+
+        $jadwals = Jadwal::select('foto_kegiatan', 'nama_kegiatan', 'waktu')
+            ->whereNotNull('foto_kegiatan')
+            ->latest('waktu')
+            ->paginate($itemsPerPage)
+            ->appends(['tab' => $activeTab]);
+
+        return view('front.galeri', compact('beritas', 'keuangans', 'jadwals', 'activeTab'));
     }
 }

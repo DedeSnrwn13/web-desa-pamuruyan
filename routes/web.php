@@ -9,7 +9,6 @@ Route::name('front.')->group(function () {
     // APBDEs & Inventaris
     Route::get('/apbdes', [FrontController::class, 'apbdes'])->name('apbdes');
     Route::get('/inventaris', [FrontController::class, 'inventaris'])->name('inventaris');
-    Route::get('/jadwal', [FrontController::class, 'jadwal'])->name('jadwal');
 
     // Detail & Kategori
     Route::prefix('berita')->name('berita.')->group(function () {

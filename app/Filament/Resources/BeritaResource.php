@@ -87,7 +87,7 @@ class BeritaResource extends Resource
                             ->required()
                             ->directory('thumbnails')
                             ->getUploadedFileNameForStorageUsing(
-                                fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                                fn(TemporaryUploadedFile $file): string => (string) date('Y-m-d-H-i-s') . '-' . str($file->getClientOriginalName())
                                     ->prepend('berita-'),
                             )
                             ->columnSpanFull()

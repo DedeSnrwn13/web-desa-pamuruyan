@@ -7,24 +7,25 @@ use Filament\Tables;
 use App\Models\Surat;
 use Filament\Forms\Form;
 use App\Enum\SuratStatus;
-use App\Enum\JenisSuratEnum;
+use App\Models\JenisSurat;
 use Filament\Tables\Table;
+use App\Enum\JenisSuratEnum;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Warga\Resources\SuratResource\Pages;
-use App\Models\JenisSurat;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Model;
 
 class SuratResource extends Resource
 {
@@ -127,74 +128,92 @@ class SuratResource extends Resource
                         foreach ($formFields as $group => $groupFields) {
                             // Skip certain groups for specific surat types
                             if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
-                                if (in_array($group, [
-                                    'Data Alamat',
-                                    'Data Surat',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Alamat',
+                                        'Data Surat',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS->value) {
-                                if (in_array($group, [
-                                    'Data Kepala Desa',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Kepala Desa',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BEDA_NAMA->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BELUM_KAWIN->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_CATATAN_KEPOLISIAN->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_DOMISILI->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_KEHILANGAN_AKTA_CERAI->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                    'Data KUA',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                        'Data KUA',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_KEMATIAN->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     continue;
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_TIDAK_MAMPU_BEASISWA->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     // Jika ada field ttd_pemohon, tetap tampilkan meskipun groupnya di-hide
                                     $hasRequiredField = false;
                                     foreach ($groupFields as $gField) {
@@ -208,11 +227,13 @@ class SuratResource extends Resource
                                     }
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_USAHA->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     // Jika ada field ttd_pemohon, tetap tampilkan meskipun groupnya di-hide
                                     $hasRequiredField = false;
                                     foreach ($groupFields as $gField) {
@@ -226,11 +247,13 @@ class SuratResource extends Resource
                                     }
                                 }
                             } elseif ($jenisSurat->kode === JenisSuratEnum::PERNYATAAN_KEPEMILIKAN_TANAH->value) {
-                                if (in_array($group, [
-                                    'Data Surat',
-                                    'Data Kepala Desa',
-                                    'Data Pengesahan',
-                                ])) {
+                                if (
+                                    in_array($group, [
+                                        'Data Surat',
+                                        'Data Kepala Desa',
+                                        'Data Pengesahan',
+                                    ])
+                                ) {
                                     // Jika ada field ttd_pemohon, tetap tampilkan meskipun groupnya di-hide
                                     $hasRequiredField = false;
                                     foreach ($groupFields as $gField) {
@@ -249,15 +272,17 @@ class SuratResource extends Resource
                             foreach ($groupFields as $field) {
                                 // Skip certain fields based on surat type
                                 if ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS_BANK->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nama_desa',
-                                        'nomor_surat',
-                                        'nama_camat',
-                                        'nip_camat',
-                                        'ttd_camat',
-                                        'nama_kepala_desa',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nama_desa',
+                                            'nomor_surat',
+                                            'nama_camat',
+                                            'nip_camat',
+                                            'ttd_camat',
+                                            'nama_kepala_desa',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
 
@@ -269,95 +294,115 @@ class SuratResource extends Resource
                                         $field->is_required = in_array($field->nama_field, ['nama_saksi_1', 'ttd_saksi_1']);
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_AHLI_WARIS->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nama_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nama_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BEDA_NAMA->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_BELUM_KAWIN->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_CATATAN_KEPOLISIAN->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_DOMISILI->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'jabatan',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'jabatan',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_KEHILANGAN_AKTA_CERAI->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'jabatan',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                        'nama_kepala_kua',
-                                        'nip_kepala_kua',
-                                        'ttd_kepala_kua',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'jabatan',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                            'nama_kepala_kua',
+                                            'nip_kepala_kua',
+                                            'ttd_kepala_kua',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_KEMATIAN->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_TIDAK_MAMPU_BEASISWA->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::KETERANGAN_USAHA->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 } elseif ($jenisSurat->kode === JenisSuratEnum::PERNYATAAN_KEPEMILIKAN_TANAH->value) {
-                                    if (in_array($field->nama_field, [
-                                        'nomor_surat',
-                                        'nama_kepala_desa',
-                                        'tanggal_surat',
-                                        'ttd_kepala_desa',
-                                    ])) {
+                                    if (
+                                        in_array($field->nama_field, [
+                                            'nomor_surat',
+                                            'nama_kepala_desa',
+                                            'tanggal_surat',
+                                            'ttd_kepala_desa',
+                                        ])
+                                    ) {
                                         continue;
                                     }
                                 }
@@ -385,7 +430,7 @@ class SuratResource extends Resource
                                     'select' => Select::make("form_fields.{$field->id}")
                                         ->label($field->label)
                                         ->placeholder("Pilih {$field->label}")
-                                        ->options(collect(explode(',', $field->opsi))->mapWithKeys(fn ($item) => [$item => $item]))
+                                        ->options(collect(explode(',', $field->opsi))->mapWithKeys(fn($item) => [$item => $item]))
                                         ->required($field->is_required),
                                     'file' => FileUpload::make("form_fields.{$field->id}")
                                         ->label($field->label)
@@ -404,7 +449,7 @@ class SuratResource extends Resource
 
                         return $sections;
                     })
-                    ->visible(fn ($get) => (bool) $get('jenis_surat_id')),
+                    ->visible(fn($get) => (bool) $get('jenis_surat_id')),
             ]);
     }
 
@@ -457,21 +502,22 @@ class SuratResource extends Resource
             )
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'menunggu' => 'Menunggu',
-                        'disetujui' => 'Disetujui',
-                        'ditolak' => 'Ditolak'
-                    ]),
+                    ->options(SuratStatus::class)
+                    ->label('Status')
+                    ->native(false)
+                    ->searchable(),
                 Tables\Filters\SelectFilter::make('jenis_surat')
                     ->relationship('jenisSurat', 'nama')
+                    ->preload()
+                    ->searchable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
-                    ->visible(fn($record) => $record->status === 'menunggu'),
+                    ->visible(fn($record) => $record->status === SuratStatus::MENUNGGU->value),
                 Tables\Actions\Action::make('download')
                     ->label('Download')
-                    ->url(fn(Surat $record) => $record->file_surat)
+                    ->url(fn(Surat $record) => Storage::url($record->file_surat))
                     ->icon('heroicon-o-arrow-down-tray')
                     ->visible(fn(Surat $record) => $record->file_surat)
                     ->openUrlInNewTab(),
@@ -527,7 +573,7 @@ class SuratResource extends Resource
     public static function mutateFormDataBeforeSave(array $data): array
     {
         Log::info('Form data before save:', $data);
-        
+
         $formFields = $data['form_fields'] ?? [];
         unset($data['form_fields']);
 
@@ -540,7 +586,7 @@ class SuratResource extends Resource
             Log::info('Saving form fields for surat #' . $record->id, [
                 'form_fields' => $data['form_fields']
             ]);
-            
+
             $record->saveFormFieldValues($data['form_fields']);
         }
     }

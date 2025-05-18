@@ -54,7 +54,7 @@ class PenandatanganResource extends Resource
                             ->downloadable()
                             ->uploadingMessage('Mengupload tanda tangan...')
                             ->getUploadedFileNameForStorageUsing(
-                                fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                                fn(TemporaryUploadedFile $file): string => (string) date('Y-m-d-H-i-s') . '-' . str($file->getClientOriginalName())
                                     ->prepend('ttd-'),
                             )
                             ->columnSpanFull()

@@ -49,7 +49,7 @@ class LampiranSuratResource extends Resource
                             ->uploadingMessage('Uploading lampiran...')
                             ->directory('lampiran-surat')
                             ->getUploadedFileNameForStorageUsing(
-                                fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                                fn(TemporaryUploadedFile $file): string => (string) date('Y-m-d-H-i-s') . '-' . str($file->getClientOriginalName())
                                     ->prepend('lampiran-surat-'),
                             )
                             ->columnSpanFull()

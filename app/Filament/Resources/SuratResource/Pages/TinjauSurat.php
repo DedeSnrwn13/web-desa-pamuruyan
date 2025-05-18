@@ -6,7 +6,6 @@ use Filament\Forms\Form;
 use App\Enum\SuratStatus;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Page;
 use Filament\Forms\Components\Grid;
 use Illuminate\Support\Facades\Log;
@@ -17,21 +16,19 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
 use App\Filament\Resources\SuratResource;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Actions\Contracts\HasActions;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Infolists\Components\RepeatableEntry;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
-use Filament\Infolists\Components\Section as InfolistSection;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Filament\Notifications\Notification;
+use Filament\Notifications\Actions\Action as NotificationAction;
 
 class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasActions
 {
@@ -152,12 +149,28 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
                         ->label('Upload File Surat')
                         ->required()
                         ->directory('surat-disetujui')
-                        ->acceptedFileTypes(['application/pdf'])
+                        ->acceptedFileTypes([
+                            'application/pdf',
+                            'application/msword',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                            'application/vnd.ms-word.document.macroEnabled.12',
+                            'application/vnd.ms-word.template.macroEnabled.12',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+                        ])
+                        ->helperText('Surat harus berformat PDF atau Word')
+                        ->mimeTypeMap([
+                            'application/pdf' => 'PDF',
+                            'application/msword' => 'Word',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word',
+                            'application/vnd.ms-word.document.macroEnabled.12' => 'Word (Macro-Enabled)',
+                            'application/vnd.ms-word.template.macroEnabled.12' => 'Word Template (Macro-Enabled)',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.template' => 'Word Template',
+                        ])
                         ->uploadingMessage('Uploading file surat...')
                         ->required()
                         ->directory('surat-disetujui/' . $this->record->id)
                         ->getUploadedFileNameForStorageUsing(
-                            fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            fn(TemporaryUploadedFile $file): string => date('Y-m-d-H-i-s') . '-' . (string) str($file->getClientOriginalName())
                                 ->prepend('surat-disetujui-'),
                         )
                         ->maxSize(5120),
@@ -180,6 +193,21 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
                             'file_surat' => $data['file_surat'],
                             'keterangan_admin' => $data['keterangan_admin']
                         ]);
+
+                        // Send notification to warga
+                        $warga = $this->record->warga;
+                        Notification::make()
+                            ->title('Status Surat Diperbarui')
+                            ->success()
+                            ->body("Surat {$this->record->jenisSurat->nama} telah disetujui. Silakan download surat Anda.")
+                            ->actions([
+                                NotificationAction::make('view')
+                                    ->label('Lihat')
+                                    ->button()
+                                    ->url(fn(): string => route('filament.warga.resources.surats.view', $this->record))
+                                    ->markAsRead()
+                            ])
+                            ->sendToDatabase($warga, isEventDispatched: true);
 
                         Notification::make()
                             ->success()
@@ -218,6 +246,21 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
                             'keterangan_admin' => $data['keterangan_admin']
                         ]);
 
+                        // Send notification to warga
+                        $warga = $this->record->warga;
+                        Notification::make()
+                            ->title('Status Surat Diperbarui')
+                            ->danger()
+                            ->body("Surat {$this->record->jenisSurat->nama} ditolak dengan alasan: {$data['keterangan_admin']}")
+                            ->actions([
+                                NotificationAction::make('view')
+                                    ->label('Lihat')
+                                    ->url(fn(): string => route('filament.warga.resources.surats.view', $this->record))
+                                    ->button()
+                                    ->markAsRead()
+                            ])
+                            ->sendToDatabase($warga, isEventDispatched: true);
+
                         Notification::make()
                             ->success()
                             ->title('Surat berhasil ditolak')
@@ -239,7 +282,7 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
     public function table(Table $table): Table
     {
         return $table
-            ->relationship(fn (): HasMany => $this->record->suratFieldValues())
+            ->relationship(fn(): HasMany => $this->record->suratFieldValues())
             ->columns([
                 TextColumn::make('suratFormField.label')
                     ->label('Label')
@@ -264,8 +307,9 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
                     ->sortable(),
             ])
             ->defaultGroup('suratFormField.group')
-            ->modifyQueryUsing(fn ($query) => $query->join('surat_form_fields', 'surat_field_values.surat_form_field_id', '=', 'surat_form_fields.id')
-                ->orderBy('surat_form_fields.urutan', 'asc')
-        );
+            ->modifyQueryUsing(
+                fn($query) => $query->join('surat_form_fields', 'surat_field_values.surat_form_field_id', '=', 'surat_form_fields.id')
+                    ->orderBy('surat_form_fields.urutan', 'asc')
+            );
     }
 }

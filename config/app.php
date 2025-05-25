@@ -72,7 +72,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -136,9 +136,9 @@ return [
          */
         BladeUI\Icons\BladeIconsServiceProvider::class,
 
-        /*
-         * Application Service Providers...
-         */
+            /*
+             * Application Service Providers...
+             */
         AppServiceProvider::class,
         AuthServiceProvider::class,
         EventServiceProvider::class,

@@ -38,7 +38,17 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 //
             ])
-            ->middleware([EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, AuthenticateSession::class, ShareErrorsFromSession::class, VerifyCsrfToken::class, SubstituteBindings::class, DisableBladeIconComponents::class, DispatchServingFilamentEvent::class])
+            ->middleware([
+                EncryptCookies::class,
+                AddQueuedCookiesToResponse::class,
+                StartSession::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
+                VerifyCsrfToken::class,
+                SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class
+            ])
             ->authMiddleware([Authenticate::class])
             ->spa()
             ->unsavedChangesAlerts()
@@ -47,7 +57,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Desa Pamuruyan')
             ->brandLogoHeight('3rem')
             ->maxContentWidth('full')
-            ->databaseNotifications()
-            ->databaseNotificationsPolling('30s');
+            ->databaseNotifications();
     }
 }

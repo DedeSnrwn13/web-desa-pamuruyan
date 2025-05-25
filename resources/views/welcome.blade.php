@@ -84,62 +84,83 @@
                     memajukan desa dan melayani masyarakat dengan sepenuh hati.</p>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <!-- Kepala Desa -->
-                <div class="text-center">
-                    <div
-                        class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-600 shadow-md">
-                        <img src="{{ ImageHelper::getImage('images/pengurus/kades.jpg', 'Foto Kepala Desa') }}"
-                            alt="Kepala Desa" class="object-cover w-full h-full">
+            <!-- Kepala Desa -->
+            @if($kepalaDesa)
+            <div class="mb-12">
+                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Kepala Desa</h3>
+                <div class="flex justify-center">
+                    <div class="text-center w-64">
+                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-600 shadow-md">
+                            <img src="{{ ImageHelper::getImage($kepalaDesa->foto, 'Foto Kepala Desa') }}"
+                                alt="Foto {{ $kepalaDesa->nama }}" class="object-cover w-full h-full">
+                        </div>
+                        <h3 class="text-xl font-semibold">{{ $kepalaDesa->nama }}</h3>
+                        <p class="mb-2 font-medium text-lime-600">{{ $kepalaDesa->jabatan }}</p>
+                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($kepalaDesa->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($kepalaDesa->masa_jabatan_selesai)->format('Y') }}</p>
                     </div>
-                    <h3 class="text-xl font-semibold">Budi Santoso</h3>
-                    <p class="mb-2 font-medium text-lime-600">Kepala Desa</p>
-                    <p class="text-sm text-gray-600">Masa Jabatan: 2020 - 2026</p>
-                </div>
-
-                <!-- Sekretaris Desa -->
-                <div class="text-center">
-                    <div
-                        class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
-                        <img src="{{ ImageHelper::getImage('images/pengurus/sekdes.jpg', 'Foto Sekretaris Desa') }}"
-                            alt="Sekretaris Desa" class="object-cover w-full h-full">
-                    </div>
-                    <h3 class="text-xl font-semibold">Siti Aminah</h3>
-                    <p class="mb-2 font-medium text-lime-600">Sekretaris Desa</p>
-                    <p class="text-sm text-gray-600">Masa Jabatan: 2020 - 2026</p>
-                </div>
-
-                <!-- Bendahara Desa -->
-                <div class="text-center">
-                    <div
-                        class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
-                        <img src="{{ ImageHelper::getImage('images/pengurus/bendahara.jpg', 'Foto Bendahara Desa') }}"
-                            alt="Bendahara Desa" class="object-cover w-full h-full">
-                    </div>
-                    <h3 class="text-xl font-semibold">Agus Wijaya</h3>
-                    <p class="mb-2 font-medium text-lime-600">Bendahara Desa</p>
-                    <p class="text-sm text-gray-600">Masa Jabatan: 2020 - 2026</p>
-                </div>
-
-                <!-- Kaur Perencanaan -->
-                <div class="text-center">
-                    <div
-                        class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
-                        <img src="{{ ImageHelper::getImage('images/pengurus/kaur.jpg', 'Foto Kaur Perencanaan') }}"
-                            alt="Kaur Perencanaan" class="object-cover w-full h-full">
-                    </div>
-                    <h3 class="text-xl font-semibold">Dewi Lestari</h3>
-                    <p class="mb-2 font-medium text-lime-600">Kaur Perencanaan</p>
-                    <p class="text-sm text-gray-600">Masa Jabatan: 2020 - 2026</p>
                 </div>
             </div>
+            @endif
 
-            <div class="mt-8 text-center">
-                <a href="{{ route('front.kepengurusan') }}"
-                    class="inline-block px-6 py-3 text-white bg-lime-600 rounded-lg transition hover:bg-lime-700">
-                    Lihat Struktur Lengkap
-                </a>
+            <!-- Sekretariat Desa -->
+            @if($sekretariatDesa && $sekretariatDesa->count() > 0)
+            <div class="mb-12">
+                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Sekretariat Desa</h3>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    @foreach($sekretariatDesa as $pengurus)
+                    <div class="text-center">
+                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
+                            <img src="{{ ImageHelper::getImage($pengurus->foto, 'Foto Pengurus') }}"
+                                alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
+                        </div>
+                        <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
+                        <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
+                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format('Y') }}</p>
+                    </div>
+                    @endforeach
+                </div>
             </div>
+            @endif
+
+            <!-- Pelaksana Teknis -->
+            @if($pelaksanaTeknis && $pelaksanaTeknis->count() > 0)
+            <div class="mb-12">
+                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Pelaksana Teknis</h3>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    @foreach($pelaksanaTeknis as $pengurus)
+                    <div class="text-center">
+                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
+                            <img src="{{ ImageHelper::getImage($pengurus->foto, 'Foto Pengurus') }}"
+                                alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
+                        </div>
+                        <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
+                        <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
+                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format('Y') }}</p>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            <!-- Kepala Dusun -->
+            @if($kepalaDusun && $kepalaDusun->count() > 0)
+            <div class="mb-12">
+                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Kepala Dusun</h3>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    @foreach($kepalaDusun as $pengurus)
+                    <div class="text-center">
+                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
+                            <img src="{{ ImageHelper::getImage($pengurus->foto, 'Foto Pengurus') }}"
+                                alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
+                        </div>
+                        <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
+                        <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
+                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format('Y') }}</p>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
         </div>
     </section>
 

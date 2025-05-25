@@ -15,6 +15,7 @@ use App\Repositories\JadwalRepository;
 use App\Repositories\KeuanganRepository;
 use App\Repositories\JenisSuratRepository;
 use App\Repositories\VisiMisiRepository;
+use App\Repositories\KepengurusanRepository;
 
 class FrontController extends Controller
 {
@@ -23,19 +24,22 @@ class FrontController extends Controller
     protected $jenisSuratRepo;
     protected $keuanganRepo;
     protected $visiMisiRepo;
+    protected $kepengurusanRepo;
 
     public function __construct(
         BeritaRepository $beritaRepo,
         JadwalRepository $jadwalRepo,
         JenisSuratRepository $jenisSuratRepo,
         KeuanganRepository $keuanganRepo,
-        VisiMisiRepository $visiMisiRepo
+        VisiMisiRepository $visiMisiRepo,
+        KepengurusanRepository $kepengurusanRepo
     ) {
         $this->beritaRepo = $beritaRepo;
         $this->jadwalRepo = $jadwalRepo;
         $this->jenisSuratRepo = $jenisSuratRepo;
         $this->keuanganRepo = $keuanganRepo;
         $this->visiMisiRepo = $visiMisiRepo;
+        $this->kepengurusanRepo = $kepengurusanRepo;
     }
 
     public function index()
@@ -45,6 +49,12 @@ class FrontController extends Controller
         $jadwalKegiatan = $this->jadwalRepo->getJadwalKegiatan();
         $layananSurat = $this->jenisSuratRepo->getLayananSurat();
         $visiMisi = $this->visiMisiRepo->getLatestVisiMisi();
+
+        // Get all officials grouped by roles
+        $kepalaDesa = $this->kepengurusanRepo->getKepalaDesa();
+        $sekretariatDesa = $this->kepengurusanRepo->getSekretariatDesa();
+        $pelaksanaTeknis = $this->kepengurusanRepo->getPelaksanaTeknis();
+        $kepalaDusun = $this->kepengurusanRepo->getAllKepalaDusun();
 
         $totalPendapatan = $this->keuanganRepo->getTotalPendapatan();
         $totalBelanja = $this->keuanganRepo->getTotalBelanja();
@@ -60,6 +70,10 @@ class FrontController extends Controller
             'jadwalKegiatan',
             'layananSurat',
             'visiMisi',
+            'kepalaDesa',
+            'sekretariatDesa',
+            'pelaksanaTeknis',
+            'kepalaDusun',
             'totalPendapatan',
             'totalBelanja',
             'totalPembiayaan',
@@ -190,11 +204,6 @@ class FrontController extends Controller
             ->get();
 
         return view('front.berita.detail', compact('berita', 'kategori_beritas', 'beritas'));
-    }
-
-    public function kepengurusan()
-    {
-        //
     }
 
     public function jadwalKegiatan()

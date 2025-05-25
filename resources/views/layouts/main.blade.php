@@ -63,27 +63,6 @@
                     <a href="{{ route('front.index') }}"
                         class="text-gray-700 hover:text-lime-600 font-medium">Beranda</a>
 
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" @click.away="open = false"
-                            class="flex items-center text-gray-700 hover:text-lime-600 font-medium">
-                            <span>Profil</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div x-show="open" x-cloak
-                            class="absolute z-10 -left-4 mt-2 bg-white rounded-md shadow-lg w-48" x-transition>
-                            <a href="{{ route('front.visi-misi') }}"
-                                class="block px-4 py-2 text-gray-700 hover:bg-lime-50 hover:text-lime-600">Visi &
-                                Misi</a>
-                            <a href="{{ route('front.kepengurusan') }}"
-                                class="block px-4 py-2 text-gray-700 hover:bg-lime-50 hover:text-lime-600">Struktur
-                                Pemerintahan</a>
-                        </div>
-                    </div>
-
                     <a href="{{ route('front.berita.index') }}"
                         class="text-gray-700 hover:text-lime-600 font-medium">Berita</a>
 
@@ -149,26 +128,6 @@
             <div class="container mx-auto px-4 py-3 space-y-1">
                 <a href="{{ route('front.index') }}"
                     class="block py-2 text-gray-700 hover:text-lime-600 font-medium">Beranda</a>
-
-                <div x-data="{ open: false }">
-                    <button @click="open = !open"
-                        class="flex items-center justify-between w-full py-2 text-gray-700 hover:text-lime-600 font-medium">
-                        <span>Profil</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div x-show="open" x-cloak class="pl-4 space-y-1" x-transition>
-                        <a href="{{ route('front.visi-misi') }}"
-                            class="block py-2 text-gray-700 hover:text-lime-600">Visi
-                            &
-                            Misi</a>
-                        <a href="{{ route('front.kepengurusan') }}"
-                            class="block py-2 text-gray-700 hover:text-lime-600">Struktur Pemerintahan</a>
-                    </div>
-                </div>
 
                 <a href="{{ route('front.berita.index') }}"
                     class="block py-2 text-gray-700 hover:text-lime-600 font-medium">Berita</a>

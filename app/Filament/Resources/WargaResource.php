@@ -30,7 +30,8 @@ class WargaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationGroup = 'Manajemen Desa';
-    protected static ?string $navigationLabel = 'Data Warga';
+    protected static ?string $navigationLabel = 'Warga';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

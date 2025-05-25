@@ -14,6 +14,7 @@ use App\Repositories\BeritaRepository;
 use App\Repositories\JadwalRepository;
 use App\Repositories\KeuanganRepository;
 use App\Repositories\JenisSuratRepository;
+use App\Repositories\VisiMisiRepository;
 
 class FrontController extends Controller
 {
@@ -21,30 +22,34 @@ class FrontController extends Controller
     protected $jadwalRepo;
     protected $jenisSuratRepo;
     protected $keuanganRepo;
+    protected $visiMisiRepo;
 
     public function __construct(
         BeritaRepository $beritaRepo,
         JadwalRepository $jadwalRepo,
         JenisSuratRepository $jenisSuratRepo,
-        KeuanganRepository $keuanganRepo
+        KeuanganRepository $keuanganRepo,
+        VisiMisiRepository $visiMisiRepo
     ) {
         $this->beritaRepo = $beritaRepo;
         $this->jadwalRepo = $jadwalRepo;
         $this->jenisSuratRepo = $jenisSuratRepo;
         $this->keuanganRepo = $keuanganRepo;
+        $this->visiMisiRepo = $visiMisiRepo;
     }
-    
+
     public function index()
     {
         $beritaUtama = $this->beritaRepo->getBeritaUtama();
         $beritaTerbaru = $this->beritaRepo->getBeritaTerbaru();
         $jadwalKegiatan = $this->jadwalRepo->getJadwalKegiatan();
         $layananSurat = $this->jenisSuratRepo->getLayananSurat();
-        
+        $visiMisi = $this->visiMisiRepo->getLatestVisiMisi();
+
         $totalPendapatan = $this->keuanganRepo->getTotalPendapatan();
         $totalBelanja = $this->keuanganRepo->getTotalBelanja();
         $totalPembiayaan = $this->keuanganRepo->getTotalPembiayaan();
-        
+
         $sumberPendapatan = $this->keuanganRepo->getSumberPendapatan();
         $jenisBelanja = $this->keuanganRepo->getJenisBelanja();
         $jenisPembiayaan = $this->keuanganRepo->getJenisPembiayaan();
@@ -54,6 +59,7 @@ class FrontController extends Controller
             'beritaTerbaru',
             'jadwalKegiatan',
             'layananSurat',
+            'visiMisi',
             'totalPendapatan',
             'totalBelanja',
             'totalPembiayaan',
@@ -68,16 +74,16 @@ class FrontController extends Controller
         // Get current year for default filter
         $tahunSekarang = date('Y');
         $tahunAnggaran = request('tahun', $tahunSekarang);
-        
+
         // Get raw data from repository with year filter
         $totalPendapatan = $this->keuanganRepo->getTotalPendapatan($tahunAnggaran);
         $totalBelanja = $this->keuanganRepo->getTotalBelanja($tahunAnggaran);
         $totalPembiayaan = $this->keuanganRepo->getTotalPembiayaan($tahunAnggaran);
-        
+
         // Get detailed data and transform into array of objects
         $sumberPendapatan = $this->keuanganRepo->getSumberPendapatan($tahunAnggaran)
             ->map(function ($total, $sumber) {
-                return (object)[
+                return (object) [
                     'sumber_dana' => $sumber,
                     'total' => $total
                 ];
@@ -86,7 +92,7 @@ class FrontController extends Controller
 
         $jenisBelanja = $this->keuanganRepo->getJenisBelanja($tahunAnggaran)
             ->map(function ($total, $jenis) {
-                return (object)[
+                return (object) [
                     'sub_kategori' => $jenis,
                     'total' => $total
                 ];
@@ -95,7 +101,7 @@ class FrontController extends Controller
 
         $jenisPembiayaan = $this->keuanganRepo->getJenisPembiayaan($tahunAnggaran)
             ->map(function ($total, $jenis) {
-                return (object)[
+                return (object) [
                     'sub_kategori' => $jenis,
                     'total' => $total
                 ];
@@ -197,7 +203,7 @@ class FrontController extends Controller
             ->orderBy('waktu', 'asc')
             ->paginate(20);
 
-        $groupedJadwals = $jadwals->getCollection()->groupBy(function($jadwal) {
+        $groupedJadwals = $jadwals->getCollection()->groupBy(function ($jadwal) {
             return $jadwal->waktu->format('Y-m');
         });
 
@@ -210,7 +216,7 @@ class FrontController extends Controller
     public function layananSurat()
     {
         $jenisSurat = JenisSurat::paginate(14);
-        
+
         return view('front.layanan-surat', compact('jenisSurat'));
     }
 

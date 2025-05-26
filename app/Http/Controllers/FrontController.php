@@ -14,6 +14,8 @@ use App\Repositories\BeritaRepository;
 use App\Repositories\JadwalRepository;
 use App\Repositories\KeuanganRepository;
 use App\Repositories\JenisSuratRepository;
+use App\Repositories\VisiMisiRepository;
+use App\Repositories\KepengurusanRepository;
 
 class FrontController extends Controller
 {
@@ -21,30 +23,43 @@ class FrontController extends Controller
     protected $jadwalRepo;
     protected $jenisSuratRepo;
     protected $keuanganRepo;
+    protected $visiMisiRepo;
+    protected $kepengurusanRepo;
 
     public function __construct(
         BeritaRepository $beritaRepo,
         JadwalRepository $jadwalRepo,
         JenisSuratRepository $jenisSuratRepo,
-        KeuanganRepository $keuanganRepo
+        KeuanganRepository $keuanganRepo,
+        VisiMisiRepository $visiMisiRepo,
+        KepengurusanRepository $kepengurusanRepo
     ) {
         $this->beritaRepo = $beritaRepo;
         $this->jadwalRepo = $jadwalRepo;
         $this->jenisSuratRepo = $jenisSuratRepo;
         $this->keuanganRepo = $keuanganRepo;
+        $this->visiMisiRepo = $visiMisiRepo;
+        $this->kepengurusanRepo = $kepengurusanRepo;
     }
-    
+
     public function index()
     {
         $beritaUtama = $this->beritaRepo->getBeritaUtama();
         $beritaTerbaru = $this->beritaRepo->getBeritaTerbaru();
         $jadwalKegiatan = $this->jadwalRepo->getJadwalKegiatan();
         $layananSurat = $this->jenisSuratRepo->getLayananSurat();
-        
+        $visiMisi = $this->visiMisiRepo->getLatestVisiMisi();
+
+        // Get all officials grouped by roles
+        $kepalaDesa = $this->kepengurusanRepo->getKepalaDesa();
+        $sekretariatDesa = $this->kepengurusanRepo->getSekretariatDesa();
+        $pelaksanaTeknis = $this->kepengurusanRepo->getPelaksanaTeknis();
+        $kepalaDusun = $this->kepengurusanRepo->getAllKepalaDusun();
+
         $totalPendapatan = $this->keuanganRepo->getTotalPendapatan();
         $totalBelanja = $this->keuanganRepo->getTotalBelanja();
         $totalPembiayaan = $this->keuanganRepo->getTotalPembiayaan();
-        
+
         $sumberPendapatan = $this->keuanganRepo->getSumberPendapatan();
         $jenisBelanja = $this->keuanganRepo->getJenisBelanja();
         $jenisPembiayaan = $this->keuanganRepo->getJenisPembiayaan();
@@ -54,6 +69,11 @@ class FrontController extends Controller
             'beritaTerbaru',
             'jadwalKegiatan',
             'layananSurat',
+            'visiMisi',
+            'kepalaDesa',
+            'sekretariatDesa',
+            'pelaksanaTeknis',
+            'kepalaDusun',
             'totalPendapatan',
             'totalBelanja',
             'totalPembiayaan',
@@ -68,16 +88,16 @@ class FrontController extends Controller
         // Get current year for default filter
         $tahunSekarang = date('Y');
         $tahunAnggaran = request('tahun', $tahunSekarang);
-        
+
         // Get raw data from repository with year filter
         $totalPendapatan = $this->keuanganRepo->getTotalPendapatan($tahunAnggaran);
         $totalBelanja = $this->keuanganRepo->getTotalBelanja($tahunAnggaran);
         $totalPembiayaan = $this->keuanganRepo->getTotalPembiayaan($tahunAnggaran);
-        
+
         // Get detailed data and transform into array of objects
         $sumberPendapatan = $this->keuanganRepo->getSumberPendapatan($tahunAnggaran)
             ->map(function ($total, $sumber) {
-                return (object)[
+                return (object) [
                     'sumber_dana' => $sumber,
                     'total' => $total
                 ];
@@ -86,7 +106,7 @@ class FrontController extends Controller
 
         $jenisBelanja = $this->keuanganRepo->getJenisBelanja($tahunAnggaran)
             ->map(function ($total, $jenis) {
-                return (object)[
+                return (object) [
                     'sub_kategori' => $jenis,
                     'total' => $total
                 ];
@@ -95,7 +115,7 @@ class FrontController extends Controller
 
         $jenisPembiayaan = $this->keuanganRepo->getJenisPembiayaan($tahunAnggaran)
             ->map(function ($total, $jenis) {
-                return (object)[
+                return (object) [
                     'sub_kategori' => $jenis,
                     'total' => $total
                 ];
@@ -186,18 +206,13 @@ class FrontController extends Controller
         return view('front.berita.detail', compact('berita', 'kategori_beritas', 'beritas'));
     }
 
-    public function kepengurusan()
-    {
-        //
-    }
-
     public function jadwalKegiatan()
     {
         $jadwals = Jadwal::query()
             ->orderBy('waktu', 'asc')
             ->paginate(20);
 
-        $groupedJadwals = $jadwals->getCollection()->groupBy(function($jadwal) {
+        $groupedJadwals = $jadwals->getCollection()->groupBy(function ($jadwal) {
             return $jadwal->waktu->format('Y-m');
         });
 
@@ -210,7 +225,7 @@ class FrontController extends Controller
     public function layananSurat()
     {
         $jenisSurat = JenisSurat::paginate(14);
-        
+
         return view('front.layanan-surat', compact('jenisSurat'));
     }
 

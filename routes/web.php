@@ -18,9 +18,6 @@ Route::name('front.')->group(function () {
         Route::get('/cari', [FrontController::class, 'search'])->name('cari');
     });
 
-    // Kepengurusan
-    Route::get('/kepengurusan', [FrontController::class, 'kepengurusan'])->name('kepengurusan');
-
     // Jadwal
     Route::get('/jadwal-kegiatan', [FrontController::class, 'jadwalKegiatan'])->name('jadwal-kegiatan');
 

@@ -17,11 +17,11 @@ return new class extends Migration
             $table->foreignId('warga_id')->constrained('wargas')->cascadeOnDelete();
             $table->foreignId('jenis_surat_id')->constrained('jenis_surats')->cascadeOnDelete();
             $table->enum('status', ['menunggu', 'disetujui', 'ditolak']);
-            $table->string(column: 'keterangan_warga');
-            $table->string(column: 'keterangan_admin')->nullable();
-            $table->string(column: 'no_surat')->nullable();
-            $table->string(column: 'tanggal_surat')->nullable();
-            $table->string(column: 'file_surat')->nullable();
+            $table->string('keterangan_warga');
+            $table->string('keterangan_admin')->nullable();
+            $table->string('no_surat')->nullable();
+            $table->string('tanggal_surat')->nullable();
+            $table->string('file_surat')->nullable();
             $table->timestamps();
         });
     }

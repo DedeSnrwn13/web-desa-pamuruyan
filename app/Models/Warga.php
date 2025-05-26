@@ -74,11 +74,11 @@ class Warga extends Authenticatable implements FilamentUser, HasName
 
     public function rt(): BelongsTo
     {
-        return $this->belongsTo(related: Rt::class);
+        return $this->belongsTo(Rt::class);
     }
 
     public function surats(): HasMany
     {
-        return $this->hasMany(related: Surat::class);
+        return $this->hasMany(Surat::class);
     }
 }

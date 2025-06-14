@@ -6,15 +6,13 @@ use App\Http\Controllers\FrontController;
 Route::name('front.')->group(function () {
     Route::get('/', [FrontController::class, 'index'])->name('index');
 
-    // APBDEs & Inventaris
+    // APBDes
     Route::get('/apbdes', [FrontController::class, 'apbdes'])->name('apbdes');
-    Route::get('/inventaris', [FrontController::class, 'inventaris'])->name('inventaris');
 
-    // Detail & Kategori
+    // Detail
     Route::prefix('berita')->name('berita.')->group(function () {
         Route::get('/', [FrontController::class, 'beritaIndex'])->name('index');
         Route::get('/detail/{berita:slug}', [FrontController::class, 'beritaDetail'])->name('detail');
-        Route::get('kategori/{kategori_berita:slug}', [FrontController::class, 'category'])->name('kategori');
         Route::get('/cari', [FrontController::class, 'search'])->name('cari');
     });
 
@@ -23,9 +21,6 @@ Route::name('front.')->group(function () {
 
     // Layanan Surat
     Route::get('/layanan-surat', [FrontController::class, 'layananSurat'])->name('layanan-surat');
-
-    // Visi Misi
-    Route::get('/visi-misi', [FrontController::class, 'visiMisi'])->name('visi-misi');
 
     // Galeri
     Route::get('/galeri', [FrontController::class, 'galeri'])->name('galeri');

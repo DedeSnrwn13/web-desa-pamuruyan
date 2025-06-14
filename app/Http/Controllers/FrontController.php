@@ -145,23 +145,6 @@ class FrontController extends Controller
         ));
     }
 
-    public function inventaris()
-    {
-        return view('front.inventaris');
-    }
-
-    public function jadwal()
-    {
-        return view('front.jadwal');
-    }
-
-    public function category(KategoriBerita $kategori_berita)
-    {
-        $kategori_beritas = KategoriBerita::with('beritas')->get();
-
-        return view('front.category', compact('kategori_berita', 'kategori_beritas'));
-    }
-
     public function search(Request $request)
     {
         $request->validate([
@@ -227,11 +210,6 @@ class FrontController extends Controller
         $jenisSurat = JenisSurat::paginate(14);
 
         return view('front.layanan-surat', compact('jenisSurat'));
-    }
-
-    public function visiMisi()
-    {
-        // 
     }
 
     public function galeri(Request $request)

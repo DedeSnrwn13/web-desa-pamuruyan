@@ -36,7 +36,7 @@ class Register extends BasePage
 
     public function getLogo(): ?string
     {
-        return asset('images/logo-kab-sukabumi.png');
+        return public_asset('images/logo-kab-sukabumi.png');
     }
 
     public function getFooter(): string|Htmlable|null
@@ -54,12 +54,13 @@ class Register extends BasePage
                     ->options(Kampung::query()->pluck('nama', 'id'))
                     ->required()
                     ->live()
-                    ->afterStateUpdated(fn (Set $set) => $set('rw_id', null)),
+                    ->afterStateUpdated(fn(Set $set) => $set('rw_id', null)),
 
                 Select::make('rw_id')
                     ->label('RW')
                     ->placeholder('Pilih RW')
-                    ->options(fn (Get $get): array => 
+                    ->options(
+                        fn(Get $get): array =>
                         Rw::query()
                             ->where('kampung_id', $get('kampung_id'))
                             ->pluck('no_rw', 'id')
@@ -67,20 +68,21 @@ class Register extends BasePage
                     )
                     ->required()
                     ->live()
-                    ->visible(fn (Get $get): bool => filled($get('kampung_id')))
-                    ->afterStateUpdated(fn (Set $set) => $set('rt_id', null)),
+                    ->visible(fn(Get $get): bool => filled($get('kampung_id')))
+                    ->afterStateUpdated(fn(Set $set) => $set('rt_id', null)),
 
                 Select::make('rt_id')
                     ->label('RT')
                     ->placeholder('Pilih RT')
-                    ->options(fn (Get $get): array => 
+                    ->options(
+                        fn(Get $get): array =>
                         Rt::query()
                             ->where('rw_id', $get('rw_id'))
                             ->pluck('no_rt', 'id')
                             ->toArray()
                     )
                     ->required()
-                    ->visible(fn (Get $get): bool => filled($get('rw_id'))),
+                    ->visible(fn(Get $get): bool => filled($get('rw_id'))),
 
                 TextInput::make('nama')
                     ->label('Nama Lengkap')
@@ -181,4 +183,4 @@ class Register extends BasePage
     {
         return '/warga';
     }
-} 
+}

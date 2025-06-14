@@ -13,8 +13,7 @@
     <link rel="shortcut icon" href="{{ public_asset('images/favicon.ico') }}" type="image/x-icon">
 
     <!-- Tailwind CSS -->
-    @vite('resources/css/app.css')
-    {{-- <link rel="stylesheet" href="{{ public_asset(Vite::asset('resources/css/app.css')) }}"> --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>

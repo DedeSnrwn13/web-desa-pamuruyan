@@ -3,6 +3,7 @@ import laravel, { refreshPaths } from 'laravel-vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+    base: process.env.NODE_ENV === 'production' ? '/public/' : '/',
     plugins: [
         tailwindcss(),
         laravel({

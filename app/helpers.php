@@ -1,14 +1,12 @@
 <?php
 
-function public_asset($path)
-{
-    if (config('app.env') === 'production') {
-        if (str_starts_with($path, 'http')) {
-            return $path;
+if (! function_exists('public_asset')) {
+    function public_asset($path)
+    {
+        if (config('app.env') == 'production') {
+            return url('public/' . ltrim($path, '/'));
+        } else {
+            return asset($path);
         }
-
-        return url('public/' . ltrim($path, '/'));
     }
-
-    return asset($path);
 }

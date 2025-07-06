@@ -5,6 +5,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\AuthServiceProvider;
 use Illuminate\Events\EventServiceProvider;
 use App\Providers\Filament\WargaPanelProvider;
+use App\Providers\EventServiceProvider as AppEventServiceProvider;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 
 return [
@@ -144,6 +145,7 @@ return [
         EventServiceProvider::class,
         RouteServiceProvider::class,
         WargaPanelProvider::class,
+        AppEventServiceProvider::class,
     ])->toArray(),
 
 ];

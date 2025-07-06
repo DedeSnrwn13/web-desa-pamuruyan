@@ -5,30 +5,18 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Surat;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Enum\SuratStatus;
 use Filament\Tables\Table;
-use Filament\Pages\Actions;
 use Filament\Resources\Resource;
-use Illuminate\Support\HtmlString;
-use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
-use Filament\Support\Enums\ActionSize;
-use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SuratResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SuratResource\RelationManagers;
-use Filament\Tables\Actions\Modal\Actions\Action as ModalAction;
 
 class SuratResource extends Resource
 {
@@ -74,23 +62,28 @@ class SuratResource extends Resource
                                 'disetujui' => 'Disetujui',
                                 'ditolak' => 'Ditolak'
                             ])
+                            ->placeholder('Pilih status surat')
                             ->required()
                             ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         TextInput::make('keterangan_warga')
+                            ->placeholder('Masukkan keterangan warga')
                             ->required()
                             ->maxLength(255)
                             ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         TextInput::make('keterangan_admin')
                             ->maxLength(255)
+                            ->placeholder('Masukkan keterangan admin')
                             ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         TextInput::make('no_surat')
                             ->maxLength(255)
+                            ->placeholder('Masukkan nomor surat')
                             ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
 
                         DatePicker::make('tanggal_surat')
+                            ->placeholder('Pilih tanggal surat')
                             ->disabled(fn($record) => $record?->status !== SuratStatus::MENUNGGU->value),
                     ])->columns(2),
             ]);
@@ -156,7 +149,7 @@ class SuratResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->hidden(fn($record) => $record?->status !== 'menunggu'),
-                // Tables\Actions\DeleteAction::make(),
+
                 Tables\Actions\Action::make('tinjau')
                     ->label('Tinjau')
                     ->icon('heroicon-o-eye')
@@ -166,7 +159,7 @@ class SuratResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+
                 ]),
             ]);
     }

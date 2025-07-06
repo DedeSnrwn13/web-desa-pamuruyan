@@ -35,6 +35,7 @@ class PenandatanganResource extends Resource
                             ->searchable()
                             ->preload()
                             ->placeholder('Pilih surat'),
+
                         Forms\Components\TextInput::make('nama')
                             ->required()
                             ->placeholder('Masukkan nama penandatangan')
@@ -47,6 +48,7 @@ class PenandatanganResource extends Resource
 
                         Forms\Components\FileUpload::make('ttd_path')
                             ->label('Tanda Tangan')
+                            ->placeholder('Pilih tanda tangan')
                             ->required()
                             ->image()
                             ->directory('tanda-tangan')
@@ -70,15 +72,20 @@ class PenandatanganResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('#')
                     ->rowIndex(),
+
                 Tables\Columns\TextColumn::make('surat.no_surat')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('jabatan')
                     ->searchable(),
+
                 Tables\Columns\ImageColumn::make('ttd_path')
                     ->label('Tanda Tangan'),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat pada')
                     ->dateTime()

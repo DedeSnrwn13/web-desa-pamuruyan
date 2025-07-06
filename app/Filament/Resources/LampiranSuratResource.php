@@ -10,7 +10,6 @@ use App\Models\LampiranSurat;
 use Filament\Resources\Resource;
 use App\Filament\Resources\LampiranSuratResource\Pages;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Filament\Tables\Columns\TextColumn;
 
 class LampiranSuratResource extends Resource
 {
@@ -36,12 +35,15 @@ class LampiranSuratResource extends Resource
                             ->searchable()
                             ->preload()
                             ->placeholder('Pilih surat'),
+
                         Forms\Components\TextInput::make('nama_file')
                             ->placeholder('Masukkan nama file')
                             ->required()
                             ->maxLength(255),
+
                         Forms\Components\FileUpload::make('path')
                             ->label('File Lampiran')
+                            ->placeholder('Pilih file lampiran')
                             ->required()
                             ->directory('lampiran-surat')
                             ->preserveFilenames()
@@ -65,11 +67,14 @@ class LampiranSuratResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make(name: '#')
                     ->rowIndex(),
+
                 Tables\Columns\TextColumn::make('surat.no_surat')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('nama_file')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat pada')
                     ->dateTime()

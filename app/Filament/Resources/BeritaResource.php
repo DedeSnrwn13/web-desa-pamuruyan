@@ -15,16 +15,12 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BeritaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\BeritaResource\RelationManagers;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class BeritaResource extends Resource
@@ -70,6 +66,7 @@ class BeritaResource extends Resource
 
                         Select::make('kategori_berita_id')
                             ->relationship('kategoriBerita', 'nama')
+                            ->placeholder('Pilih kategori berita')
                             ->required()
                             ->searchable()
                             ->preload(),

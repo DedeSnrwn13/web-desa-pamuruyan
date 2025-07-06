@@ -12,10 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\JenisSuratResource\Pages;
-use App\Filament\Resources\JenisSuratResource\RelationManagers;
 
 class JenisSuratResource extends Resource
 {
@@ -40,17 +37,17 @@ class JenisSuratResource extends Resource
                             ->default(fn() => Auth::guard('admin')->id())
                             ->required(),
 
-                    TextInput::make('nama')
-                        ->placeholder('Masukkan nama jenis surat')
-                        ->required()
-                        ->maxLength(150),
+                        TextInput::make('nama')
+                            ->placeholder('Masukkan nama jenis surat')
+                            ->required()
+                            ->maxLength(150),
 
-                    TextInput::make('kode')
-                        ->placeholder('Masukkan kode jenis surat')
-                        ->required()
-                        ->unique(ignoreRecord: true)
-                        ->maxLength(20),
-                ])->columns(2)
+                        TextInput::make('kode')
+                            ->placeholder('Masukkan kode jenis surat')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(20),
+                    ])->columns(2)
             ]);
     }
 

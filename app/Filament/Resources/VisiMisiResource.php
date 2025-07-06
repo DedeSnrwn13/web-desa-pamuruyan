@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Models\VisiMisi;
-use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -68,6 +67,7 @@ class VisiMisiResource extends Resource
 
                         FileUpload::make('gambar')
                             ->label('Gambar Ilustrasi')
+                            ->placeholder('Pilih gambar ilustrasi')
                             ->image()
                             ->imageEditor()
                             ->directory('visi-misi')

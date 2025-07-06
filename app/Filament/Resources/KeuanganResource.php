@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\Keuangan;
 use Filament\Forms\Form;
@@ -44,7 +43,7 @@ class KeuanganResource extends Resource
                             ->maxLength(255)
                             ->label('Sumber Dana')
                             ->placeholder('Masukkan sumber dana'),
-                        
+
                         TextInput::make('nominal')
                             ->required()
                             ->numeric()
@@ -60,7 +59,7 @@ class KeuanganResource extends Resource
                             ])
                             ->label('Jenis Transaksi')
                             ->placeholder('Pilih jenis transaksi'),
-                            
+
                         Textarea::make('keterangan')
                             ->required()
                             ->label('Keterangan')
@@ -270,4 +269,4 @@ class KeuanganResource extends Resource
             'edit' => Pages\EditKeuangan::route('/{record}/edit'),
         ];
     }
-} 
+}

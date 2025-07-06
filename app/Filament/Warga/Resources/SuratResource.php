@@ -11,7 +11,6 @@ use App\Models\JenisSurat;
 use Filament\Tables\Table;
 use App\Enum\JenisSuratEnum;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
@@ -91,18 +90,21 @@ class SuratResource extends Resource
 
                         TextInput::make('no_surat')
                             ->label('Nomor Surat')
+                            ->placeholder('Masukkan nomor surat')
                             ->disabled()
                             ->dehydrated(false)
                             ->visible(fn($record) => $record?->status === SuratStatus::DISETUJUI->value),
 
                         DatePicker::make('tanggal_surat')
                             ->label('Tanggal Surat')
+                            ->placeholder('Pilih tanggal surat')
                             ->disabled()
                             ->dehydrated(false)
                             ->visible(fn($record) => $record?->status === SuratStatus::DISETUJUI->value),
 
                         TextInput::make('keterangan_admin')
                             ->label('Keterangan Admin')
+                            ->placeholder('Masukkan keterangan admin')
                             ->disabled()
                             ->dehydrated(false)
                             ->visible(fn($record) => in_array($record?->status, [SuratStatus::DISETUJUI->value, SuratStatus::DITOLAK->value])),

@@ -24,7 +24,6 @@ use App\Filament\Resources\InventarisResource\Pages\EditInventaris;
 use App\Filament\Resources\InventarisResource\Pages\ListInventaris;
 use App\Filament\Resources\InventarisResource\Pages\CreateInventaris;
 
-
 class InventarisResource extends Resource
 {
     protected static ?string $model = Inventaris::class;
@@ -39,24 +38,29 @@ class InventarisResource extends Resource
                 Section::make('Informasi Barang')
                     ->schema([
                         TextInput::make('nama_barang')
+                            ->placeholder('Masukkan nama barang')
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('kode_barang')
+                            ->placeholder('Masukkan kode barang')
                             ->required()
                             ->maxLength(50),
 
                         TextInput::make('jumlah')
+                            ->placeholder('Masukkan jumlah barang')
                             ->required()
                             ->numeric()
                             ->minValue(0),
 
                         TextInput::make('harga')
+                            ->placeholder('Masukkan harga barang')
                             ->numeric()
                             ->prefix('Rp')
                             ->minValue(0),
 
                         Select::make('kondisi')
+                            ->placeholder('Pilih kondisi barang')
                             ->options([
                                 'baik' => 'Baik',
                                 'rusak' => 'Rusak',
@@ -68,6 +72,7 @@ class InventarisResource extends Resource
                             ->required(),
 
                         Select::make('status')
+                            ->placeholder('Pilih status barang')
                             ->options([
                                 'aktif' => 'Aktif',
                                 'tidak aktif' => 'Tidak Aktif',
@@ -81,15 +86,19 @@ class InventarisResource extends Resource
                 Section::make('Lokasi & Sumber')
                     ->schema([
                         TextInput::make('lokasi')
+                            ->placeholder('Masukkan lokasi barang')
                             ->maxLength(255),
 
                         TextInput::make('sumber_dana')
+                            ->placeholder('Masukkan sumber dana barang')
                             ->maxLength(255),
 
                         DatePicker::make('tanggal_pembelian')
+                            ->placeholder('Pilih tanggal pembelian')
                             ->format('Y-m-d'),
 
                         DatePicker::make('tanggal_penjualan')
+                            ->placeholder('Pilih tanggal penjualan')
                             ->format('Y-m-d')
                             ->visible(fn(Get $get) => $get('kondisi') === 'dijual'),
                     ])->columns(2),
@@ -97,11 +106,13 @@ class InventarisResource extends Resource
                 Section::make('Informasi Tambahan')
                     ->schema([
                         FileUpload::make('gambar')
+                            ->placeholder('Pilih gambar barang')
                             ->image()
                             ->directory('inventaris')
                             ->visibility('public'),
 
                         Textarea::make('keterangan')
+                            ->placeholder('Masukkan keterangan barang')
                             ->maxLength(255)
                             ->columnSpanFull(),
                     ]),

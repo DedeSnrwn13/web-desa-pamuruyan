@@ -6,14 +6,12 @@ use App\Models\Kepengurusan;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
@@ -131,6 +129,7 @@ class KepengurusanResource extends Resource
                     ->schema([
                         FileUpload::make('foto')
                             ->label('Foto')
+                            ->placeholder('Pilih foto pengurus')
                             ->image()
                             ->imageEditor()
                             ->directory('pengurus')

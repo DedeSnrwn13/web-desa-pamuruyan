@@ -12,14 +12,10 @@ use Illuminate\Support\Str;
 use App\Models\KategoriBerita;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\KategoriBeritaResource\Pages;
-use App\Filament\Resources\KategoriBeritaResource\RelationManagers;
 
 class KategoriBeritaResource extends Resource
 {
@@ -52,11 +48,13 @@ class KategoriBeritaResource extends Resource
                                     $set('slug', Str::slug($state));
                                 }
                             })
+                            ->placeholder('Masukkan nama kategori')
                             ->minLength(3)
                             ->maxLength(150),
 
                         TextInput::make('slug')
                             ->required()
+                            ->placeholder('Masukkan slug kategori')
                             ->unique(KategoriBerita::class, 'slug', ignoreRecord: true)
                             ->maxLength(255)
                             ->disabled()

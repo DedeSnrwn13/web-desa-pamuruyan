@@ -69,7 +69,8 @@ class SuratFormFieldResource extends Resource
                                 'textarea' => 'Text Area',
                                 'number' => 'Number',
                                 'date' => 'Date',
-                                'select' => 'Select'
+                                'select' => 'Select',
+                                'file' => 'File'
                             ])
                             ->live()
                             ->required(),

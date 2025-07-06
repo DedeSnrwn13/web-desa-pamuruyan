@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,8 +12,7 @@ return new class extends Migration
     {
         Schema::create('surat_form_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jenis_surat_id')->constrained('jenis_surats')
-                ->cascadeOnDelete();
+            $table->foreignId('jenis_surat_id')->constrained('jenis_surats')->cascadeOnDelete();
             $table->string('nama_field');
             $table->string('label');
             $table->enum('tipe', ['text', 'textarea', 'number', 'date', 'select', 'file']);

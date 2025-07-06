@@ -200,7 +200,7 @@ class InventarisResource extends Resource
                 SelectFilter::make('status')
                     ->options([
                         'aktif' => 'Aktif',
-                        'tidak_aktif' => 'Tidak Aktif',
+                        'tidak aktif' => 'Tidak Aktif',
                         'diarsipkan' => 'Diarsipkan',
                         'dihapuskan' => 'Dihapuskan',
                     ]),

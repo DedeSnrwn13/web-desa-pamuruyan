@@ -17,10 +17,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Validation\Rules\Unique;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SuratFormFieldResource\Pages;
-use App\Filament\Resources\SuratFormFieldResource\RelationManagers;
 
 class SuratFormFieldResource extends Resource
 {
@@ -37,79 +34,80 @@ class SuratFormFieldResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Forms\Components\Section::make('Informasi Input')
             ->schema([
-                Select::make('jenis_surat_id')
-                    ->relationship('jenisSurat', 'nama')
-                    ->placeholder('Pilih jenis surat')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->live(),
+                Forms\Components\Section::make('Informasi Input')
+                    ->schema([
+                        Select::make('jenis_surat_id')
+                            ->relationship('jenisSurat', 'nama')
+                            ->placeholder('Pilih jenis surat')
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->live(),
 
-                TextInput::make('nama_field')
-                    ->placeholder('Masukkan nama input')
-                    ->required()
-                    ->maxLength(100)
-                    ->unique(
-                        table: 'surat_form_fields',
-                        column: 'nama_field',
-                        ignorable: fn($record) => $record,
-                        modifyRuleUsing: function (Unique $rule, Get $get) {
-                            return $rule->where('jenis_surat_id', $get('jenis_surat_id'));
-                        }
-                    ),
+                        TextInput::make('nama_field')
+                            ->placeholder('Masukkan nama input')
+                            ->required()
+                            ->maxLength(100)
+                            ->unique(
+                                table: 'surat_form_fields',
+                                column: 'nama_field',
+                                ignorable: fn($record) => $record,
+                                modifyRuleUsing: function (Unique $rule, Get $get) {
+                                    return $rule->where('jenis_surat_id', $get('jenis_surat_id'));
+                                }
+                            ),
 
-                TextInput::make('label')
-                    ->placeholder('Masukkan label input')
-                    ->required()
-                    ->maxLength(100),
+                        TextInput::make('label')
+                            ->placeholder('Masukkan label input')
+                            ->required()
+                            ->maxLength(100),
 
-                Select::make('tipe')
-                    ->placeholder('Pilih tipe input')
-                    ->options([
-                        'text' => 'Text',
-                        'textarea' => 'Text Area',
-                        'number' => 'Number',
-                        'date' => 'Date',
-                        'select' => 'Select'
+                        Select::make('tipe')
+                            ->placeholder('Pilih tipe input')
+                            ->options([
+                                'text' => 'Text',
+                                'textarea' => 'Text Area',
+                                'number' => 'Number',
+                                'date' => 'Date',
+                                'select' => 'Select'
+                            ])
+                            ->live()
+                            ->required(),
+
+                        Textarea::make('opsi')
+                            ->helperText('Masukkan opsi dipisahkan dengan koma (,) jika tipe adalah select')
+                            ->visible(fn(Get $get) => $get('tipe') === 'select'),
+
+                        Toggle::make('is_required')
+                            ->inline(false)
+                            ->label('Wajib diisi')
+                            ->onIcon('heroicon-o-check-circle')
+                            ->offIcon('heroicon-o-x-circle')
+                            ->onColor('success')
+                            ->offColor('danger')
+                            ->default(false),
+
+                        TextInput::make('urutan')
+                            ->placeholder('Masukkan urutan input')
+                            ->numeric()
+                            ->required()
+                            ->unique(
+                                table: 'surat_form_fields',
+                                column: 'urutan',
+                                ignorable: fn($record) => $record,
+                                modifyRuleUsing: function (Unique $rule, Get $get) {
+                                    return $rule->where('jenis_surat_id', $get('jenis_surat_id'));
+                                }
+                            ),
+
+                        TextInput::make('group')
+                            ->placeholder('Masukkan group input')
+                            ->maxLength(150)
+                            ->nullable(),
                     ])
-                    ->required(),
-
-                Textarea::make('opsi')
-                    ->helperText('Masukkan opsi dipisahkan dengan koma (,) jika tipe adalah select')
-                    ->visible(fn(Forms\Get $get) => $get('tipe') === 'select'),
-
-                Toggle::make('is_required')
-                    ->inline(false)
-                    ->label('Wajib diisi')
-                    ->onIcon('heroicon-o-check-circle')
-                    ->offIcon('heroicon-o-x-circle')
-                    ->onColor('success')
-                    ->offColor('danger')
-                    ->default(false),
-
-                TextInput::make('urutan')
-                    ->placeholder('Masukkan urutan input')
-                    ->numeric()
-                    ->required()
-                    ->unique(
-                        table: 'surat_form_fields',
-                        column: 'urutan',
-                        ignorable: fn($record) => $record,
-                        modifyRuleUsing: function (Unique $rule, Get $get) {
-                            return $rule->where('jenis_surat_id', $get('jenis_surat_id'));
-                        }
-                    ),
-
-                TextInput::make('group')
-                    ->placeholder('Masukkan group input')
-                    ->maxLength(150)
-                    ->nullable(),
-            ])
-            ->columns(2),
-        ]);
+                    ->columns(2),
+            ]);
     }
 
     public static function table(Table $table): Table

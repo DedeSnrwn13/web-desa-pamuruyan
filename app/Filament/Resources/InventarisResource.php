@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms\Form;
 use App\Models\Inventaris;
+use Filament\Forms\Get;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
@@ -16,7 +17,6 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -64,6 +64,7 @@ class InventarisResource extends Resource
                                 'dipinjam' => 'Dipinjam',
                                 'dijual' => 'Dijual',
                             ])
+                            ->live()
                             ->required(),
 
                         Select::make('status')
@@ -90,7 +91,7 @@ class InventarisResource extends Resource
 
                         DatePicker::make('tanggal_penjualan')
                             ->format('Y-m-d')
-                            ->visible(fn (callable $get) => $get('kondisi') === 'dijual'),
+                            ->visible(fn(Get $get) => $get('kondisi') === 'dijual'),
                     ])->columns(2),
 
                 Section::make('Informasi Tambahan')
@@ -136,7 +137,7 @@ class InventarisResource extends Resource
 
                 TextColumn::make('kondisi')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'baik' => 'success',
                         'rusak' => 'danger',
                         'hilang' => 'gray',
@@ -144,7 +145,7 @@ class InventarisResource extends Resource
                         'dijual' => 'info',
                         default => 'primary'
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'baik' => 'Baik',
                         'rusak' => 'Rusak',
                         'hilang' => 'Hilang',
@@ -156,14 +157,14 @@ class InventarisResource extends Resource
 
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'aktif' => 'success',
                         'tidak aktif' => 'danger',
                         'diarsipkan' => 'warning',
                         'dihapuskan' => 'gray',
                         default => 'primary'
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'aktif' => 'Aktif',
                         'tidak aktif' => 'Tidak Aktif',
                         'diarsipkan' => 'Diarsipkan',

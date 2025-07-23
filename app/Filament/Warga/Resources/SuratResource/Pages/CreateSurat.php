@@ -4,10 +4,11 @@ namespace App\Filament\Warga\Resources\SuratResource\Pages;
 
 use App\Models\Admin;
 use App\Models\JenisSurat;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Warga\Resources\SuratResource;
-use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Notifications\Actions\Action as NotificationAction;
+use Filament\Notifications\Notification as FilamentNotification;
 
 class CreateSurat extends CreateRecord
 {
@@ -22,7 +23,8 @@ class CreateSurat extends CreateRecord
             $jenisSurat = JenisSurat::where('kode', $kode)->first();
             if ($jenisSurat) {
                 $this->form->fill([
-                    'jenis_surat_id' => $jenisSurat->id
+                    'jenis_surat_id' => $jenisSurat->id,
+                    'warga_id' => Auth::guard('warga')->id()
                 ]);
             }
         }
@@ -33,6 +35,7 @@ class CreateSurat extends CreateRecord
         $formFields = $data['form_fields'] ?? [];
         unset($data['form_fields']);
 
+        $data['warga_id'] = Auth::guard('warga')->id();
         $data['status'] = 'menunggu';
         return $data;
     }

@@ -46,7 +46,7 @@ class SuratResource extends Resource
                     ->description('Silakan isi informasi surat yang akan diajukan')
                     ->schema([
                         Hidden::make('warga_id')
-                            ->default(fn() => Auth::id()),
+                            ->default(fn() => Auth::guard('warga')->id()),
 
                         Select::make('jenis_surat_id')
                             ->relationship('jenisSurat', 'nama')
@@ -481,6 +481,7 @@ class SuratResource extends Resource
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'menunggu' => 'warning',
+                        'ditinjau' => 'info',
                         'disetujui' => 'success',
                         'ditolak' => 'danger',
                     })
@@ -499,7 +500,7 @@ class SuratResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->modifyQueryUsing(
                 fn(Builder $query) => $query
-                    ->orderByRaw("FIELD(status, 'menunggu', 'disetujui', 'ditolak')")
+                    ->orderByRaw("FIELD(status, 'ditinjau', 'menunggu', 'disetujui', 'ditolak')")
                     ->orderBy('created_at', 'desc')
             )
             ->filters([

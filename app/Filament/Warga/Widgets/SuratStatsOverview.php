@@ -15,11 +15,15 @@ class SuratStatsOverview extends BaseWidget
             Stat::make('Total Surat', Surat::where('warga_id', auth()->id())->count())
                 ->description('Total surat yang diajukan')
                 ->descriptionIcon('heroicon-m-document-text')
-                ->color('info'),
+                ->color('gray'),
             Stat::make('Surat Pending', Surat::where('warga_id', auth()->id())->where('status', SuratStatus::MENUNGGU->value)->count())
                 ->description('Surat yang sedang diproses')
                 ->descriptionIcon('heroicon-m-clock')
                 ->color('warning'),
+            Stat::make('Surat Ditinjau', Surat::where('warga_id', auth()->id())->where('status', SuratStatus::DITINJAU->value)->count())
+                ->description('Surat yang sedang ditinjau')
+                ->descriptionIcon('heroicon-m-clock')
+                ->color('info'),
             Stat::make('Surat Selesai', Surat::where('warga_id', auth()->id())->where('status', SuratStatus::DISETUJUI->value)->count())
                 ->description('Surat yang sudah selesai')
                 ->descriptionIcon('heroicon-m-check-circle')
@@ -30,4 +34,4 @@ class SuratStatsOverview extends BaseWidget
                 ->color('danger'),
         ];
     }
-} 
+}

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
             $table->foreignId('warga_id')->constrained('wargas')->cascadeOnDelete();
             $table->foreignId('jenis_surat_id')->constrained('jenis_surats')->cascadeOnDelete();
-            $table->enum('status', ['menunggu', 'disetujui', 'ditolak']);
+            $table->enum('status', ['menunggu', 'ditinjau', 'disetujui', 'ditolak']);
             $table->string('keterangan_warga');
             $table->string('keterangan_admin')->nullable();
             $table->string('no_surat')->nullable();

@@ -2,9 +2,10 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\BarChartWidget;
-use Filament\Widgets\ChartWidget;
 use App\Models\Surat;
+use App\Enum\SuratStatus;
+use Filament\Widgets\ChartWidget;
+use Filament\Widgets\BarChartWidget;
 
 class SuratChart extends BarChartWidget
 {
@@ -19,15 +20,16 @@ class SuratChart extends BarChartWidget
     protected function getData(): array
     {
         return [
-            'labels' => ['Menunggu', 'Disetujui', 'Ditolak'],
+            'labels' => ['Menunggu', 'Ditinjau', 'Disetujui', 'Ditolak'],
             'datasets' => [
                 [
                     'label' => 'Jumlah Surat',
-                    'backgroundColor' => ['#facc15', '#22c55e', '#ef4444'],
+                    'backgroundColor' => ['#facc15', '#15CCFAFF', '#22c55e', '#ef4444'],
                     'data' => [
-                        Surat::where('status', 'menunggu')->count(),
-                        Surat::where('status', 'disetujui')->count(),
-                        Surat::where('status', 'ditolak')->count(),
+                        Surat::where('status', SuratStatus::MENUNGGU->value)->count(),
+                        Surat::where('status', SuratStatus::DITINJAU->value)->count(),
+                        Surat::where('status', SuratStatus::DISETUJUI->value)->count(),
+                        Surat::where('status', SuratStatus::DITOLAK->value)->count(),
                     ],
                 ],
             ],

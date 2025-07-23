@@ -14,9 +14,11 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SuratResource\Pages;
+use Filament\Notifications\Actions\Action as NotificationAction;
 
 class SuratResource extends Resource
 {
@@ -116,6 +118,7 @@ class SuratResource extends Resource
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'menunggu' => 'warning',
+                        'ditinjau' => 'info',
                         'disetujui' => 'success',
                         'ditolak' => 'danger',
                     })
@@ -133,13 +136,14 @@ class SuratResource extends Resource
             ->defaultSort('created_at', 'asc')
             ->modifyQueryUsing(
                 fn(Builder $query) => $query
-                    ->orderByRaw("FIELD(status, 'menunggu', 'disetujui', 'ditolak')")
+                    ->orderByRaw("FIELD(status, 'ditinjau', 'menunggu', 'disetujui', 'ditolak')")
                     ->orderBy('created_at', direction: 'asc')
             )
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'menunggu' => 'Menunggu',
+                        'ditinjau' => 'Sedang Ditinjau',
                         'disetujui' => 'Disetujui',
                         'ditolak' => 'Ditolak'
                     ]),
@@ -151,11 +155,29 @@ class SuratResource extends Resource
                     ->hidden(fn($record) => $record?->status !== 'menunggu'),
 
                 Tables\Actions\Action::make('tinjau')
-                    ->label('Tinjau')
+                    ->label(fn($record) => $record->status === SuratStatus::DITINJAU->value ? 'Sedang Ditinjau' : 'Tinjau')
                     ->icon('heroicon-o-eye')
-                    ->color('warning')
+                    ->color(fn($record) => $record->status === SuratStatus::DITINJAU->value ? 'info' : 'warning')
                     ->url(fn(Surat $record): string => static::getUrl('tinjau', ['record' => $record]))
-                    ->visible(fn($record) => $record->status === 'menunggu'),
+                    ->visible(function ($record) {
+                        // Jika surat ini sedang ditinjau, tampilkan button
+                        if ($record->status === SuratStatus::DITINJAU->value) {
+                            return true;
+                        }
+
+                        // Jika surat ini menunggu
+                        if ($record->status === SuratStatus::MENUNGGU->value) {
+                            // Ambil ID surat menunggu paling awal
+                            $firstWaitingId = Surat::where('status', SuratStatus::MENUNGGU->value)
+                                ->orderBy('created_at', 'asc')
+                                ->value('id');
+
+                            // Tampilkan button hanya jika ini adalah surat menunggu paling awal
+                            return $record->id === $firstWaitingId;
+                        }
+
+                        return false;
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

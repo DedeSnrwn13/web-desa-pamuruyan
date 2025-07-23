@@ -44,8 +44,30 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
     {
         $this->record = $this->resolveRecord($record);
 
-        if ($this->record->status !== SuratStatus::MENUNGGU->value) {
+        // Hanya bisa mengakses jika status menunggu atau ditinjau
+        if (!in_array($this->record->status, [SuratStatus::MENUNGGU->value, SuratStatus::DITINJAU->value])) {
             redirect()->to($this->getResource()::getUrl('index'));
+        }
+
+        if ($this->record->status === SuratStatus::MENUNGGU->value) {
+            $this->record->update([
+                'status' => SuratStatus::DITINJAU->value,
+                'admin_id' => Auth::guard('admin')->id()
+            ]);
+
+            // Kirim notifikasi ke warga
+            Notification::make()
+                ->title('Status Surat Diperbarui')
+                ->info()
+                ->body("Surat {$this->record->jenisSurat->nama} sedang dalam peninjauan.")
+                ->actions([
+                    NotificationAction::make('view')
+                        ->label('Lihat')
+                        ->url(fn(): string => route('filament.warga.resources.surats.view', $record))
+                        ->button()
+                        ->markAsRead()
+                ])
+                ->sendToDatabase($this->record->warga);
         }
 
         $this->record->load(['suratFieldValues.suratFormField']);

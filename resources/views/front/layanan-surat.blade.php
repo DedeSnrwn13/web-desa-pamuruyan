@@ -1,8 +1,8 @@
-@extends('layouts.main')
+@extends("layouts.main")
 
-@section('title', 'Pelayanan Surat')
+@section("title", "Pelayanan Surat")
 
-@section('content')
+@section("content")
     <div class="bg-white">
         <div class="relative isolate px-6 pt-14 lg:px-8">
             <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
@@ -34,9 +34,9 @@
                                 <h3 class="text-lg font-semibold leading-8 text-gray-900">{{ $surat->nama }}</h3>
                                 <p class="mt-2 text-sm leading-6 text-gray-600">Kode: {{ $surat->kode }}</p>
                             </div>
-                            <a href="{{ auth()->check() ? route('filament.warga.resources.surats.create', ['kode-surat' => $surat->kode]) : route('filament.warga.auth.login') }}"
+                            <a href="{{ auth()->guard("warga")->check() ? route("filament.warga.resources.surats.create", ["kode-surat" => $surat->kode]) : route("filament.warga.auth.login") }}"
                                 class="mt-auto inline-flex items-center justify-center rounded-md bg-lime-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600">
-                                {{ auth()->check() ? 'Ajukan Surat' : 'Login untuk Ajukan' }}
+                                {{ auth()->guard("warga")->check() ? "Ajukan Surat" : "Login untuk Ajukan" }}
                             </a>
                         </div>
                     @endforeach
@@ -46,42 +46,54 @@
                     <div class="mt-10">
                         <div class="flex items-center justify-center gap-2">
                             @if ($jenisSurat->onFirstPage())
-                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 text-gray-300 ring-1 ring-inset ring-gray-200">
+                                <span
+                                    class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 text-gray-300 ring-1 ring-inset ring-gray-200">
                                     <span class="sr-only">Previous</span>
                                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd"
+                                            d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                                            clip-rule="evenodd" />
                                     </svg>
                                 </span>
                             @else
-                                <a href="{{ $jenisSurat->previousPageUrl() }}" class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600">
+                                <a href="{{ $jenisSurat->previousPageUrl() }}"
+                                    class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600">
                                     <span class="sr-only">Previous</span>
                                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd"
+                                            d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                                            clip-rule="evenodd" />
                                     </svg>
                                 </a>
                             @endif
 
                             @foreach ($jenisSurat->getUrlRange(1, $jenisSurat->lastPage()) as $page => $url)
-                                <a href="{{ $url }}" 
-                                   class="inline-flex h-10 min-w-10 items-center justify-center rounded-lg px-4 {{ $page == $jenisSurat->currentPage() 
-                                   ? 'bg-lime-600 text-white hover:bg-lime-500 focus:outline-offset-0' 
-                                   : 'bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600' }}">
+                                <a href="{{ $url }}"
+                                    class="inline-flex h-10 min-w-10 items-center justify-center rounded-lg px-4 {{ $page == $jenisSurat->currentPage()
+                                        ? "bg-lime-600 text-white hover:bg-lime-500 focus:outline-offset-0"
+                                        : "bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600" }}">
                                     {{ $page }}
                                 </a>
                             @endforeach
 
                             @if ($jenisSurat->hasMorePages())
-                                <a href="{{ $jenisSurat->nextPageUrl() }}" class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600">
+                                <a href="{{ $jenisSurat->nextPageUrl() }}"
+                                    class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600">
                                     <span class="sr-only">Next</span>
                                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd"
+                                            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                                            clip-rule="evenodd" />
                                     </svg>
                                 </a>
                             @else
-                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 text-gray-300 ring-1 ring-inset ring-gray-200">
+                                <span
+                                    class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 text-gray-300 ring-1 ring-inset ring-gray-200">
                                     <span class="sr-only">Next</span>
                                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd"
+                                            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                                            clip-rule="evenodd" />
                                     </svg>
                                 </span>
                             @endif

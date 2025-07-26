@@ -437,7 +437,14 @@ class SuratResource extends Resource
                                     'file' => FileUpload::make("form_fields.{$field->id}")
                                         ->label($field->label)
                                         ->placeholder("Unggah {$field->label}")
-                                        ->required($field->is_required),
+                                        ->required($field->is_required)
+                                        ->directory("lampiran-surat/temp")
+                                        ->visibility('public')
+                                        ->preserveFilenames()
+                                        ->downloadable()
+                                        ->previewable()
+                                        ->acceptedFileTypes(['image/*', 'application/pdf'])
+                                        ->maxSize(5120),
                                     default => null,
                                 };
                             }
@@ -497,11 +504,11 @@ class SuratResource extends Resource
                     ->label('Ditinjau oleh')
                     ->placeholder('-'),
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('created_at', 'asc')
             ->modifyQueryUsing(
                 fn(Builder $query) => $query
                     ->orderByRaw("FIELD(status, 'ditinjau', 'menunggu', 'disetujui', 'ditolak')")
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('created_at', 'asc')
             )
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

@@ -16,7 +16,8 @@ class SuratFieldValue extends Model
         'text_value',
         'number_value',
         'date_value',
-        'select_value'
+        'select_value',
+        'file_value'
     ];
 
     protected $casts = [
@@ -44,6 +45,7 @@ class SuratFieldValue extends Model
                     'number' => $this->number_value,
                     'date' => $this->date_value,
                     'select' => $this->select_value,
+                    'file' => $this->file_value ? [$this->file_value] : null, // Return as array for Filament FileUpload
                     default => null
                 };
             },
@@ -55,6 +57,7 @@ class SuratFieldValue extends Model
                     'number' => ['number_value' => $value],
                     'date' => ['date_value' => $value],
                     'select' => ['select_value' => $value],
+                    'file' => ['file_value' => is_array($value) ? $value[0] : $value],
                     default => []
                 };
             }

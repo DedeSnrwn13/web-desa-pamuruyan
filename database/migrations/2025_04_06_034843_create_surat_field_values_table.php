@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -19,6 +18,7 @@ return new class extends Migration
             $table->decimal('number_value', 15, 2)->nullable();
             $table->date('date_value')->nullable();
             $table->string('select_value')->nullable();
+            $table->string('file_value')->nullable();
             $table->timestamps();
 
             $table->unique(['surat_id', 'surat_form_field_id']);

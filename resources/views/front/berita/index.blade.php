@@ -1,12 +1,12 @@
-@extends('layouts.main')
+@extends("layouts.main")
 
-@section('title', 'Berita')
+@section("title", "Berita")
 
 @php
     use App\Helpers\ImageHelper;
 @endphp
 
-@section('content')
+@section("content")
     <div class="bg-white">
         <div class="relative isolate px-6 pt-14 lg:px-8">
             <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="p-6">
                                     <div class="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                                        <span>{{ $berita->created_at->format('d M Y') }}</span>
+                                        <span>{{ $berita->created_at->format("d M Y") }}</span>
                                         <span>•</span>
                                         <span>{{ $berita->kategoriBerita->nama }}</span>
                                     </div>
@@ -45,8 +45,8 @@
                                         <div
                                             class="w-8 h-8 rounded-full overflow-hidden bg-lime-600 flex items-center justify-center text-white text-sm font-semibold">
                                             @php
-                                                $nama = explode(' ', $berita->admin->name);
-                                                $inisial = '';
+                                                $nama = explode(" ", $berita->admin->name);
+                                                $inisial = "";
                                                 if (count($nama) >= 2) {
                                                     foreach ($nama as $kata) {
                                                         $inisial .= strtoupper(substr($kata, 0, 1));
@@ -63,7 +63,7 @@
                                             <span class="text-xs text-gray-500">{{ $berita->admin->jabatan }}</span>
                                         </div>
                                     </div>
-                                    <a href="{{ route('front.berita.detail', $berita->slug) }}"
+                                    <a href="{{ route("front.berita.detail", $berita->slug) }}"
                                         class="inline-flex items-center justify-center rounded-md bg-lime-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600 w-full">
                                         Baca Selengkapnya
                                     </a>
@@ -110,8 +110,8 @@
                                 @foreach ($beritas->getUrlRange(1, $beritas->lastPage()) as $page => $url)
                                     <a href="{{ $url }}"
                                         class="inline-flex h-10 min-w-10 items-center justify-center rounded-lg px-4 {{ $page == $beritas->currentPage()
-                                            ? 'bg-lime-600 text-white hover:bg-lime-500 focus:outline-offset-0'
-                                            : 'bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600' }}">
+                                            ? "bg-lime-600 text-white hover:bg-lime-500 focus:outline-offset-0"
+                                            : "bg-white text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-lime-50 hover:text-lime-600" }}">
                                         {{ $page }}
                                     </a>
                                 @endforeach

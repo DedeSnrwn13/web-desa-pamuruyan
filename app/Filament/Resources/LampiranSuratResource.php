@@ -30,10 +30,12 @@ class LampiranSuratResource extends Resource
                 Forms\Components\Section::make('Informasi Lampiran')
                     ->schema([
                         Forms\Components\Select::make('surat_id')
-                            ->relationship('surat', 'no_surat')
+                            ->relationship('surat', 'id')
                             ->required()
                             ->searchable()
                             ->preload()
+                            ->disabled()
+                            ->getOptionLabelFromRecordUsing(fn($record) => 'ID Surat: ' . $record->id)
                             ->placeholder('Pilih surat'),
 
                         Forms\Components\TextInput::make('nama_file')
@@ -48,6 +50,7 @@ class LampiranSuratResource extends Resource
                             ->directory('lampiran-surat')
                             ->preserveFilenames()
                             ->downloadable()
+                            ->previewable()
                             ->uploadingMessage('Uploading lampiran...')
                             ->directory('lampiran-surat')
                             ->getUploadedFileNameForStorageUsing(
@@ -69,8 +72,8 @@ class LampiranSuratResource extends Resource
                     ->rowIndex(),
 
                 Tables\Columns\TextColumn::make('surat.no_surat')
-                    ->searchable()
-                    ->sortable(),
+                    ->label('No Surat')
+                    ->default('-'),
 
                 Tables\Columns\TextColumn::make('nama_file')
                     ->searchable(),
@@ -78,14 +81,20 @@ class LampiranSuratResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat pada')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui pada')
+                    ->dateTime()
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->hidden(fn($record) => $record->surat->status !== 'menunggu'),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->hidden(fn($record) => $record->surat->status !== 'menunggu'),
             ])
@@ -107,8 +116,7 @@ class LampiranSuratResource extends Resource
     {
         return [
             'index' => Pages\ListLampiranSurats::route('/'),
-            'create' => Pages\CreateLampiranSurat::route('/create'),
-            'edit' => Pages\EditLampiranSurat::route('/{record}/edit'),
+            'view' => Pages\ViewLampiranSurat::route('/{record}'),
         ];
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\LampiranSuratResource\Pages;
 
 use App\Filament\Resources\LampiranSuratResource;
-use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class CreateLampiranSurat extends CreateRecord
+class ViewLampiranSurat extends ViewRecord
 {
     protected static string $resource = LampiranSuratResource::class;
 }

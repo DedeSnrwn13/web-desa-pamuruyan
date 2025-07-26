@@ -1,8 +1,8 @@
-@extends('layouts.main')
+@extends("layouts.main")
 
-@section('title', 'Informasi APBDes')
+@section("title", "Informasi APBDes")
 
-@push('styles')
+@push("styles")
     <style>
         select {
             -webkit-appearance: none;
@@ -18,7 +18,7 @@
     </style>
 @endpush
 
-@section('content')
+@section("content")
     <div class="bg-white">
         <div class="relative isolate px-6 pt-14 lg:px-8">
             <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
@@ -36,13 +36,13 @@
 
                     <!-- Year Filter -->
                     <div class="mt-8">
-                        <form id="tahunForm" action="{{ route('front.apbdes') }}" method="GET"
+                        <form id="tahunForm" action="{{ route("front.apbdes") }}" method="GET"
                             class="flex items-center justify-center space-x-4">
                             <label for="tahun" class="text-sm font-medium text-gray-700">Tahun Anggaran:</label>
                             <select name="tahun" id="tahun"
                                 class="block w-32 rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-lime-600 sm:text-sm sm:leading-6 cursor-pointer hover:bg-gray-50">
                                 @forelse($tahunTersedia as $tahun)
-                                    <option value="{{ $tahun }}" {{ $tahun == $tahunAnggaran ? 'selected' : '' }}>
+                                    <option value="{{ $tahun }}" {{ $tahun == $tahunAnggaran ? "selected" : "" }}>
                                         {{ $tahun }}
                                     </option>
                                 @empty
@@ -74,7 +74,7 @@
                         </dt>
                         <dd class="ml-16 flex items-baseline pb-6">
                             <p class="text-2xl font-semibold text-gray-900">Rp
-                                {{ number_format($totalPendapatan, 0, ',', '.') }}</p>
+                                {{ number_format($totalPendapatan, 0, ",", ".") }}</p>
                         </dd>
                     </div>
 
@@ -93,7 +93,7 @@
                         </dt>
                         <dd class="ml-16 flex items-baseline pb-6">
                             <p class="text-2xl font-semibold text-gray-900">Rp
-                                {{ number_format($totalBelanja, 0, ',', '.') }}</p>
+                                {{ number_format($totalBelanja, 0, ",", ".") }}</p>
                         </dd>
                     </div>
 
@@ -112,7 +112,7 @@
                         </dt>
                         <dd class="ml-16 flex items-baseline pb-6">
                             <p class="text-2xl font-semibold text-gray-900">Rp
-                                {{ number_format($totalPembiayaan, 0, ',', '.') }}</p>
+                                {{ number_format($totalPembiayaan, 0, ",", ".") }}</p>
                         </dd>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                                         class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors duration-150">
                                         <span class="text-sm text-gray-600">{{ $sumber->sumber_dana }}</span>
                                         <span class="text-sm font-medium text-gray-900">Rp
-                                            {{ number_format($sumber->total, 0, ',', '.') }}</span>
+                                            {{ number_format($sumber->total, 0, ",", ".") }}</span>
                                     </div>
                                 @empty
                                     <p class="text-sm text-gray-500 text-center py-4">Belum ada data sumber pendapatan</p>
@@ -150,7 +150,7 @@
                                         class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors duration-150">
                                         <span class="text-sm text-gray-600">{{ $belanja->sub_kategori }}</span>
                                         <span class="text-sm font-medium text-gray-900">Rp
-                                            {{ number_format($belanja->total, 0, ',', '.') }}</span>
+                                            {{ number_format($belanja->total, 0, ",", ".") }}</span>
                                     </div>
                                 @empty
                                     <p class="text-sm text-gray-500 text-center py-4">Belum ada data jenis belanja</p>
@@ -172,7 +172,7 @@
                                         class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors duration-150">
                                         <span class="text-sm text-gray-600">{{ $pembiayaan->sub_kategori }}</span>
                                         <span class="text-sm font-medium text-gray-900">Rp
-                                            {{ number_format($pembiayaan->total, 0, ',', '.') }}</span>
+                                            {{ number_format($pembiayaan->total, 0, ",", ".") }}</span>
                                     </div>
                                 @empty
                                     <p class="text-sm text-gray-500 text-center py-4">Belum ada data pembiayaan</p>
@@ -221,9 +221,9 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {{ $program->sub_kategori }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
-                                                {{ number_format($program->pagu_anggaran, 0, ',', '.') }}</td>
+                                                {{ number_format($program->pagu_anggaran, 0, ",", ".") }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
-                                                {{ number_format($program->realisasi_anggaran, 0, ',', '.') }}</td>
+                                                {{ number_format($program->realisasi_anggaran, 0, ",", ".") }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -236,14 +236,14 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 @switch($program->status_realisasi)
-                                                    @case('Selesai')
+                                                    @case("Selesai")
                                                         <span
                                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                             Selesai
                                                         </span>
                                                     @break
 
-                                                    @case('Sedang Berjalan')
+                                                    @case("Sedang Berjalan")
                                                         <span
                                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                             Sedang Berjalan
@@ -305,9 +305,9 @@
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {{ $program->sub_kategori }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
-                                                    {{ number_format($program->pagu_anggaran, 0, ',', '.') }}</td>
+                                                    {{ number_format($program->pagu_anggaran, 0, ",", ".") }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
-                                                    {{ number_format($program->realisasi_anggaran, 0, ',', '.') }}</td>
+                                                    {{ number_format($program->realisasi_anggaran, 0, ",", ".") }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
                                                         <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -320,14 +320,14 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     @switch($program->status_realisasi)
-                                                        @case('Selesai')
+                                                        @case("Selesai")
                                                             <span
                                                                 class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                                 Selesai
                                                             </span>
                                                         @break
 
-                                                        @case('Sedang Berjalan')
+                                                        @case("Sedang Berjalan")
                                                             <span
                                                                 class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                                 Sedang Berjalan
@@ -389,9 +389,9 @@
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         {{ $program->sub_kategori }}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
-                                                        {{ number_format($program->pagu_anggaran, 0, ',', '.') }}</td>
+                                                        {{ number_format($program->pagu_anggaran, 0, ",", ".") }}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
-                                                        {{ number_format($program->realisasi_anggaran, 0, ',', '.') }}</td>
+                                                        {{ number_format($program->realisasi_anggaran, 0, ",", ".") }}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
                                                         <div class="flex items-center">
                                                             <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -404,14 +404,14 @@
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
                                                         @switch($program->status_realisasi)
-                                                            @case('Selesai')
+                                                            @case("Selesai")
                                                                 <span
                                                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                                     Selesai
                                                                 </span>
                                                             @break
 
-                                                            @case('Sedang Berjalan')
+                                                            @case("Sedang Berjalan")
                                                                 <span
                                                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                                     Sedang Berjalan
@@ -469,7 +469,7 @@
                 </div>
             @endsection
 
-            @push('scripts')
+            @push("scripts")
                 <script>
                     // Backup script jika onchange pada select tidak berfungsi
                     document.getElementById('tahun').addEventListener('change', function() {

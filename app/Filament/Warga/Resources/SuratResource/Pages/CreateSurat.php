@@ -3,6 +3,7 @@
 namespace App\Filament\Warga\Resources\SuratResource\Pages;
 
 use App\Models\Admin;
+use App\Enum\SuratStatus;
 use App\Models\JenisSurat;
 use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\CreateRecord;
@@ -36,13 +37,30 @@ class CreateSurat extends CreateRecord
         unset($data['form_fields']);
 
         $data['warga_id'] = Auth::guard('warga')->id();
-        $data['status'] = 'menunggu';
+        $data['status'] = SuratStatus::MENUNGGU->value;
         return $data;
     }
 
     protected function afterCreate(): void
     {
+        // Get form fields data
         $formFields = $this->data['form_fields'] ?? [];
+
+        // Get the jenis surat to access form field definitions
+        $jenisSurat = $this->record->jenisSurat;
+        $formFieldDefinitions = $jenisSurat->suratFormFields()->get();
+
+        // Process each form field
+        foreach ($formFields as $fieldId => $value) {
+            if (empty($value))
+                continue;
+
+            $fieldDefinition = $formFieldDefinitions->firstWhere('id', $fieldId);
+            if (!$fieldDefinition)
+                continue;
+        }
+
+        // Save all form field values
         $this->record->saveFormFieldValues($formFields);
 
         // Send notification to all admins

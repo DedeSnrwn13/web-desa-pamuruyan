@@ -1,12 +1,12 @@
-@extends('layouts.main')
+@extends("layouts.main")
 
-@section('title', 'Beranda')
+@section("title", "Beranda")
 
 @php
     use App\Helpers\ImageHelper;
 @endphp
 
-@section('content')
+@section("content")
     <!-- Hero Section -->
     <section class="relative text-white bg-lime-600">
         <div class="absolute inset-0 bg-gradient-to-r from-lime-800 to-lime-600 opacity-90"></div>
@@ -16,10 +16,10 @@
                 <p class="mb-8 text-lg opacity-90 md:text-xl">Mewujudkan desa yang mandiri, sejahtera dan berbudaya
                     melalui pelayanan prima dan pemberdayaan masyarakat.</p>
                 <div class="flex flex-wrap gap-4">
-                    <a href="{{ route('front.layanan-surat') }}"
+                    <a href="{{ route("front.layanan-surat") }}"
                         class="px-6 py-3 font-medium text-lime-600 bg-white rounded-md hover:bg-lime-50">Layanan
                         Online</a>
-                    <a href="{{ route('front.berita.index') }}"
+                    <a href="{{ route("front.berita.index") }}"
                         class="px-6 py-3 font-medium text-white bg-transparent rounded-md border-2 border-white hover:bg-white hover:text-lime-600">Berita
                         Terkini</a>
                 </div>
@@ -32,7 +32,7 @@
         <div class="container mx-auto">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 md:text-3xl">Berita Terbaru</h2>
-                <a href="{{ route('front.berita.index') }}" class="flex items-center text-lime-600 hover:text-lime-700">
+                <a href="{{ route("front.berita.index") }}" class="flex items-center text-lime-600 hover:text-lime-700">
                     Lihat Semua
                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-5 h-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -45,13 +45,13 @@
                 @forelse ($beritaTerbaru as $berita)
                     <div
                         class="overflow-hidden bg-white rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
-                        <a href="{{ route('front.berita.detail', $berita->slug) }}">
+                        <a href="{{ route("front.berita.detail", $berita->slug) }}">
                             <img src="{{ ImageHelper::getImage($berita->thumbnail, $berita->judul) }}"
                                 alt="{{ $berita->judul }}" class="object-cover w-full h-48">
                             <div class="p-5">
                                 <div class="flex items-center mb-2">
                                     <span
-                                        class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($berita->tanggal_post)->isoFormat('D MMM Y') }}</span>
+                                        class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($berita->tanggal_post)->isoFormat("D MMM Y") }}</span>
                                     <span class="mx-2 text-gray-300">|</span>
                                     <span
                                         class="px-2 py-1 text-xs text-lime-600 bg-lime-100 rounded">{{ $berita->kategoriBerita->nama }}</span>
@@ -59,7 +59,7 @@
                                 <h3 class="mb-2 text-lg font-semibold line-clamp-2">{{ $berita->judul }}</h3>
                                 <p class="mb-4 text-sm text-gray-600 line-clamp-3">
                                     {{ Str::limit(strip_tags($berita->isi), 120) }}</p>
-                                <a href="{{ route('front.berita.detail', $berita->slug) }}"
+                                <a href="{{ route("front.berita.detail", $berita->slug) }}"
                                     class="font-medium text-lime-600 hover:text-lime-700">Baca Selengkapnya</a>
                             </div>
                         </a>
@@ -85,81 +85,93 @@
             </div>
 
             <!-- Kepala Desa -->
-            @if($kepalaDesa)
-            <div class="mb-12">
-                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Kepala Desa</h3>
-                <div class="flex justify-center">
-                    <div class="text-center w-64">
-                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-600 shadow-md">
-                            <img src="{{ ImageHelper::getImage($kepalaDesa->foto, 'Foto Kepala Desa') }}"
-                                alt="Foto {{ $kepalaDesa->nama }}" class="object-cover w-full h-full">
+            @if ($kepalaDesa)
+                <div class="mb-12">
+                    <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Kepala Desa</h3>
+                    <div class="flex justify-center">
+                        <div class="text-center w-64">
+                            <div
+                                class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-600 shadow-md">
+                                <img src="{{ ImageHelper::getImage($kepalaDesa->foto, "Foto Kepala Desa") }}"
+                                    alt="Foto {{ $kepalaDesa->nama }}" class="object-cover w-full h-full">
+                            </div>
+                            <h3 class="text-xl font-semibold">{{ $kepalaDesa->nama }}</h3>
+                            <p class="mb-2 font-medium text-lime-600">{{ $kepalaDesa->jabatan }}</p>
+                            <p class="text-sm text-gray-600">Masa Jabatan:
+                                {{ \Carbon\Carbon::parse($kepalaDesa->masa_jabatan_mulai)->format("Y") }} -
+                                {{ \Carbon\Carbon::parse($kepalaDesa->masa_jabatan_selesai)->format("Y") }}</p>
                         </div>
-                        <h3 class="text-xl font-semibold">{{ $kepalaDesa->nama }}</h3>
-                        <p class="mb-2 font-medium text-lime-600">{{ $kepalaDesa->jabatan }}</p>
-                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($kepalaDesa->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($kepalaDesa->masa_jabatan_selesai)->format('Y') }}</p>
                     </div>
                 </div>
-            </div>
             @endif
 
             <!-- Sekretariat Desa -->
-            @if($sekretariatDesa && $sekretariatDesa->count() > 0)
-            <div class="mb-12">
-                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Sekretariat Desa</h3>
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    @foreach($sekretariatDesa as $pengurus)
-                    <div class="text-center">
-                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
-                            <img src="{{ ImageHelper::getImage($pengurus->foto, 'Foto Pengurus') }}"
-                                alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
-                        </div>
-                        <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
-                        <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
-                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format('Y') }}</p>
+            @if ($sekretariatDesa && $sekretariatDesa->count() > 0)
+                <div class="mb-12">
+                    <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Sekretariat Desa</h3>
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                        @foreach ($sekretariatDesa as $pengurus)
+                            <div class="text-center">
+                                <div
+                                    class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
+                                    <img src="{{ ImageHelper::getImage($pengurus->foto, "Foto Pengurus") }}"
+                                        alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
+                                </div>
+                                <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
+                                <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
+                                <p class="text-sm text-gray-600">Masa Jabatan:
+                                    {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format("Y") }} -
+                                    {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format("Y") }}</p>
+                            </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
-            </div>
             @endif
 
             <!-- Pelaksana Teknis -->
-            @if($pelaksanaTeknis && $pelaksanaTeknis->count() > 0)
-            <div class="mb-12">
-                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Pelaksana Teknis</h3>
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    @foreach($pelaksanaTeknis as $pengurus)
-                    <div class="text-center">
-                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
-                            <img src="{{ ImageHelper::getImage($pengurus->foto, 'Foto Pengurus') }}"
-                                alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
-                        </div>
-                        <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
-                        <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
-                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format('Y') }}</p>
+            @if ($pelaksanaTeknis && $pelaksanaTeknis->count() > 0)
+                <div class="mb-12">
+                    <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Pelaksana Teknis</h3>
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                        @foreach ($pelaksanaTeknis as $pengurus)
+                            <div class="text-center">
+                                <div
+                                    class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
+                                    <img src="{{ ImageHelper::getImage($pengurus->foto, "Foto Pengurus") }}"
+                                        alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
+                                </div>
+                                <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
+                                <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
+                                <p class="text-sm text-gray-600">Masa Jabatan:
+                                    {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format("Y") }} -
+                                    {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format("Y") }}</p>
+                            </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
-            </div>
             @endif
 
             <!-- Kepala Dusun -->
-            @if($kepalaDusun && $kepalaDusun->count() > 0)
-            <div class="mb-12">
-                <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Kepala Dusun</h3>
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    @foreach($kepalaDusun as $pengurus)
-                    <div class="text-center">
-                        <div class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
-                            <img src="{{ ImageHelper::getImage($pengurus->foto, 'Foto Pengurus') }}"
-                                alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
-                        </div>
-                        <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
-                        <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
-                        <p class="text-sm text-gray-600">Masa Jabatan: {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format('Y') }} - {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format('Y') }}</p>
+            @if ($kepalaDusun && $kepalaDusun->count() > 0)
+                <div class="mb-12">
+                    <h3 class="mb-6 text-xl font-semibold text-center text-lime-700">Kepala Dusun</h3>
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                        @foreach ($kepalaDusun as $pengurus)
+                            <div class="text-center">
+                                <div
+                                    class="overflow-hidden relative mx-auto mb-4 w-40 h-40 rounded-full border-4 border-lime-500 shadow-md">
+                                    <img src="{{ ImageHelper::getImage($pengurus->foto, "Foto Pengurus") }}"
+                                        alt="Foto {{ $pengurus->nama }}" class="object-cover w-full h-full">
+                                </div>
+                                <h3 class="text-xl font-semibold">{{ $pengurus->nama }}</h3>
+                                <p class="mb-2 font-medium text-lime-600">{{ $pengurus->jabatan }}</p>
+                                <p class="text-sm text-gray-600">Masa Jabatan:
+                                    {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_mulai)->format("Y") }} -
+                                    {{ \Carbon\Carbon::parse($pengurus->masa_jabatan_selesai)->format("Y") }}</p>
+                            </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
-            </div>
             @endif
         </div>
     </section>
@@ -186,7 +198,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M5 13l4 4L19 7" />
                                         </svg>
-                                        <span>{{ $item['misi_item'] }}</span>
+                                        <span>{{ $item["misi_item"] }}</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -199,7 +211,7 @@
                 </div>
 
                 <div class="hidden lg:block">
-                    <img src="{{ ImageHelper::getImage($visiMisi->gambar, 'Ilustrasi Visi Misi') }}" alt="Visi Misi"
+                    <img src="{{ ImageHelper::getImage($visiMisi->gambar, "Ilustrasi Visi Misi") }}" alt="Visi Misi"
                         class="mx-auto w-full max-w-md">
                 </div>
             </div>
@@ -220,9 +232,9 @@
                                     <div class="flex items-start">
                                         <div class="flex-shrink-0 p-3 text-center text-lime-600 bg-lime-100 rounded-lg">
                                             <span
-                                                class="block text-lg font-bold">{{ \Carbon\Carbon::parse($jadwal->waktu)->format('d') }}</span>
+                                                class="block text-lg font-bold">{{ \Carbon\Carbon::parse($jadwal->waktu)->format("d") }}</span>
                                             <span
-                                                class="text-xs uppercase">{{ \Carbon\Carbon::parse($jadwal->waktu)->format('M Y') }}</span>
+                                                class="text-xs uppercase">{{ \Carbon\Carbon::parse($jadwal->waktu)->format("M Y") }}</span>
                                         </div>
                                         <div class="ml-4">
                                             <h4 class="text-lg font-semibold text-gray-800">{{ $jadwal->nama_kegiatan }}
@@ -233,7 +245,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
-                                                {{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }} WIB
+                                                {{ \Carbon\Carbon::parse($jadwal->waktu)->format("H:i") }} WIB
                                             </div>
                                             <div class="flex items-center mt-1 text-sm text-gray-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 w-4 h-4"
@@ -260,7 +272,7 @@
                             @endforelse
                         </ul>
                         <div class="mt-6 text-center">
-                            <a href="{{ route('front.jadwal-kegiatan') }}"
+                            <a href="{{ route("front.jadwal-kegiatan") }}"
                                 class="inline-block px-4 py-2 text-white bg-lime-600 rounded transition hover:bg-lime-700">Lihat
                                 Semua Jadwal</a>
                         </div>
@@ -295,7 +307,7 @@
                         </div>
 
                         <div class="mt-6 text-center">
-                            <a href="{{ route('front.layanan-surat') }}"
+                            <a href="{{ route("front.layanan-surat") }}"
                                 class="inline-block px-4 py-2 text-white bg-lime-600 rounded transition hover:bg-lime-700">Lihat
                                 Semua Layanan</a>
                         </div>
@@ -309,7 +321,7 @@
     <section class="px-4 py-16 bg-gray-50 md:px-8 lg:px-16">
         <div class="container mx-auto">
             <div class="mb-12 text-center">
-                <h2 class="mb-4 text-2xl font-bold text-gray-800 md:text-3xl">Transparansi APBDes {{ date('Y') }}</h2>
+                <h2 class="mb-4 text-2xl font-bold text-gray-800 md:text-3xl">Transparansi APBDes {{ date("Y") }}</h2>
                 <p class="mx-auto max-w-2xl text-gray-600">Informasi ringkas mengenai Anggaran Pendapatan dan Belanja Desa
                     sebagai bentuk transparansi dan akuntabilitas kepada masyarakat.</p>
             </div>
@@ -328,14 +340,14 @@
                         <h3 class="text-xl font-semibold text-gray-800">Pendapatan</h3>
                     </div>
                     <p class="mb-2 text-2xl font-bold text-green-600">Rp
-                        {{ number_format($totalPendapatan, 0, ',', '.') }}</p>
+                        {{ number_format($totalPendapatan, 0, ",", ".") }}</p>
                     <div class="mt-4">
                         @if (isset($sumberPendapatan))
                             @foreach ($sumberPendapatan as $sumber => $nominal)
                                 <div class="flex justify-between items-center mb-2 text-sm">
                                     <span class="text-gray-600">{{ $sumber }}</span>
                                     <span class="font-medium text-gray-800">Rp
-                                        {{ number_format($nominal, 0, ',', '.') }}</span>
+                                        {{ number_format($nominal, 0, ",", ".") }}</span>
                                 </div>
                             @endforeach
                         @else
@@ -359,14 +371,14 @@
                         <h3 class="text-xl font-semibold text-gray-800">Belanja</h3>
                     </div>
                     <p class="mb-2 text-2xl font-bold text-red-600">Rp
-                        {{ number_format($totalBelanja, 0, ',', '.') }}</p>
+                        {{ number_format($totalBelanja, 0, ",", ".") }}</p>
                     <div class="mt-4">
                         @if (isset($jenisbelanja))
                             @foreach ($jenisBelanja as $jenis => $nominal)
                                 <div class="flex justify-between items-center mb-2 text-sm">
                                     <span class="text-gray-600">{{ $jenis }}</span>
                                     <span class="font-medium text-gray-800">Rp
-                                        {{ number_format($nominal, 0, ',', '.') }}</span>
+                                        {{ number_format($nominal, 0, ",", ".") }}</span>
                                 </div>
                             @endforeach
                         @else
@@ -390,14 +402,14 @@
                         <h3 class="text-xl font-semibold text-gray-800">Pembiayaan</h3>
                     </div>
                     <p class="mb-2 text-2xl font-bold text-lime-600">Rp
-                        {{ number_format($totalPembiayaan, 0, ',', '.') }}</p>
+                        {{ number_format($totalPembiayaan, 0, ",", ".") }}</p>
                     <div class="mt-4">
                         @if (isset($jenisPembiayaan))
                             @foreach ($jenisPembiayaan as $jenis => $nominal)
                                 <div class="flex justify-between items-center mb-2 text-sm">
                                     <span class="text-gray-600">{{ $jenis }}</span>
                                     <span class="font-medium text-gray-800">Rp
-                                        {{ number_format($nominal, 0, ',', '.') }}</span>
+                                        {{ number_format($nominal, 0, ",", ".") }}</span>
                                 </div>
                             @endforeach
                         @else
@@ -410,7 +422,7 @@
             </div>
 
             <div class="mt-8 text-center">
-                <a href="{{ route('front.apbdes') }}"
+                <a href="{{ route("front.apbdes") }}"
                     class="inline-block px-6 py-3 text-white bg-lime-600 rounded-lg transition hover:bg-lime-700">Lihat
                     Detail APBDes</a>
             </div>

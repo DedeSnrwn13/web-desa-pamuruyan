@@ -29,6 +29,7 @@ use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action as NotificationAction;
+use Illuminate\Support\Facades\Storage;
 
 class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasActions
 {
@@ -319,11 +320,24 @@ class TinjauSurat extends Page implements HasForms, HasTable, HasInfolists, HasA
                             return $record->select_value;
                         } elseif ($record->suratFormField->tipe === 'number') {
                             return $record->number_value;
-                        } elseif ($record->suratFormField->tipe === 'text') {
+                        } elseif ($record->suratFormField->tipe === 'text' || $record->suratFormField->tipe === 'textarea') {
                             return $record->text_value;
+                        } elseif ($record->suratFormField->tipe === 'file') {
+                            if ($record->file_value) {
+                                $filePath = $record->file_value;
+                                if (Storage::exists($filePath)) {
+                                    return view('filament.components.file-link', [
+                                        'url' => Storage::url($filePath),
+                                        'label' => basename($filePath)
+                                    ]);
+                                }
+                                return 'File tidak ditemukan: ' . basename($filePath);
+                            }
+                            return null;
                         }
                         return $state;
-                    }),
+                    })
+                    ->html(),
                 TextColumn::make('suratFormField.group')
                     ->label('Grup')
                     ->sortable(),

@@ -698,6 +698,29 @@ class SuratResource extends Resource
 
     /**
      * Get validation rules based on field name
+     *
+     * Field yang ditangani berdasarkan kategori:
+     * 1. Data Surat & Administrasi: nomor_surat, tanggal_surat, keperluan, tujuan_skck, tujuan_domisili,
+     *    register_desa, tanggal_pernyataan, tanggal_kehilangan, nomor_perkara
+     * 2. Data Pejabat: nama_kepala_desa, ttd_kepala_desa, jabatan, nama_camat, nip_camat, ttd_camat,
+     *    nama_kepala_kua, nip_kepala_kua, ttd_kepala_kua, ttd_pemohon
+     * 3. Data Diri: nik, no_ktp, nama, nama_lengkap, tempat_lahir, tanggal_lahir, umur, jenis_kelamin,
+     *    status_perkawinan, agama, kebangsaan, kewarganegaraan, pekerjaan, pendidikan, alamat, dusun,
+     *    rt, rw, desa, kecamatan, nama_bank, penghasilan_perbulan, jenis_usaha
+     * 4. Data Orang Tua: nama_ayah, tempat_lahir_ayah, tanggal_lahir_ayah, pekerjaan_ayah, alamat_ayah,
+     *    nama_ibu, tempat_lahir_ibu, tanggal_lahir_ibu, pekerjaan_ibu, alamat_ibu
+     * 5. Data Keluarga: nama_anak, nik_anak, tempat_lahir_anak, tanggal_lahir_anak, jenis_kelamin_anak,
+     *    nama_sekolah, jurusan, nama_istri_almarhum, umur_istri, pekerjaan_istri
+     * 6. Data Kematian: nama_almarhum, nik_almarhum, jenis_kelamin_almarhum, dusun_almarhum, rt_almarhum,
+     *    rw_almarhum, desa_almarhum, kecamatan_almarhum, hari_meninggal, tanggal_meninggal, tempat_meninggal,
+     *    sebab_meninggal
+     * 7. Data Perbandingan: data_yang_benar, nama_kk, nik_kk, tempat_lahir_kk, tanggal_lahir_kk, dll (variasi _kk dan _ktp)
+     * 8. Data Tanah: nomor_sppt, luas_tanah, batas_utara, batas_selatan, batas_timur, batas_barat
+     * 9. Data Berulang: nama_ahli_waris_1-10, umur_ahli_waris_1-10, pekerjaan_ahli_waris_1-10,
+     *    desa_ahli_waris_1-10, tanggal_lahir_ahli_waris_1-10, hubungan_keluarga_1-10, ttd_ahli_waris_1-10,
+     *    nama_saksi_1-5, ttd_saksi_1-5
+     *
+     * Catatan: Field 'tes' diabaikan (data sampah/uji coba)
      */
     protected static function getValidationRules(string $namaField, string $tipe, bool $isRequired): array
     {
@@ -806,7 +829,8 @@ class SuratResource extends Resource
                     'jurusan',
                     'nama_bank',
                     'jenis_usaha',
-                    'register_desa'
+                    'register_desa',
+                    'keterangan' // Field keterangan umum
                 ]) ||
                 preg_match('/^pekerjaan_ahli_waris_\d+$/', $namaField) ||
                 preg_match('/^desa_ahli_waris_\d+$/', $namaField);
@@ -918,6 +942,12 @@ class SuratResource extends Resource
 
         // 6. Validasi Teks Bebas, Alamat & Deskripsi
         if (empty($messages) && $tipe === 'text') {
+            $messages['string'] = ':attribute harus berupa teks.';
+            $messages['min'] = ':attribute minimal :min karakter.';
+        }
+
+        // Field khusus yang mungkin belum tercakup
+        if (in_array($namaField, ['keterangan', 'register_desa'])) {
             $messages['string'] = ':attribute harus berupa teks.';
             $messages['min'] = ':attribute minimal :min karakter.';
         }

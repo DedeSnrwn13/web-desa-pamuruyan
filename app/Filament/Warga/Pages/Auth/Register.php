@@ -88,7 +88,12 @@ class Register extends BasePage
                     ->label('Nama Lengkap')
                     ->placeholder('Masukkan nama lengkap')
                     ->required()
-                    ->maxLength(255),
+                    ->minLength(3)
+                    ->maxLength(150)
+                    ->rules(['regex:/^[a-zA-Z\s\.\']+$/'])
+                    ->validationMessages([
+                        'regex' => 'Nama hanya boleh mengandung huruf, spasi, titik, dan petik satu',
+                    ]),
 
                 TextInput::make('email')
                     ->label('Alamat Email')
@@ -96,7 +101,17 @@ class Register extends BasePage
                     ->email()
                     ->required()
                     ->maxLength(255)
-                    ->unique('wargas', 'email'),
+                    ->rules([
+                        'email',
+                        'min:3',
+                        'max:255',
+                        'unique:wargas,email',
+                    ])
+                    ->unique('wargas', 'email')
+                    ->validationMessages([
+                        'email' => 'Format email tidak valid',
+                        'unique' => 'Email sudah terdaftar',
+                    ]),
 
                 TextInput::make('password')
                     ->label('Kata Sandi')
@@ -125,27 +140,42 @@ class Register extends BasePage
 
                 TextInput::make('no_telepon')
                     ->label('Nomor Telepon')
-                    ->placeholder('Masukkan nomor telepon')
-                    ->tel()
+                    ->placeholder('Masukkan nomor telepon (contoh: 081234567890 atau 6281234567890)')
                     ->required()
-                    ->maxLength(15),
+                    ->numeric()
+                    ->rules([
+                        'regex:/^(08[0-9]{8,11}|62[0-9]{9,13})$/',
+                    ])
+                    ->validationMessages([
+                        'regex' => 'Nomor telepon harus dimulai dengan 08 (10-13 digit) atau 62 (11-15 digit)',
+                    ])
+                    ->helperText('Format: 08xxxxxxxx (10-13 digit) atau 62xxxxxxxxxxx (11-15 digit)'),
 
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir')
                     ->placeholder('Masukkan tempat lahir')
                     ->required()
+                    ->minLength(3)
                     ->maxLength(100),
 
                 DatePicker::make('tanggal_lahir')
                     ->label('Tanggal Lahir')
                     ->placeholder('Pilih tanggal lahir')
                     ->required()
-                    ->maxDate(now()),
+                    ->format('Y-m-d')
+                    ->displayFormat('d/m/Y')
+                    ->maxDate(now()->subYears(17)->subDay())
+                    ->rules(['before:-17 years'])
+                    ->helperText('Minimal 17 tahun')
+                    ->validationMessages([
+                        'before' => 'Tanggal lahir harus minimal 17 tahun yang lalu',
+                    ]),
 
                 TextInput::make('pekerjaan')
                     ->label('Pekerjaan')
                     ->placeholder('Masukkan pekerjaan')
                     ->required()
+                    ->minLength(3)
                     ->maxLength(255),
 
                 Select::make('agama')
